@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Training extends Model
 {
     use HasFactory;
     public $timestamps = false;
@@ -15,12 +15,14 @@ class User extends Model
      *
      * @var string
      */
-    protected $table = 'GRP2_USER';
+    protected $table = 'GRP2_TRAINING';
+
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'TRAIN_ID';
+
 }
