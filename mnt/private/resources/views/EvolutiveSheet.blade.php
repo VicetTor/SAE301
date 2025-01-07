@@ -16,11 +16,9 @@ use App\Models\Skill;
     $level = session('level_id');
     $skills = Skill::select('*')
         ->where('LEVEL_ID','=',$level)->get();
-    $nbSkill = $skills->count();
 
+        
     $skillsWithAbilities = [];
-
-
     $i = 0;
     foreach ($skills as $skill) {
         $abilities = Ability::select('*')
@@ -42,7 +40,7 @@ use App\Models\Skill;
     $i = 0;
     foreach($sessions as $session){
         $evaluations = Evaluation::select('*')
-            ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.SESS_ID')
+            ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
             ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
             ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
             ->get();
@@ -50,7 +48,6 @@ use App\Models\Skill;
         $i++;
     }
 
-    echo $evaluationsChaqueSeance[0];
 
 
     ?>
@@ -71,40 +68,77 @@ use App\Models\Skill;
             <th></th>
             @foreach($skills as $skill)
                 @php
-                    $nbAbility = $skill->count();
+                $nbAbility = $skill->count();
                 @endphp
-                <th colspan="{{ $nbAbility }}">{{ $skill->SKILL_LABEL }}</th>
+
+                <?php
+                $nombre = Ability::select('*')
+                ->where('SKILL_ID', '=', $skill->SKILL_ID)
+                ->count();
+                ?>
+
+                <!-- Ici sont généré les gros skills !-->
+                <th colspan="{{ $nombre }}">{{ $skill->SKILL_LABEL }}</th>
             @endforeach
         </tr>
         </thead>
         <tbody>
             <tr>
             <th></th>
+            @php $nbAbility = 0; @endphp
             @foreach($skillsWithAbilities as $skillId => $abilities)
                 @foreach($abilities as $ability)
                     <td>
+                        <!-- Ici est généré le nom de chaque abilité !-->
                     {{ $ability->ABI_LABEL }}
                     </td>
+                    @php
+                        $nbAbility++;
+                    @endphp
                 @endforeach
             @endforeach
             </tr>
 
-            @php
-            $i = 0;
-            @endphp
+            @php $i = 0; @endphp
+
             @foreach($sessions as $session)
             <tr>
+                <!-- Ici est générée la date de chaque session !-->
                 <td>
-                 {{$session->SESSION_DATE}}
+                    {{$session->SESSION_DATE}}
                 </td>
                 
+                @foreach($skillsWithAbilities as $abilities)
+                    @foreach($abilities as $ability)
+                        @php
+                            $evaluationTrouvee = null;
 
-                <!-- Affiche chaque evaluation de chaque competence pour la session 
-                     Il faut que ca fasse une boucle i a chaque fois de la meme longueur que le nb de case en longueur
-                     et ensuite si il faut que ca place le tout au bon endroit
-                !-->
-                
+                            foreach($evaluationsChaqueSeance[$i] as $eval) {
+                                if ($eval->ABI_ID == $ability->ABI_ID) {
+                                    $evaluationTrouvee = $eval;
+                                    break;
+                                }
+                            }
+                        @endphp
+
+                        <!-- Ici sont générées les cases "Absent", "En cours d'acquisition", ect...  !-->
+                        <td>
+                            @if($evaluationTrouvee)
+                                {{$evaluationTrouvee->STATUSTYPE_LABEL}}
+                            @else
+                            
+                            @endif
+                        </td>
+                    @endforeach
+                @endforeach
             </tr>
+
+
+
+
+            @php
+            $i++;
+            @endphp
             @endforeach
             
         
@@ -112,6 +146,7 @@ use App\Models\Skill;
     </tbody>
     </table>
 
+    <!-- Vous pouvez supprimer ce css bien sur cetait juste pour etre lisible en attendant !-->
     <style>
         table {
         width: 50%;
