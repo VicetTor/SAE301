@@ -21,9 +21,8 @@ Route::get('/connexion',function(){
     return view('ConnexionPage');
 })->name('connexion');
 
-Route::get('/inscription',function(){
-    return view('SignInForm');
-})->name('inscription');
+Route::get('/inscription',[\App\Http\Controllers\SignInController::class,'show'])->name('inscription');
+Route::post('/inscription',[\App\Http\Controllers\SignInController::class,'signIn'])->name('inscriptionValidate');
 
 Route::get('/profile',function(){
     return view('MyProfile');
