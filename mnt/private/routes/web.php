@@ -61,3 +61,10 @@ Route::get('/sheet', function(){
     return view('EvolutiveSheet');
 });
 
+// Afficher le formulaire de création
+Route::get('/sessions/create', [SessionController::class, 'create'])->name('sessions.create');
+
+// Enregistrer une nouvelle séance
+Route::post('/sessions/store', [SessionController::class, 'store'])->name('sessions.store');
+
+
