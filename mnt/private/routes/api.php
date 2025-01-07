@@ -62,4 +62,9 @@ Route::get('api/documentation', function () {
     return response()->json(['message' => 'Swagger docs!']);
 })->name('api.documentation');
 
+
+Route::get('test', function () {
+    return "DB=".config("log.channel");
+})
+
 ?>
