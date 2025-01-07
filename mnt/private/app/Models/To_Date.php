@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Session extends Model
+class To_Date extends Model
 {
     use HasFactory;
     public $timestamps = false;
@@ -15,13 +15,7 @@ class Session extends Model
      *
      * @var string
      */
-    protected $table = 'GRP2_SESSION';
+    protected $table = 'TO_DATE';
 
 
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'SESS_ID';
 }

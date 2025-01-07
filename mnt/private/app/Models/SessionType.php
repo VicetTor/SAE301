@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SessionType extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 
     /**
      * The table associated with the model.
