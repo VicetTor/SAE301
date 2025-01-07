@@ -11,14 +11,31 @@
 </head>
 
 <body class="turtle-background">
-    <h1> Se connecter </h1>
-        <div class="card center" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Connexion</h5>
-                <p class="card-text"></p>
-                <a href="#" class="btn btn-primary">Se connecter</a>
+    <section class="h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card connexion-card text-black">
+                        <div class="card-body p-5 text-center">
+                                <h1 class="fw-bold mb-5">CONNEXION</h1>
+
+                                <div data-mdb-input-init class="mb-4">
+                                    <label for="mail" class="form-label">Adresse mail</label>
+                                    <input class="form-control form-control-lg" for="mail" name="mail" type="email" id="mail" value="" placeholder="exemple@mail.fr" required />
+                                </div>
+
+                                <div data-mdb-input-init class="mb-4">
+                                    <label class="form-label" for="mdp">Mot de passe</label>
+                                    <input class="form-control form-control-lg" type="password" id="code" name="code" placeholder="*****" AUTOCOMPLETE=OFF required />
+                                </div>
+                                <br>
+                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-outline-dark btn-lg px-5" type="submit" name="connexion">Connexion</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 </body>
 
 </html>
