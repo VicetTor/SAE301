@@ -33,6 +33,6 @@ html,
     display: flex !important;
     flex-direction: row  !important;
     justify-content: space-evenly !important;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
 }
 

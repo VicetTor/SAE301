@@ -21,17 +21,14 @@ Route::get('/connexion',function(){
     return view('ConnexionPage');
 })->name('connexion');
 
-Route::get('/inscription',function(){
-    return view('SignInForm');
-})->name('inscription');
+Route::get('/inscription',[\App\Http\Controllers\SignInController::class,'show'])->name('inscription');
+Route::post('/inscription',[\App\Http\Controllers\SignInController::class,'signIn'])->name('inscriptionValidate');
 
 Route::get('/profile',function(){
     return view('MyProfile');
 })->name('profile');
 
-Route::get('/session',function(){
-    return view('SessionsPage');
-})->name('session');
+Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
 
 Route::get('/session/create',function(){
     return view('SessionCreate');
@@ -60,4 +57,3 @@ Route::get('/validate', function(){
 Route::get('/sheet', function(){
     return view('EvolutiveSheet');
 });
-

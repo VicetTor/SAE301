@@ -1,8 +1,8 @@
 @extends('Base')
-
 @section('title','Création séance')
 @section('navBarTitle', "Création d'une séance")
 @section('content')
+
 
 <!-- ligne 1 -->
 
@@ -44,7 +44,25 @@
         </select>
     </div>
     <div> 
-    <p>Aptitude</p>
+    <p>Aptitude 1</p>
+    <select class="form-select" style="width:200px">
+        <option selected>Choix des aptitude</option>
+        <option value="1">A1 : s'équilibrer</option>
+        <option value="2">A2 : Respecter le millieu</option>
+        <option value="3">A3 : S'immerger</option>
+    </select>
+    </div>
+    <div> 
+    <p>Aptitude 2</p>
+    <select class="form-select" style="width:200px">
+        <option selected>Choix des aptitude</option>
+        <option value="1">A1 : s'équilibrer</option>
+        <option value="2">A2 : Respecter le millieu</option>
+        <option value="3">A3 : S'immerger</option>
+    </select>
+    </div>
+    <div> 
+    <p>Aptitude 3</p>
     <select class="form-select" style="width:200px">
         <option selected>Choix des aptitude</option>
         <option value="1">A1 : s'équilibrer</option>
@@ -79,7 +97,25 @@
         </select>
     </div>
     <div> 
-    <p>Aptitude</p>
+    <p>Aptitude 1</p>
+    <select class="form-select" style="width:200px">
+        <option selected>Choix des aptitude</option>
+        <option value="1">A1 : s'équilibrer</option>
+        <option value="2">A2 : Respecter le millieu</option>
+        <option value="3">A3 : S'immerger</option>
+    </select>
+    </div>
+    <div> 
+    <p>Aptitude 2</p>
+    <select class="form-select" style="width:200px">
+        <option selected>Choix des aptitude</option>
+        <option value="1">A1 : s'équilibrer</option>
+        <option value="2">A2 : Respecter le millieu</option>
+        <option value="3">A3 : S'immerger</option>
+    </select>
+    </div>
+    <div> 
+    <p>Aptitude 3</p>
     <select class="form-select" style="width:200px">
         <option selected>Choix des aptitude</option>
         <option value="1">A1 : s'équilibrer</option>
@@ -98,13 +134,32 @@
     </div>
 </div> 
 
+<div id="addStudent">
+        <!-- Les nouvelles lignes pour les élèves pour les séances apparaîtront ici -->
+</div>
+
+
 <div class="range">
-<div> 
-<button type="button" class="btn btn-outline-warning range">Retour</button>
+    <div>
+        <button class="btn btn-outline-warning range" onclick="addDiv()">Ajouter un élève</button>  
+    </div>
 </div>
-<div> 
-<button type="button" class="btn btn-outline-primary range">Valider</button>
+
+<div class="range">    
+    <div>
+        <input type="text" placeholder="Information(s) complémentaire(s)" size=80px style="height: 70px; border-radius:20px; border-color:#005C8F;">
+    </div>
 </div>
-</div> 
+  
+<div class="range">
+    <div> 
+        <button type="button" class="btn btn-outline-danger">Retour</button>
+    </div>
+    <div> 
+        <button type="button" class="btn btn-outline-primary">Valider</button>
+    </div>
+</div>
+
+
 
 @endsection
