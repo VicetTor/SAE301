@@ -4,11 +4,11 @@
 
 @section('content')
 
-@if(session('mail'))
+@if(session('user_mail'))
         <p>bonjour {{ session('user_mail') }}</p>
     @else
         <p>Aucun utilisateur connecté.</p>
     @endif
 
-    
+
 @endsection

@@ -26,6 +26,4 @@ class Level extends Model
     protected $primaryKey = 'LEVEL_ID';
 
 
-    public $timestamps = false;
-
 }
