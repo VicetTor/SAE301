@@ -51,8 +51,8 @@ Route::get('/session/create/form',function(){
 })->name('session.create.form');
 
 
-Route::get('/modifing', function(){
-    return view('SiteModifing');
+Route::get('/modifying', function(){
+    return view('SiteModifying');
 });
 
 

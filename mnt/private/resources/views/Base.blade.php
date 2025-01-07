@@ -21,9 +21,22 @@
 
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item fs-4">
-                        <a class="nav-link active text-light" href="/session">Accueil</a>
-                        </li>
+                        <li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session"> Accueil </a> </li>
+                        <?php 
+                        if(Session('type_id') == 1){
+                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/modifying">Personnaliser Site</a></li>';
+                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/validate">Valider Niveau</a></li>';
+                        }
+                        if(Session('type_id') == 1 || Session('type_id') == 2 || Session('type_id') == 3){
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Accéder Tableau Evolutif </a> </li>';
+                        }
+                        if(Session('type_id') == 2){
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session/create"> Créer Séance </a> </li> ';
+                        }
+                        if(Session('type_id') == 4){
+                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/session">Voir Séances</a></li>';
+                        }
+                        ?>
                     </ul>
                     <span class="navbar-text text-light fs-2">
                         @yield('navBarTitle')
