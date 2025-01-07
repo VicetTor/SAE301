@@ -8,7 +8,8 @@ use App\Http\Controllers\{
     SkillController,
     LevelController,
     AbilityController,
-    ValidationController
+    ValidationController,
+    ClubController
 };
 
 // Routes accessibles sans authentification (pas de token)
@@ -50,6 +51,12 @@ Route::get('/validations/{id}', [ValidationController::class, 'show']);
 Route::post('/validations', [ValidationController::class, 'store']);
 Route::put('/validations/{id}', [ValidationController::class, 'update']);
 Route::delete('/validations/{id}', [ValidationController::class, 'destroy']);
+
+Route::get('/clubs', [ClubController::class, 'index']);
+Route::get('/clubs/{id}', [ClubController::class, 'show']);
+Route::post('/clubs', [ClubController::class, 'store']);
+Route::put('/clubs/{id}', [ClubController::class, 'update']);
+Route::delete('/clubs/{id}', [ClubController::class, 'destroy']);
 
 Route::get('api/documentation', function () {
     return response()->json(['message' => 'Swagger docs!']);
