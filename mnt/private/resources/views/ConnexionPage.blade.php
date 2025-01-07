@@ -17,18 +17,21 @@
                     <div class="card connexion-card text-black">
                         <div class="card-body p-5 text-center">
                                 <h1 class="fw-bold mb-5">CONNEXION</h1>
+                                <form method="POST" action="">
+                                @csrf    
+                                
+                                    <div data-mdb-input-init class="mb-4">
+                                        <label for="mail" class="form-label">Adresse mail</label>
+                                        <input class="form-control form-control-lg" for="mail" name="email" type="email" id="email" value="" placeholder="exemple@mail.fr" required />
+                                    </div>
 
-                                <div data-mdb-input-init class="mb-4">
-                                    <label for="mail" class="form-label">Adresse mail</label>
-                                    <input class="form-control form-control-lg" for="mail" name="mail" type="email" id="mail" value="" placeholder="exemple@mail.fr" required />
-                                </div>
-
-                                <div data-mdb-input-init class="mb-4">
-                                    <label class="form-label" for="mdp">Mot de passe</label>
-                                    <input class="form-control form-control-lg" type="password" id="code" name="code" placeholder="*****" AUTOCOMPLETE=OFF required />
-                                </div>
-                                <br>
-                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-outline-dark btn-lg px-5" type="submit" name="connexion">Connexion</button>
+                                    <div data-mdb-input-init class="mb-4">
+                                        <label class="form-label" for="mdp">Mot de passe</label>
+                                        <input class="form-control form-control-lg" type="password" id="password" name="password" placeholder="*****" AUTOCOMPLETE=OFF required />
+                                    </div>
+                                    <br>
+                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-outline-dark btn-lg px-5" type="submit" name="connexion">Connexion</button>
+                                </form>
                         </div>
                     </div>
                 </div>
@@ -38,4 +41,4 @@
 </body>
 
 </html>
->>>>>>> origin/connexionView
+
