@@ -29,9 +29,7 @@ Route::get('/profile',function(){
     return view('MyProfile');
 })->name('profile');
 
-Route::get('/session',function(){
-    return view('SessionsPage');
-})->name('session');
+Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
 
 Route::get('/session/create',function(){
     return view('SessionCreate');
