@@ -17,45 +17,59 @@ Route::get('/', function () {
     return view('Base');
 });
 
+
 Route::get('/connexion',function(){
     return view('ConnexionPage');
 })->name('connexion');
+
 
 Route::get('/inscription',function(){
     return view('SignInForm');
 })->name('inscription');
 
+
 Route::get('/profile',function(){
     return view('MyProfile');
 })->name('profile');
+
 
 Route::get('/session',function(){
     return view('SessionsPage');
 })->name('session');
 
+
 Route::get('/session/create',function(){
     return view('SessionCreate');
 })->name('session.create');
+
 
 Route::get('/session/create/form',function(){
     return view('SessionCreateForm');
 })->name('session.create.form');
 
+
 Route::get('/modifing', function(){
     return view('SiteModifing');
 });
+
 
 Route::get('/students', function(){
     return view('StudentsSheet');
 });
 
+
 Route::get('/user', function(){
-    return view('UserModifing');
+    return view('UserModifying');
 });
+Route::post('/user', function(){
+    return view('MyProfile');
+});
+
 
 Route::get('/validate', function(){
     return view('ValidateLevel');
 });
+
 
 Route::get('/sheet', function(){
     return view('EvolutiveSheet');
