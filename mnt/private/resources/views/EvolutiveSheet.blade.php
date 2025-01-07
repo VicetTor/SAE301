@@ -134,8 +134,6 @@ use App\Models\Skill;
             </tr>
 
 
-
-
             @php
             $i++;
             @endphp
