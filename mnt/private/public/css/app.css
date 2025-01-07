@@ -28,3 +28,10 @@ html,
 .margin-footer {
     margin-top: 50px !important;
 }
+
+.turtle-background {
+    height: 100% !important;
+    width: 100% !important;
+    background: url("/images/Turtle_ConnexionView.png") no-repeat center center !important;
+    background-size: cover !important;
+}
