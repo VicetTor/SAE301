@@ -4,8 +4,9 @@
 @section('navBarTitle', "Création d'une séance")
 @section('content')
 
-<!-- ligne 1 -->
 
+<!-- ligne 1 -->
+<!-- Faire une requete pour chercher les users reliées à une formation mais le responsablede formation n'est pas lié au a la formation -->
 <div class="range">
     <div>    
     <p>Date</p>
@@ -30,7 +31,6 @@
 </div>
     
 <!-- ligne 2 -->
-
 <div class="range">
     <div> 
         <p>Elève</p>
