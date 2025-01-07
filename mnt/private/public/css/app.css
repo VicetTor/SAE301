@@ -28,3 +28,11 @@ html,
 .margin-footer {
     margin-top: 50px !important;
 }
+
+.range{
+    display: flex !important;
+    flex-direction: row  !important;
+    justify-content: space-evenly !important;
+    margin-bottom: 15px;
+}
+
