@@ -32,12 +32,20 @@
                                     <br>
                                     <button data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-outline-dark btn-lg px-5" type="submit" name="connexion">Connexion</button>
                                 </form>
+                                @if(session('fail') == 1)
+                                    <p> Erreur </p>
+                                @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <?php
+    use Illuminate\Support\Facades\Session;
+
+    Session::put('fail', 0);
+    ?>
 </body>
 
 </html>
