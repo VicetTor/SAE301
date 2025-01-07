@@ -128,5 +128,13 @@
                 </div>
             </div>
         </div>
+        <?php
+        use App\Models\typeUser;
+
+        foreach (typeUser::all() as $allTypes){
+            echo $allTypes;
+        }
+        echo 'fin';
+        ?>
     </body>
 </html>
