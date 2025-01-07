@@ -17,9 +17,8 @@ Route::get('/', function () {
     return view('Base');
 });
 
-Route::get('/connexion',function(){
-    return view('ConnexionPage');
-})->name('connexion');
+Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create']);
+Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConnect']);
 
 Route::get('/inscription',function(){
     return view('SignInForm');
@@ -47,7 +46,7 @@ Route::get('/modifing', function(){
 
 Route::get('/students', function(){
     return view('StudentsSheet');
-});
+})->name('students');;
 
 Route::get('/user', function(){
     return view('UserModifing');
