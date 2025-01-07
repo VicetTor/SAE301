@@ -17,6 +17,10 @@
 </head>
 <main>
 
+    @if(session('fail') == 1)
+        <p> Erreur </p>
+    @endif
+
     <form method="POST" action="">
     @csrf  
         <label for="email">Mail:</label>
@@ -35,8 +39,11 @@
         <p>Aucun utilisateur connecté.</p>
     @endif
 
-    
+    <?php
+    use Illuminate\Support\Facades\Session;
 
+    Session::put('fail', 0);
+    ?>
             
 </main>
 </html>

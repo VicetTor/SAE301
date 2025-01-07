@@ -44,6 +44,7 @@ class LoginController extends Controller
             
             return redirect()->route('students');
         } else{
+            Session::put('fail', 1);
             return view('ConnexionPage');
         }
     }
