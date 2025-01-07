@@ -61,6 +61,7 @@ Route::get('/students', function(){
 Route::get('/user', function(){
     return view('UserModifying');
 });
+
 Route::post('/user', function(){
     return view('MyProfile');
 });

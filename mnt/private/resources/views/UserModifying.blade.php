@@ -6,7 +6,10 @@
 
 @section('content')
     <!-- vous bossez la dedans adresse mail adresse mdp num tel-!-->
-    <form class="row">
+    
+    <form action="" method="POST" class="row">
+        
+    @csrf
         <h4 class="text-danger text-center"> Ne modifiez que ce que vous voulez changer </h2>
         
         <div class="col align-self-start">
