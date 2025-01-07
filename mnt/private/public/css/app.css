@@ -1,0 +1,43 @@
+.gray-bg {
+    background-color: #f5f5f5;
+}
+
+html,
+.body-base {
+    height: 100% !important;
+}
+
+.darkblue-bg {
+    background-color: #005C8F !important;
+}
+
+.body-base {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}
+
+
+.margin-contain {
+    margin-top: 135px !important;
+}
+
+.margin-footer {
+    margin-top: 50px !important;
+}
+
+.turtle-background {
+    height: 100% !important;
+    width: 100% !important;
+    background: url("/images/Turtle_ConnexionView.png") no-repeat center center !important;
+    background-size: cover !important;
+}
+
+.connexion-card{
+    background-color: #f5f5f5e5 !important;
+    border-radius: 2rem !important;
+}
+
