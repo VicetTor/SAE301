@@ -15,4 +15,11 @@ class User extends Model
      * @var string
      */
     protected $table = 'GRP2_USER';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'user_id';
 }
