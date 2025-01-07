@@ -9,15 +9,27 @@
 </head>
 <body class="gray-bg body-base">
     <header>
-         <nav class="navbar fixed-top darkblue-bg">
+         <nav class="navbar navbar-expand-lg fixed-top darkblue-bg">
             <div class="container-fluid d-flex ">
-                <a class="navbar-brand " href="#">
+                <a class="navbar-brand " href="/session">
                     <img src="/images/FFESSM-Logo.png" alt="Logo de la FFESSM" width="56" height="56">
                 </a>
-                 <span class="navbar-text text-light fs-2">
-                    @yield('navBarTitle')
-                 </span>
-                 <a class="navbar-brand" href="#">
+
+                <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon" ></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item fs-4">
+                        <a class="nav-link active text-light" href="/session">Accueil</a>
+                        </li>
+                    </ul>
+                    <span class="navbar-text text-light fs-2">
+                        @yield('navBarTitle')
+                    </span>
+                </div>
+                <a class="navbar-brand" href="/profile">
                     <img src="/images/profile_icon.png" alt="Image de profil" width="56" height="56">
                 </a>
             </div>
@@ -35,30 +47,30 @@
             <div class="container-fluid d-block">
                 
                 <div class="text-center text-light">
-                    <a class="fs-6 text-light" href="#">Mentions légales</a> -
-                    <a class="fs-6 text-light" href="#">Conditions générales d'utilisation </a>-
-                    <a class="fs-6 text-light" href="#">FAQ </a>-
-                    <a class="fs-6 text-light" href="#">Contact </a>-
-                    <a class="fs-6 text-light" href="#">Aide en ligne </a>-
-                    <a class="fs-6 text-light" href="#">Ma FFESSM </a>
+                    <a class="fs-6 text-light" href="https://ffessm.fr/mentions-legales">Mentions légales</a> -
+                    <a class="fs-6 text-light" href="https://ffessm.fr/conditions-generales-d-utilisation">Conditions générales d'utilisation </a>-
+                    <a class="fs-6 text-light" href="https://ffessm.fr/faq">FAQ </a>-
+                    <a class="fs-6 text-light" href="https://ffessm.fr/contact">Contact </a>-
+                    <a class="fs-6 text-light" href="https://support.ffessm.fr/">Aide en ligne </a>-
+                    <a class="fs-6 text-light" href="https://maffessm.fr/">Ma FFESSM </a>
 
                 </div>
                 <br>
                 <div class="text-center">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="https://ffessm.fr/">
                         <img src="/images/ffessm-footer.png" alt="Logo de la FFESSM" width="56" height="56">
                     </a>
-                    <a class="navbar-brand" href="#">
-                        <img src="/images/instagram-icon.png" alt="Logo de la FFESSM" width="56" height="56">
+                    <a class="navbar-brand" href="https://www.instagram.com/ffessm_officiel/">
+                        <img src="/images/instagram-icon.png" alt="Logo Instagram" width="56" height="56">
                     </a>
-                    <a class="navbar-brand" href="#">
-                        <img src="/images/X-icon.png" alt="Logo de la FFESSM" width="56" height="56">
+                    <a class="navbar-brand" href="https://x.com/FFESSM_Off?mx=2">
+                        <img src="/images/X-icon.png" alt="Logo X" width="56" height="56">
                     </a>
-                    <a class="navbar-brand" href="#">
-                        <img src="/images/facebook-icon.png" alt="Logo de la FFESSM" width="56" height="56">
+                    <a class="navbar-brand" href="https://www.facebook.com/Ffessm/">
+                        <img src="/images/facebook-icon.png" alt="Logo Facebook" width="56" height="56">
                     </a>
-                    <a class="navbar-brand" href="#">
-                        <img src="/images/youtube-icon.png" alt="Logo de la FFESSM" width="56" height="56">
+                    <a class="navbar-brand" href="https://www.youtube.com/channel/UCJsqq4c8lyL_Q3Olw5EwDQQ?cbrd=1">
+                        <img src="/images/youtube-icon.png" alt="Logo Youtube" width="56" height="56">
                     </a>
                 </div>
             
