@@ -7,38 +7,44 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use OpenApi\Annotations as OA;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = 'grp2_user'; // Table associée
+    protected $primaryKey = 'USER_ID'; // Clé primaire
+    public $timestamps = false; // Si votre table n'a pas de colonnes de timestamps
+
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'LEVEL_ID', 'TYPE_ID', 'LEVEL_ID_RESUME', 'USER_MAIL', 'USER_PASSWORD', 
+        'USER_FIRSTNAME', 'USER_LASTNAME', 'USER_PHONENUMBER', 'USER_BIRTHDATE',
+        'USER_ADDRESS', 'USER_POSTALCODE', 'USER_LICENSENUMBER', 'USER_MEDICCERTIFICATEDATE'
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * @OA\Schema(
+     *     schema="User",
+     *     type="object",
+     *     required={"USER_ID", "USER_MAIL", "USER_FIRSTNAME", "USER_LASTNAME"},
+     *     @OA\Property(property="USER_ID", type="integer", description="ID de l'utilisateur"),
+     *     @OA\Property(property="USER_MAIL", type="string", description="Email de l'utilisateur"),
+     *     @OA\Property(property="USER_PASSWORD", type="string", description="Mot de passe de l'utilisateur"),
+     *     @OA\Property(property="USER_FIRSTNAME", type="string", description="Prénom de l'utilisateur"),
+     *     @OA\Property(property="USER_LASTNAME", type="string", description="Nom de l'utilisateur"),
+     *     @OA\Property(property="USER_PHONENUMBER", type="string", description="Numéro de téléphone de l'utilisateur"),
+     *     @OA\Property(property="USER_BIRTHDATE", type="string", format="date", description="Date de naissance de l'utilisateur"),
+     *     @OA\Property(property="USER_ADDRESS", type="string", description="Adresse de l'utilisateur"),
+     *     @OA\Property(property="USER_POSTALCODE", type="string", description="Code postal de l'utilisateur"),
+     *     @OA\Property(property="USER_LICENSENUMBER", type="string", description="Numéro de licence de l'utilisateur"),
+     *     @OA\Property(property="USER_MEDICCERTIFICATEDATE", type="string", format="date", description="Date du certificat médical de l'utilisateur")
+     * )
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    
+    public function formationsResponsable()
+    {
+        return $this->hasMany(Training::class, 'type_id');
+    }
 }
