@@ -24,7 +24,7 @@
                         <div class="d-flex justify-content-center">
                             @foreach($chunk as $session)
                                 @if($session->SESS_ID != session('verify'))
-                                    <div class="card text-bg-light border-black mb-3 rounded-5 p-3 back flex-column me-3" style="max-width: 18rem;">
+                                    <div class="card text-bg-light mb-3 rounded-5 p-3 back flex-column me-3 bg-body-secondary" style="max-width: 18rem;">
                                         {{ session(['verify' => $session->SESS_ID]) }}
                                         <div class="seance">
                                             <ul>
@@ -65,7 +65,7 @@
 
             <br>
             <div class="d-flex justify-content-center">
-                <button data-mdb-button-init data-mdb-ripple-init class="col-lg-2 btn btn-light btn-outline-dark" type="button" data-dismiss="modal">Voir la progression</button>
+                <button data-mdb-button-init data-mdb-ripple-init class="col-lg-2 btn btn-primary" type="button" data-dismiss="modal">Voir la progression</button>
             </div>
         </div>
     </div>
