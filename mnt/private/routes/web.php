@@ -61,4 +61,5 @@ Route::get('/sheet', function(){
 });
 
 Route::get('/forms-training', [FormsTrainingController::class, 'show']);
-Route::post('/forms-training', [FormsTrainingController::class, 'validateForms']);
+Route::post('/forms-training/validate1', [FormsTrainingController::class, 'validateForms'])->name('validate.forms1');
+Route::post('/forms-training/validate2', [FormsTrainingController::class, 'validateForms2'])->name('validate.forms2');
