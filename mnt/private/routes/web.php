@@ -17,34 +17,21 @@ Route::get('/', function () {
     return view('Base');
 });
 
-
-Route::get('/connexion',function(){
-    return view('ConnexionPage');
-})->name('connexion');
-
 Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create']);
 Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConnect']);
 
-
-Route::get('/inscription',function(){
-    return view('SignInForm');
-})->name('inscription');
-
+Route::get('/inscription',[\App\Http\Controllers\SignInController::class,'show'])->name('inscription');
+Route::post('/inscription',[\App\Http\Controllers\SignInController::class,'signIn'])->name('inscriptionValidate');
 
 Route::get('/profile',function(){
     return view('MyProfile');
 })->name('profile');
 
-
-Route::get('/session',function(){
-    return view('SessionsPage');
-})->name('session');
-
+Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
 
 Route::get('/session/create',function(){
     return view('SessionCreate');
 })->name('session.create');
-
 
 Route::get('/session/create/form',function(){
     return view('SessionCreateForm');
@@ -55,11 +42,9 @@ Route::get('/modifying', function(){
     return view('SiteModifying');
 });
 
-
 Route::get('/students', function(){
     return view('StudentsSheet');
 })->name('students');;
-
 
 Route::get('/user', function(){
     return view('UserModifying');

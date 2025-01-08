@@ -23,4 +23,5 @@ class User extends Model
      * @var string
      */
     protected $primaryKey = 'user_id';
+
 }
