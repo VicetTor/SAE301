@@ -21,7 +21,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session"> Accueil </a> </li>
+                        <li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/"> Accueil </a> </li>
                         <?php 
                         //Directeur Technique
                         if(Session('type_id') == 1){

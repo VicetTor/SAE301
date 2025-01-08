@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('Base');
+    return view('Home');
 });
 
-
+/* CONNEXION */
 Route::get('/connexion',function(){
     return view('ConnexionPage');
 })->name('connexion');
@@ -60,10 +60,15 @@ Route::get('/students', function(){
     return view('StudentsSheet');
 })->name('students');;
 
-
+/* USER MODIFYING */
 Route::get('/user', function(){
     return view('UserModifying');
 });
+
+Route::post('/infoUserUpdate',[App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate');
+Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate');
+
+
 
 Route::post('/user', function(){
     return view('MyProfile');

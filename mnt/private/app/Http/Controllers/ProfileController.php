@@ -12,9 +12,8 @@ class ProfileController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    function load(){
-
-        $utilisateur = USER::select('*')
-            ->where('USER_MAIL', '=', Session('user_mail'));
+    function infoUpdate(){
+        echo "LAORSDFFDZGFZGF";
+        return view('MyProfile');
     }
 }
