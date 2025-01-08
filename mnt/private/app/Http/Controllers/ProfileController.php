@@ -46,9 +46,25 @@ class ProfileController extends Controller
         Session::put('user_phonenumber', $inputPhoneNumber);
         Session::put('user_address', $inputAddress);
         Session::put('user_postalcode', $inputPostalCode);
+
+
+     
         
         return view('MyProfile');
+
     }
+
+
+    function up(){
+        $popUps=DB::table('report')
+        ->join('grp2_user','grp2_user.user_id','=','report.user_id')
+        ->join('grp2_club','grp2_club.club_id','=','report.club_id')
+        ->where('type_id','=','3')
+        ->first();
+
+        return view('MyProfile', ['popUps'=>$popUps]);
+    }
+
 
     /*Session('user_id');*/
 }
