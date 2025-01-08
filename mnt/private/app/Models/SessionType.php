@@ -4,24 +4,39 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OpenApi\Annotations as OA;
 
 class SessionType extends Model
 {
     use HasFactory;
+
+    // Spécifier le nom de la table
+    protected $table = 'grp2_sessiontype';
+
+    // Spécifier la clé primaire
+    protected $primaryKey = 'SESSTYPE_ID';
+
+    // Indiquer que cette table n'a pas de timestamps (created_at, updated_at)
     public $timestamps = false;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'GRP2_SESSIONTYPE';
-
+    // Définir les attributs qui peuvent être assignés en masse
+    protected $fillable = [
+        'SESSTYPE_ID', 'SESSTYPE_LABEL', // Attributs de la table
+    ];
 
     /**
-     * The primary key associated with the table.
-     *
-     * @var string
+     * @OA\Schema(
+     *     schema="SessionType",
+     *     type="object",
+     *     required={"SESSTYPE_ID", "SESSTYPE_LABEL"},
+     *     @OA\Property(property="SESSTYPE_ID", type="integer", description="ID du type de session"),
+     *     @OA\Property(property="SESSTYPE_LABEL", type="string", description="Libellé du type de session")
+     * )
      */
-    protected $primaryKey = 'SESSTYPE_ID';
+
+    
+    public function sessions()
+    {
+        return $this->hasMany(Session::class, 'SESSTYPE_ID', 'SESSTYPE_ID');
+    }
 }
