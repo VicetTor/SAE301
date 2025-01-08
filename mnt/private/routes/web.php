@@ -15,27 +15,41 @@ use App\Http\Controllers\TrainingController;
 */
 
 Route::get('/', function () {
-    return view('Base');
+    return view('Home');
 });
+
+/* CONNEXION */
+Route::get('/connexion',function(){
+    return view('ConnexionPage');
+})->name('connexion');
 
 Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create']);
 Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConnect']);
+
 
 Route::get('/inscription',function(){
     return view('SignInForm');
 })->name('inscription');
 
+
 Route::get('/profile',function(){
     return view('MyProfile');
 })->name('profile');
+
+Route::post('/user', function(){
+    return view('MyProfile');
+});
+
 
 Route::get('/session',function(){
     return view('SessionsPage');
 })->name('session');
 
+
 Route::get('/session/create',function(){
     return view('SessionCreate');
 })->name('session.create');
+
 
 Route::get('/session/create/form',function(){
     return view('SessionCreateForm');
@@ -44,17 +58,30 @@ Route::get('/session/create/form',function(){
 Route::get('/site/edit', [App\Http\Controllers\SiteController::class, 'showEditForm'])->name('modifSite');
 Route::post('/site/update', [App\Http\Controllers\SiteController::class, 'updateSite'])->name('site.update');
 
+
+Route::get('/modifying', function(){
+    return view('SiteModifying');
+});
+
+
 Route::get('/students', function(){
     return view('StudentsSheet');
 })->name('students');;
 
+/* USER MODIFYING */
 Route::get('/user', function(){
-    return view('UserModifing');
+    return view('UserModifying');
 });
+
+Route::post('/infoUserUpdate',[App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate');
+Route::get('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
+Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate');
+
 
 Route::get('/validate', function(){
     return view('ValidateLevel');
 });
+
 
 Route::get('/sheet', function(){
     return view('EvolutiveSheet');
