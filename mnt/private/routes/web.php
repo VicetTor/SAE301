@@ -40,9 +40,8 @@ Route::get('/session/create/form',function(){
     return view('SessionCreateForm');
 })->name('session.create.form');
 
-Route::get('/modifing', function(){
-    return view('SiteModifing');
-});
+Route::get('/site/edit', [App\Http\Controllers\SiteController::class, 'showEditForm'])->name('modifSite');
+Route::post('/site/update', [App\Http\Controllers\SiteController::class, 'updateSite'])->name('site.update');
 
 Route::get('/students', function(){
     return view('StudentsSheet');
