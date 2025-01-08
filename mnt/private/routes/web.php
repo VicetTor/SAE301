@@ -70,6 +70,7 @@ Route::get('/user', function(){
 });
 
 Route::post('/infoUserUpdate',[App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate');
+Route::get('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate');
 
 
