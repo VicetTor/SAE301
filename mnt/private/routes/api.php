@@ -63,4 +63,5 @@ Route::get('/clubs', [ClubController::class, 'index']);
 Route::get('api/documentation', function () {
     return response()->json(['message' => 'Swagger docs!']);
 })->name('api.documentation');
+
 ?>

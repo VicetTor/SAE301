@@ -1,0 +1,1719 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Mon API",
+        "description": "Documentation de l'API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api",
+            "description": "API de développement"
+        }
+    ],
+    "paths": {
+        "/api/abilities": {
+            "get": {
+                "tags": [
+                    "Abilities"
+                ],
+                "summary": "Get list of abilities",
+                "operationId": "8878dd9cc0d17f160a9e7b01390e12ff",
+                "responses": {
+                    "200": {
+                        "description": "List of abilities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Ability"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Abilities"
+                ],
+                "summary": "Create a new ability",
+                "operationId": "641e36f6e546c4ce41884c5932246049",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "SKILL_ID",
+                                    "ABI_LABEL"
+                                ],
+                                "properties": {
+                                    "SKILL_ID": {
+                                        "type": "integer"
+                                    },
+                                    "ABI_LABEL": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ability created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ability"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/abilities/{id}": {
+            "get": {
+                "tags": [
+                    "Abilities"
+                ],
+                "summary": "Get a specific ability by ID",
+                "operationId": "f563e02d738fdc9404c02b777e85675e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the ability",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ability found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ability"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ability not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Abilities"
+                ],
+                "summary": "Update an existing ability",
+                "operationId": "4c20730d4bfd162b4b789fea3caaae57",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the ability",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "SKILL_ID",
+                                    "ABI_LABEL"
+                                ],
+                                "properties": {
+                                    "SKILL_ID": {
+                                        "type": "integer"
+                                    },
+                                    "ABI_LABEL": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ability updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ability"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ability not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Abilities"
+                ],
+                "summary": "Delete a specific ability",
+                "operationId": "3d2395d936cd1464c9f44d7b5834e041",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the ability",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ability deleted successfully"
+                    },
+                    "404": {
+                        "description": "Ability not found"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User login",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "User email",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "User password",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged in",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully logged in"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/levels": {
+            "get": {
+                "tags": [
+                    "Levels"
+                ],
+                "summary": "Get all levels",
+                "operationId": "b21200cd0ebde08419a3347af27dcad7",
+                "responses": {
+                    "200": {
+                        "description": "List of levels",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Level"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Levels not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Levels"
+                ],
+                "summary": "Create a new level",
+                "operationId": "358e86e640b38b4360f0ed7ffa336d58",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "LEVEL_LABEL"
+                                ],
+                                "properties": {
+                                    "LEVEL_LABEL": {
+                                        "type": "string",
+                                        "example": "Beginner"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Level created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Level"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/levels/{id}": {
+            "get": {
+                "tags": [
+                    "Levels"
+                ],
+                "summary": "Pick-up a specific level by ID",
+                "operationId": "b3c3ecc8978bbd74073761046fb4f113",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID level",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Find level",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Level"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Level not find"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Levels"
+                ],
+                "summary": "Update existant level",
+                "operationId": "4176bd984204f4faaf9389a29ef8464c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Level",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "LEVEL_LABEL"
+                                ],
+                                "properties": {
+                                    "LEVEL_LABEL": {
+                                        "type": "string",
+                                        "example": "Advanced"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Level updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Level"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Level not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Levels"
+                ],
+                "summary": "Delete a level",
+                "operationId": "3b49e7cd9e044056aa55c17c9ac8766d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Level",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted level",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Level deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Level not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/session-types": {
+            "get": {
+                "tags": [
+                    "Session Types"
+                ],
+                "summary": "Retrieve all session types",
+                "operationId": "d3259be72b185a4fc96dcc882f335a73",
+                "responses": {
+                    "200": {
+                        "description": "List of all session types",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SessionType"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Session Types"
+                ],
+                "summary": "Create a new session type",
+                "operationId": "f760f8a1896d7201c06e6fcd551ea573",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "SESSTYPE_LABEL"
+                                ],
+                                "properties": {
+                                    "SESSTYPE_LABEL": {
+                                        "type": "string",
+                                        "example": "Theoretical training"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Session Type Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionType"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/session-types/{id}": {
+            "get": {
+                "tags": [
+                    "Session Types"
+                ],
+                "summary": "Retrieve a specific session type by ID",
+                "operationId": "63a95297f0f46da5f744a8a7cbeecf79",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Session Type ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Session type found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionType"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Session type not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Session Types"
+                ],
+                "summary": "Update an existing session type",
+                "operationId": "286a242819b71a01826f0dbae000dff5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Session Type ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "SESSTYPE_LABEL"
+                                ],
+                                "properties": {
+                                    "SESSTYPE_LABEL": {
+                                        "type": "string",
+                                        "example": "Practical training"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Session type updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionType"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Session type not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Session Types"
+                ],
+                "summary": "Delete a session type",
+                "operationId": "98ae20cadf3a2211a1277f557c5b6306",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Session Type ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Session type deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Session type deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Session type not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/skills": {
+            "get": {
+                "tags": [
+                    "Skills"
+                ],
+                "summary": "Collect all skills",
+                "operationId": "6acb38b223d6471cc32eab45ea57be4b",
+                "responses": {
+                    "200": {
+                        "description": "List of all skills",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Skill"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Skills"
+                ],
+                "summary": "Create a new skill",
+                "operationId": "4725cd560d3046ae33bd690208e21d41",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "LEVEL_ID",
+                                    "SKILL_LABEL"
+                                ],
+                                "properties": {
+                                    "LEVEL_ID": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "SKILL_LABEL": {
+                                        "type": "string",
+                                        "example": "Programming skills"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Skill created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Skill"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/skills/{id}": {
+            "get": {
+                "tags": [
+                    "Skills"
+                ],
+                "summary": "Retrieve a specific skill by ID",
+                "operationId": "81b9cbc27bbdd8b5a6591975bf75441a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Skill ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Skill found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Skill"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Skill not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Skills"
+                ],
+                "summary": "Update an existing skill",
+                "operationId": "6c932a7a6f40be346ab93e4dd28f14f2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Skill ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "LEVEL_ID",
+                                    "SKILL_LABEL"
+                                ],
+                                "properties": {
+                                    "LEVEL_ID": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "SKILL_LABEL": {
+                                        "type": "string",
+                                        "example": "Graphic design skills"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Skill updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Skill"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Skill not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Skills"
+                ],
+                "summary": "Delete a skill",
+                "operationId": "7401a82a4b0de61e80c67901e89d62dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Skill ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Skill removed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Skill deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Skill not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/trainings": {
+            "get": {
+                "tags": [
+                    "Trainings"
+                ],
+                "summary": "Get list of trainings",
+                "operationId": "e07cf415ceea9bd0ecac468c94a8e589",
+                "responses": {
+                    "200": {
+                        "description": "List of trainings",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Training"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Trainings"
+                ],
+                "summary": "Create a new training",
+                "operationId": "12e99115a89804e25ad6b9dd9caeda48",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "TRAIN_ID"
+                                ],
+                                "properties": {
+                                    "TRAIN_ID": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Training created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Training"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/trainings/{id}": {
+            "get": {
+                "tags": [
+                    "Trainings"
+                ],
+                "summary": "Get a specific training by ID",
+                "operationId": "785ae259c6003046917b5025847da1bc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the training",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Training found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Training"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Training not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Trainings"
+                ],
+                "summary": "Update an existing training",
+                "operationId": "0ed019fca6c0d443d4a3b029eb8e7f20",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the training",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "TRAIN_ID"
+                                ],
+                                "properties": {
+                                    "TRAIN_ID": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Training updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Training"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Training not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Trainings"
+                ],
+                "summary": "Delete a specific training",
+                "operationId": "ea493862e1ea91055870bba50d7e9348",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the training",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Training deleted successfully"
+                    },
+                    "404": {
+                        "description": "Training not found"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Retrieve all users",
+                "operationId": "c457726701591d1183b53aa71fc13441",
+                "responses": {
+                    "200": {
+                        "description": "List of all users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a new user",
+                "operationId": "592819a0265360b2014512d6dbfaf0e7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "USER_MAIL",
+                                    "USER_PASSWORD"
+                                ],
+                                "properties": {
+                                    "USER_MAIL": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "USER_PASSWORD": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secretpassword"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Retrieve a specific user by ID",
+                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/validations": {
+            "get": {
+                "tags": [
+                    "Validations"
+                ],
+                "summary": "Retrieve all validations",
+                "operationId": "93f4ef39ef1c5d82b3cc2f0615e3e8fd",
+                "responses": {
+                    "200": {
+                        "description": "List of all validations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Validation"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Validations"
+                ],
+                "summary": "Create a new validation",
+                "operationId": "0136323dbd652ab5382e4e3e4afd3c26",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "SKILL_ID",
+                                    "ABI_ID",
+                                    "LEVEL_ID",
+                                    "EVAL_ID",
+                                    "VALID_DATE"
+                                ],
+                                "properties": {
+                                    "SKILL_ID": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "ABI_ID": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "LEVEL_ID": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "EVAL_ID": {
+                                        "type": "integer",
+                                        "example": 4
+                                    },
+                                    "VALID_DATE": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-01-01"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Validation created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validation"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/validations/{id}": {
+            "get": {
+                "tags": [
+                    "Validations"
+                ],
+                "summary": "Retrieve a specific validation by ID",
+                "operationId": "42cf45319da73b096275c40a5e981276",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Validation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Validation found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validation"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Validation not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Validations"
+                ],
+                "summary": "Update an existing validation",
+                "operationId": "db20ae20b327e9a8142b5dfd0b64f726",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Validation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "SKILL_ID",
+                                    "ABI_ID",
+                                    "LEVEL_ID",
+                                    "EVAL_ID",
+                                    "VALID_DATE"
+                                ],
+                                "properties": {
+                                    "SKILL_ID": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "ABI_ID": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "LEVEL_ID": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "EVAL_ID": {
+                                        "type": "integer",
+                                        "example": 4
+                                    },
+                                    "VALID_DATE": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-01-01"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Validation updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Validation"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Validation not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Validations"
+                ],
+                "summary": "Delete a validation",
+                "operationId": "de8eb9dd2e744e2ee8f805a0d8d2088d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Validation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Validation deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Validation not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Ability": {
+                "required": [
+                    "id",
+                    "SKILL_ID",
+                    "ABI_LABEL"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID of the ability",
+                        "type": "integer"
+                    },
+                    "SKILL_ID": {
+                        "description": "Skill ID associated with the ability",
+                        "type": "integer"
+                    },
+                    "ABI_LABEL": {
+                        "description": "Label of the ability",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Club": {
+                "required": [
+                    "club_id",
+                    "club_name",
+                    "club_postalcode",
+                    "club_city",
+                    "club_address"
+                ],
+                "properties": {
+                    "club_id": {
+                        "description": "ID du club",
+                        "type": "integer"
+                    },
+                    "club_name": {
+                        "description": "Nom du club",
+                        "type": "string"
+                    },
+                    "club_postalcode": {
+                        "description": "Code postal du club",
+                        "type": "integer"
+                    },
+                    "club_city": {
+                        "description": "Ville du club",
+                        "type": "string"
+                    },
+                    "club_address": {
+                        "description": "Adresse du club",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Level": {
+                "required": [
+                    "LEVEL_ID",
+                    "LEVEL_LABEL"
+                ],
+                "properties": {
+                    "LEVEL_ID": {
+                        "description": "ID du niveau",
+                        "type": "integer"
+                    },
+                    "LEVEL_LABEL": {
+                        "description": "Libellé du niveau",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Session": {
+                "required": [
+                    "SESS_ID",
+                    "TRAIN_ID",
+                    "TYPE_ID",
+                    "SESSTYPE_ID"
+                ],
+                "properties": {
+                    "SESS_ID": {
+                        "description": "ID de la session",
+                        "type": "integer"
+                    },
+                    "TRAIN_ID": {
+                        "description": "ID de la formation associée",
+                        "type": "integer"
+                    },
+                    "TYPE_ID": {
+                        "description": "ID du type de session",
+                        "type": "integer"
+                    },
+                    "SESSTYPE_ID": {
+                        "description": "ID du type de session",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SessionType": {
+                "required": [
+                    "SESSTYPE_ID",
+                    "SESSTYPE_LABEL"
+                ],
+                "properties": {
+                    "SESSTYPE_ID": {
+                        "description": "ID du type de session",
+                        "type": "integer"
+                    },
+                    "SESSTYPE_LABEL": {
+                        "description": "Libellé du type de session",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Skill": {
+                "required": [
+                    "SKILL_ID",
+                    "LEVEL_ID",
+                    "SKILL_LABEL"
+                ],
+                "properties": {
+                    "SKILL_ID": {
+                        "description": "ID de la compétence",
+                        "type": "integer"
+                    },
+                    "LEVEL_ID": {
+                        "description": "ID du niveau associé à la compétence",
+                        "type": "integer"
+                    },
+                    "SKILL_LABEL": {
+                        "description": "Libellé de la compétence",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Training": {
+                "required": [
+                    "TRAIN_ID"
+                ],
+                "properties": {
+                    "TRAIN_ID": {
+                        "description": "ID de la formation",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "required": [
+                    "USER_ID",
+                    "USER_MAIL",
+                    "USER_FIRSTNAME",
+                    "USER_LASTNAME"
+                ],
+                "properties": {
+                    "USER_ID": {
+                        "description": "ID de l'utilisateur",
+                        "type": "integer"
+                    },
+                    "USER_MAIL": {
+                        "description": "Email de l'utilisateur",
+                        "type": "string"
+                    },
+                    "USER_PASSWORD": {
+                        "description": "Mot de passe de l'utilisateur",
+                        "type": "string"
+                    },
+                    "USER_FIRSTNAME": {
+                        "description": "Prénom de l'utilisateur",
+                        "type": "string"
+                    },
+                    "USER_LASTNAME": {
+                        "description": "Nom de l'utilisateur",
+                        "type": "string"
+                    },
+                    "USER_PHONENUMBER": {
+                        "description": "Numéro de téléphone de l'utilisateur",
+                        "type": "string"
+                    },
+                    "USER_BIRTHDATE": {
+                        "description": "Date de naissance de l'utilisateur",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "USER_ADDRESS": {
+                        "description": "Adresse de l'utilisateur",
+                        "type": "string"
+                    },
+                    "USER_POSTALCODE": {
+                        "description": "Code postal de l'utilisateur",
+                        "type": "string"
+                    },
+                    "USER_LICENSENUMBER": {
+                        "description": "Numéro de licence de l'utilisateur",
+                        "type": "string"
+                    },
+                    "USER_MEDICCERTIFICATEDATE": {
+                        "description": "Date du certificat médical de l'utilisateur",
+                        "type": "string",
+                        "format": "date"
+                    }
+                },
+                "type": "object"
+            },
+            "Validation": {
+                "required": [
+                    "VALID_ID",
+                    "VALID_DATE",
+                    "SKILL_ID",
+                    "ABI_ID",
+                    "LEVEL_ID",
+                    "EVAL_ID"
+                ],
+                "properties": {
+                    "VALID_ID": {
+                        "description": "ID de la validation",
+                        "type": "integer"
+                    },
+                    "SKILL_ID": {
+                        "description": "ID de la compétence validée",
+                        "type": "integer"
+                    },
+                    "ABI_ID": {
+                        "description": "ID de l'aptitude validée",
+                        "type": "integer"
+                    },
+                    "LEVEL_ID": {
+                        "description": "ID du niveau de la validation",
+                        "type": "integer"
+                    },
+                    "EVAL_ID": {
+                        "description": "ID de l'évaluation associée à la validation",
+                        "type": "integer"
+                    },
+                    "VALID_DATE": {
+                        "description": "Date de la validation",
+                        "type": "string",
+                        "format": "date"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Abilities",
+            "description": "Abilities"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Levels",
+            "description": "Levels"
+        },
+        {
+            "name": "Session Types",
+            "description": "Session Types"
+        },
+        {
+            "name": "Skills",
+            "description": "Skills"
+        },
+        {
+            "name": "Trainings",
+            "description": "Trainings"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Validations",
+            "description": "Validations"
+        }
+    ]
+}
