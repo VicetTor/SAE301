@@ -15,26 +15,35 @@
             <div class="shadow-sm p-3 mb-5 bg-body-secondary rounded">
                 <div class="mb-3">
                     <label for="inputEmail" class="form-label">Adresse mail :</label>
-                    <input type="email" class="form-control" id="exampleInputEmail" value="<?php echo Session('user_mail'); ?>">
+                    <input type="email" class="form-control" id="inputEmail" name="inputEmail"  value="{{ Session('user_mail') }}" max='255' required>
                 </div>
             </div>
             <div class="shadow-sm p-3 mb-5 bg-body-secondary rounded">
                 <div class="mb-3">
                     <label for="inputPhoneNumber" class="form-label">Numéro de téléphone :</label>
-                    <input type="text" class="form-control" id="inputPhoneNumber" value="<?php echo Session('user_phonenumber'); ?>">
+                    <input type="text" class="form-control" id="inputPhoneNumber" name="inputPhoneNumber" value="{{ Session('user_phonenumber') }}" min='10' max='10' required>
                 </div>
             </div>
             <div class="shadow-sm p-3 mb-5 bg-body-secondary rounded">
                 <div class="mb-3">
-                    <label for="inputCity" class="form-label">Adresse :</label>
-                    <input type="text" class="form-control" id="inputCity" value="<?php echo Session('user_address'); ?>">
+                    <label for="inputAddress" class="form-label">Adresse :</label>
+                    <input type="text" class="form-control" id="inputAddress" name="inputAddress" value="{{ Session('user_address') }}"  max='255' required>
                 </div>
                 <div class="mb-3">
                     <label for="inputPostalCode" class="form-label">Code postal :</label>
-                    <input type="text" class="form-control" id="inputPostalCode" value="<?php echo Session('user_postalcode'); ?>">
+                    <input type="text" class="form-control" id="inputPostalCode" name="inputPostalCode" value="{{ Session('user_postalcode') }}"  required>
                 </div>
             </div>
         </div>
+        @if ($errors->any()) 
+            <div class="alert alert-danger"> 
+                <ul> 
+                    @foreach ($errors->all() as $error) 
+                        <li>{{ $error }}</li> 
+                    @endforeach 
+                </ul> 
+            </div> 
+        @endif
         <button type="submit" class="btn btn-primary">Valider les modifications</button>
     </form>
         
