@@ -5,20 +5,45 @@
 @section('navBarTitle','Modification du profil')
 
 @section('content')
-    <!-- vous bossez la dedans adresse mail adresse mdp num tel-!-->
-    
-    <form action="" method="POST" class="row">
-        
+<!-- vous bossez la dedans adresse mail adresse mdp num tel-!-->
+
+<form action="" method="POST" class="row">
+
     @csrf
-        <h4 class="text-danger text-center"> Ne modifiez que ce que vous voulez changer </h2>
+    <h4 class="text-danger text-center"> Ne modifiez que ce que vous voulez changer </h2>
+        <br>
+        <br>
         
         <div class="col align-self-start">
+            
             <div class="shadow-sm p-3 mb-5 bg-body-secondary rounded">
                 <div class="mb-3">
                     <label for="inputEmail" class="form-label">Adresse mail :</label>
-                    <input type="email" class="form-control" id="exampleInputEmail">
+                    <input type="email" class="form-control" id="exampleInputEmail" value="<?php echo Session('user_mail'); ?>">
                 </div>
             </div>
+
+            <div class="shadow-sm p-3 mb-5 bg-body-secondary rounded">
+                <div class="mb-3">
+                    <label for="inputCity" class="form-label">Adresse :</label>
+                    <input type="text" class="form-control" id="inputCity" value="<?php echo Session('user_address'); ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="inputPostalCode" class="form-label">Code postal :</label>
+                    <input type="text" class="form-control" id="inputPostalCode" value="<?php echo Session('user_postalcode'); ?>">
+                </div>
+            </div>
+        </div>
+
+        <div class="col align-self-end">
+
+            <div class="shadow-sm p-3 mb-5 bg-body-secondary rounded">
+                <div class="mb-3">
+                    <label for="inputPhoneNumber" class="form-label">Numéro de téléphone :</label>
+                    <input type="text" class="form-control" id="inputPhoneNumber" value="<?php echo Session('user_phonenumber'); ?>">
+                </div>
+            </div>
+
             <div class="shadow-sm p-3 mb-5 bg-body-secondary rounded">
                 <div class="mb-3">
                     <label for="inputActualPassword" class="form-label">Mot de passe actuel :</label>
@@ -34,29 +59,6 @@
                 </div>
             </div>
         </div>
-        
-        <div class="col align-self-end">
-            <div class="shadow-sm p-3 mb-5 bg-body-secondary rounded">
-                <div class="mb-3">
-                    <label for="inputPhoneNumber" class="form-label">Numéro de téléphone :</label>
-                    <input type="text" class="form-control" id="inputPhoneNumber">
-                </div>
-            </div>
-            <div class="shadow-sm p-3 mb-5 bg-body-secondary rounded">
-                <div class="mb-3">
-                    <label for="inputPostalCode" class="form-label">Code postal :</label>
-                    <input type="text" class="form-control" id="inputPostalCode">
-                </div>
-                <div class="mb-3">
-                    <label for="inputCity" class="form-label">Ville :</label>
-                    <input type="text" class="form-control" id="inputCity">
-                </div>
-                <div class="mb-3">
-                    <label for="inputStreet" class="form-label">N° Rue et rue :</label>
-                    <input type="text" class="form-control" id="inputStreet">
-                </div>
-            </div>
-        </div>
         <button type="submit" class="btn btn-primary">Valider les modifications</button>
-    </form>
+</form>
 @endsection
