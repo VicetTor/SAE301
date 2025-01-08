@@ -2,23 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OpenApi\Annotations as OA;
 
 class User extends Authenticatable
 {
     use HasFactory;
+    use HasApiTokens;
 
-    protected $table = 'grp2_user'; // Table associée
-    protected $primaryKey = 'USER_ID'; // Clé primaire
-    public $timestamps = false; // Si votre table n'a pas de colonnes de timestamps
+    protected $table = 'grp2_user'; // Spécifie le nom de la table
+    protected $primaryKey = 'USER_ID'; // Spécifie la clé primaire si elle n'est pas `id`
+    public $timestamps = false; // Si vous n'avez pas de colonnes `created_at` et `updated_at`
 
     protected $fillable = [
-        'LEVEL_ID', 'TYPE_ID', 'LEVEL_ID_RESUME', 'USER_MAIL', 'USER_PASSWORD', 
+        'LEVEL_ID', 'TYPE_ID', 'LEVEL_ID_RESUME', 'USER_MAIL', 'USER_PASSWORD',
         'USER_FIRSTNAME', 'USER_LASTNAME', 'USER_PHONENUMBER', 'USER_BIRTHDATE',
         'USER_ADDRESS', 'USER_POSTALCODE', 'USER_LICENSENUMBER', 'USER_MEDICCERTIFICATEDATE'
     ];
@@ -43,8 +42,19 @@ class User extends Authenticatable
      */
 
     
-    public function formationsResponsable()
-    {
+    public function formationsResponsable() {
         return $this->hasMany(Training::class, 'type_id');
+    }
+
+    public function getAuthPassword() {
+        return $this->USER_PASSWORD;
+    }
+
+    public function getAuthIdentifierName() {
+        return 'USER_MAIL';
+    }
+
+    public function getAuthIdentifier() {
+        return $this->USER_ID;
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\{
@@ -12,8 +11,9 @@ use App\Http\Controllers\{
     ClubController
 };
 
-// Routes accessibles sans authentification (pas de token)
+// Routes d'authentification
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']); // Assurez-vous d'avoir la méthode 'register' dans AuthController
 
 // Routes sans middleware 'auth:sanctum'
 Route::get('/trainings', [TrainingController::class, 'index']);
@@ -58,8 +58,9 @@ Route::post('/clubs', [ClubController::class, 'store']);
 Route::put('/clubs/{id}', [ClubController::class, 'update']);
 Route::delete('/clubs/{id}', [ClubController::class, 'destroy']);
 
+Route::get('/clubs', [ClubController::class, 'index']);
+
 Route::get('api/documentation', function () {
     return response()->json(['message' => 'Swagger docs!']);
 })->name('api.documentation');
-
 ?>
