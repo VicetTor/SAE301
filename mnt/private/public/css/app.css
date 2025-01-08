@@ -1,3 +1,7 @@
+:root {
+    --site-color: #005c8f; /* Valeur par défaut */
+}
+
 .gray-bg {
     background-color: #f5f5f5;
 }
@@ -8,7 +12,7 @@ html,
 }
 
 .darkblue-bg {
-    background-color: #005C8F !important;
+    background-color: var(--site-color);
 }
 
 .body-base {

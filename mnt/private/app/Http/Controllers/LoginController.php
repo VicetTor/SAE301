@@ -38,10 +38,6 @@ class LoginController extends Controller
             Session::put('level_id', $utilisateur->LEVEL_ID);
             Session::put('level_id_resume', $utilisateur->LEVEL_ID_RESUME);
             Session::put('type_id', $utilisateur->TYPE_ID);
-
-
-
-            
             return redirect()->route('students');
         } else{
             Session::put('fail', 1);
