@@ -36,6 +36,7 @@ class SessionController extends Controller
         $abilities = DB::table('grp2_ability')
             ->join('grp2_evaluation','grp2_ability.abi_id','=','grp2_evaluation.abi_id')
             ->join('grp2_session','grp2_evaluation.sess_id','=','grp2_session.sess_id')
+            ->join('grp2_user','grp2_evaluation.user_id','=','grp2_user.user_id')
             ->get();
 
 
