@@ -35,6 +35,10 @@ Route::get('/profile',function(){
     return view('MyProfile');
 })->name('profile');
 
+Route::post('/user', function(){
+    return view('MyProfile');
+});
+
 
 Route::get('/session',function(){
     return view('SessionsPage');
@@ -68,12 +72,6 @@ Route::get('/user', function(){
 Route::post('/infoUserUpdate',[App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate');
 Route::get('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate');
-
-
-
-Route::post('/user', function(){
-    return view('MyProfile');
-});
 
 
 Route::get('/validate', function(){

@@ -8,8 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB ;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -17,7 +16,6 @@ class ProfileController extends Controller
 
     function infoUpdate(Request $request)
     {
-    
         // Valider les données 
         $validatedData = $request->validate([ 
             'inputEmail' => 'required|email|max:255', 
@@ -47,11 +45,7 @@ class ProfileController extends Controller
         Session::put('user_address', $inputAddress);
         Session::put('user_postalcode', $inputPostalCode);
 
-
-     
-        
-        return view('MyProfile');
-
+        return redirect()->route('profile');
     }
 
 
@@ -65,6 +59,30 @@ class ProfileController extends Controller
         return view('MyProfile', ['popUps'=>$popUps]);
     }
 
+    function pswdUpdate(Request $request)
+    {
+        
+        $inputPswd = $request->input('inputActualPassword'); 
+        $inputNewPswd = $request->input('inputNewPassword'); 
+        $inputPswdVerif = $request->input('inputPasswordVerif'); 
 
-    /*Session('user_id');*/
+        $userPswd = DB::table('grp2_user')
+            ->select('*')
+            ->where('USER_ID','=', session('user_id'))->first();
+
+        if(Hash::check($inputPswd, $userPswd->USER_PASSWORD)){
+            if( $inputNewPswd === $inputPswdVerif ){
+                $testUpdate = DB::table('grp2_user')
+                ->where('user_id','=', session('user_id'))
+                ->update(['user_password' => Hash::make($inputNewPswd)]);
+                return redirect()->route('profile')->with('success', 'Mot de passe mis à jour avec succès.');
+            }else{
+                return redirect()->back()->withErrors(['inputNewPassword' => 'Le nouveau mot de passe ne correspond pas à la vérification.']);
+            }
+        }else{
+            return redirect()->back()->withErrors(['inputActualPassword' => 'Le mot de passe actuel est incorrect.']);
+        }
+        
+
+    }
 }
