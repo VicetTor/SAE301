@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SessionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,11 +30,9 @@ Route::get('/profile',function(){
     return view('MyProfile');
 })->name('profile');
 
-Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
-
-Route::get('/session/create',function(){
+/*Route::get('/session/create',function(){
     return view('SessionCreate');
-})->name('session.create');
+})->name('session.create');*/
 
 Route::get('/session/create/form',function(){
     return view('SessionCreateForm');
@@ -57,3 +57,9 @@ Route::get('/validate', function(){
 Route::get('/sheet', function(){
     return view('EvolutiveSheet');
 });
+
+// Afficher le formulaire de création
+Route::get('/session/create', [App\Http\Controllers\SessionController::class, 'create'])->name('sessions.create');
+
+// Enregistrer une nouvelle séance
+Route::post('/session/create', [App\Http\Controllers\SessionController::class, 'store']);
