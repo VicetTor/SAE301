@@ -63,8 +63,7 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
-
-        @dd($request->user_id);
+        //@dd($request);
         // Valider les données du formulaire
         /*$validated = $request->validate([
             'date' => 'required|date', // Vérifie que la date est valide
@@ -74,14 +73,14 @@ class SessionController extends Controller
             'initiator_id' => 'required|integer', // Vérifie que l'initiateur est sélectionné
         ]);*/
 
-        /*$dateTime = $validated['date'] . ' ' . $validated['time'];
-        $sum = DB::table('GRP2_SESSION')
-        ->max('GRP2_SESSION->SESS_ID')
-        ->get();
+        //$dateTime = $validated['date'] . ' ' . $validated['time'];
+        $sum = DB::table('GRP2_SESSION')->max('SESS_ID');
+
+        $time = $request->date . ' ' . $request->time;
 
         // Enregistrer la nouvelle séance dans la table GRP2_SESSION
         DB::table('GRP2_SESSION')->insert([
-            'SESS_DATE' => $dateTime,
+            'SESS_DATE' => $time,
             'SESSTYPE_ID' => 1,
             'TRAIN_ID' => session('level_id_resume'),
             'SESS_ID' => $sum + 1
@@ -92,12 +91,12 @@ class SessionController extends Controller
             'EVAL_ID' => 10,
             'STATUSTYPE_ID' => 1,
             'USER_ID' => 1,
-            'ABI_ID' => session('level_id_resume'),
-            'SESS_ID' => 10,
+            'ABI_ID' => 1,
+            'SESS_ID' => $sum + 1,
             'EVAL_OBSERVATION' => ""
         ]);
 
         // Rediriger avec un message de succès
-        return redirect()->route('sessions.create')->with('success', 'Séance créée avec succès !');*/
+        return redirect()->route('sessions.create')->with('success', 'Séance créée avec succès !');
     }
 }

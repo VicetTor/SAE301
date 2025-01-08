@@ -101,7 +101,7 @@
         <select class="form-select" style="width:200px" name="aptitude_id" required>
                     <option selected>Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->Abi_label }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
                     @endforeach
 
                 </select>
@@ -111,7 +111,7 @@
         <select class="form-select" style="width:200px" name="aptitude_id" required>
                     <option selected>Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->Abi_label }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
                     @endforeach
 
                 </select>
@@ -121,7 +121,7 @@
         <select class="form-select" style="width:200px" name="aptitude_id" required>
                     <option selected>Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->Abi_label }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
                     @endforeach
 
                 </select>
