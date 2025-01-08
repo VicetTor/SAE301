@@ -8,6 +8,11 @@
     <div class="text-center">
         <h1> Bienvenue, <?php echo Session('user_firstname'); ?> <h1>
         <div id="displayPersonnalInformation" class="rounded shadow-sm p-3 mb-5 bg-body-tertiary text-start rrounded">
+            @if (session('success')) 
+                <div class="alert alert-success fs-5"> 
+                    {{ session('success') }} 
+                </div>
+            @endif
             <h3> Informations Personnelles </h3>
             <div class="fs-5">
                 <div> <h4 class="fw-bold d-inline p-2"> Nom : </h4> <p class="d-inline p-2"> <?php echo Session('user_lastname'); ?> </p></div>
