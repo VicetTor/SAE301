@@ -13,7 +13,7 @@ use App\Models\Skill;
 
     $user_id = session('user_id');
 
-    $level = session('level_id');
+    $level = session('level_id_resume');
     $skills = Skill::select('*')
         ->where('LEVEL_ID','=',$level)->get();
 
@@ -59,7 +59,7 @@ use App\Models\Skill;
         @endif
 
         <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
-        <p> Vous etes niveau {{ session('level_id') }}
+        <p> Votre progression vers le Niveau {{ session('level_id') }}
 
 
         <table>

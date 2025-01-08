@@ -60,3 +60,4 @@ Route::get('/sheet', function(){
     return view('EvolutiveSheet');
 });
 
+Route::get('/choixEleve', [StudentController::class, 'getEleves']);
