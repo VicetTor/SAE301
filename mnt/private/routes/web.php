@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FormsTrainingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,3 +60,5 @@ Route::get('/sheet', function(){
     return view('EvolutiveSheet');
 });
 
+Route::get('/forms-training', [FormsTrainingController::class, 'show']);
+Route::post('/forms-training', [FormsTrainingController::class, 'validateForms']);
