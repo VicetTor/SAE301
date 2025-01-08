@@ -9,6 +9,7 @@
 
 use App\Models\Ability;
 use App\Models\Attend;
+use App\Models\Attendee;
 use App\Models\Evaluation;
 use App\Models\Skill;
 use App\Models\StatusType;
@@ -33,11 +34,11 @@ use App\Models\User;
     }
 
 
-    $sessions = Attend::select('ATTEND.*', 'GRP2_USER.*')
-    ->join('GRP2_ATTENDEE', 'GRP2_ATTENDEE.ATTE_ID', '=', 'ATTEND.ATTE_ID')
+    $sessions = Attendee::select('*', 'GRP2_USER.*')
     ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID', '=', 'GRP2_USER.USER_ID')
+    ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
     ->where('GRP2_USER.USER_ID', '=', $user_id)
-    ->get();
+    ->get();    
 
     $evaluationsChaqueSeance =[];
     $i = 0;
@@ -74,14 +75,14 @@ use App\Models\User;
 
         <select id="selectEleve">
             @foreach($eleves as $eleve)
-                <option value="{{ $eleve->USER_ID }}">  <!-- Utilisation de l'ID de l'élève -->
-                    {{$eleve->USER_FIRSTNAME}} {{$eleve->USER_LASTNAME}} <!-- Affichage complet du nom -->
+                <option value="{{ $eleve->USER_ID }}">
+                    {{$eleve->USER_FIRSTNAME}} {{$eleve->USER_LASTNAME}}
                 </option>
             @endforeach
         </select>
-        <h1 id="result">aa </h1>
+        <h1 id="result">aaA </h1>
 
-        <table>
+        <table id=tabletable>
         <thead>
         <tr>
             <th></th>
@@ -124,47 +125,64 @@ use App\Models\User;
             <tr>
                 <!-- Ici est générée la date de chaque session !-->
                 <td>
-                    {{$session->SESSION_DATE}}
+                    {{$session->SESS_DATE}}
                 </td>
                 
                 @foreach($skillsWithAbilities as $abilities)
                     @foreach($abilities as $ability)
                         
-                        @php
-                            $evaluationTrouvee = null;
+                    @php
+                        $evaluationTrouvee = null;
+                        $found = false;
 
-                            foreach($evaluationsChaqueSeance[$i] as $eval) {
-                                if ($eval->ABI_ID == $ability->ABI_ID) {
-                                    $evaluationTrouvee = $eval;
-                                    break;
-                                }
+                        foreach($evaluationsChaqueSeance[$i] as $eval) {
+                            if ($eval->ABI_ID == $ability->ABI_ID) {
+                                $evaluationTrouvee = $eval;
+                                $found = true;
+                                break;
                             }
-                        @endphp
+                        }
+
+                        if (!$found) {
+                            $eval = new Evaluation();
+                            $eval->EVAL_ID = 0;  // ou une valeur par défaut si nécessaire
+                        }
+                    @endphp
+
 
                         <!-- Ici sont générées les cases "Absent", "En cours d'acquisition", ect...  !-->
                         <td>
-                            @if($session->SESSION_DATE > now())
-                                <select class="scroll">
-                            @endif
+                        {{$eval->EVAL_ID}}
+                        @if($session->SESS_DATE > now())
+                            <select class="scroll" 
+                                data-user-id="{{ $user_id }}" 
+                                data-abi-id="{{ $ability->ABI_ID }}" 
+                                data-sess-id="{{ $session->SESS_ID }}"
+                                data-eval-id="{{$eval->EVAL_ID}}"
+                                >
+
+                        @endif
+
+
                             
-                            @if($session->SESSION_DATE > now())
+                            @if($session->SESS_DATE > now())
                                 @if($evaluationTrouvee)
                                         <option>
-                                            {{$evaluationTrouvee->STATUSTYPE_LABEL}}
+                                            {{$evaluationTrouvee->STATUSTYPE_LABEL}} 
                                         </option>
                                     @else
                                     <option></option>
                                 @endif
                                 @foreach($statustype as $statutype)
                                     
-                                    <option>
+                                    <option value="{{$statutype->STATUSTYPE_ID}}">
                                         {{$statutype->STATUSTYPE_LABEL}}
                                     </option>
                                  @endforeach
                             @elseif($evaluationTrouvee)
                                 {{$evaluationTrouvee->STATUSTYPE_LABEL}}
                             @endif
-                            @if($session->SESSION_DATE > now())
+                            @if($session->SESS_DATE > now())
                                 </select>
                             @endif
                         </td>
@@ -179,28 +197,62 @@ use App\Models\User;
             @endforeach
             
         
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    $(document).ready(function() {
-        $.ajax({
-            url: '/choixEleve',
-            type: 'GET',
-            success: function(response) {
-                $('#selectEleve').empty();
+    <script>
+        $(document).ready(function() {
+        $('#selectEleve').change(function() {
+            var userId = $(this).val();
 
-            },
+            $.ajax({
+                url: '/choixEleve',
+                type: 'GET',
+                data: { user_id: userId },
+                success: function(response) {
+                    $('#tabletable').replaceWith(response.html);
+                },
+                error: function() {
+                    alert('Une erreur est survenue.');
+                }
+            });
         });
+
+
+        $('.scroll').change(function() {
+    var evalId = $(this).data('eval-id'); 
+    var selectedStatus = $(this).val();
+    var user_id = $(this).data('user-id');
+    var abi_id = $(this).data('abi-id');
+    var sess_id = $(this).data('sess-id');
+    if(evalId )
+    console.log(evalId);
+
+    if (selectedStatus) {
+        $.ajax({
+            url: '/updateEvaluation',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                eval_id: evalId,
+                statut_id: selectedStatus,
+                user_id: user_id,
+                abi_id: abi_id,
+                sess_id: sess_id
+            },
+            success: function(response) {
+                alert(response.message);  // Afficher le message retourné par le contrôleur
+            },
+            error: function() {
+                alert('Une erreur est survenue lors de la mise à jour.');
+            }
+        });
+    }
+});
+
     });
 
-    $('#selectEleve').change(function() {
-        var eleveId = $(this).val();
 
-        if (eleveId) {
-            $('#result').text('Vous avez sélectionné l\'élève avec ID: ' + eleveId);
-        }
-    });
-</script>
+    </script>
 
 
 </body>

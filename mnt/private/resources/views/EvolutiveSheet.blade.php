@@ -8,6 +8,7 @@
 
 use App\Models\Ability;
 use App\Models\Attend;
+use App\Models\Attendee;
 use App\Models\Evaluation;
 use App\Models\Skill;
 
@@ -30,11 +31,11 @@ use App\Models\Skill;
     }
 
 
-    $sessions = Attend::select('ATTEND.*', 'GRP2_USER.*')
-    ->join('GRP2_ATTENDEE', 'GRP2_ATTENDEE.ATTE_ID', '=', 'ATTEND.ATTE_ID')
+    $sessions = Attendee::select('*', 'GRP2_USER.*')
     ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID', '=', 'GRP2_USER.USER_ID')
+    ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
     ->where('GRP2_USER.USER_ID', '=', $user_id)
-    ->get();
+    ->get();    
 
     $evaluationsChaqueSeance =[];
     $i = 0;
@@ -105,7 +106,7 @@ use App\Models\Skill;
             <tr>
                 <!-- Ici est générée la date de chaque session !-->
                 <td>
-                    {{$session->SESSION_DATE}}
+                    {{$session->SESS_DATE}}
                 </td>
                 
                 @foreach($skillsWithAbilities as $abilities)

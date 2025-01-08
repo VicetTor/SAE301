@@ -60,4 +60,5 @@ Route::get('/sheet', function(){
     return view('EvolutiveSheet');
 });
 
-Route::get('/choixEleve', [StudentController::class, 'getEleves']);
+Route::get('/choixEleve', [App\Http\Controllers\StudentController::class, 'getEleves']);
+Route::post('/updateEvaluation', [App\Http\Controllers\EvaluationController::class, 'updateEvaluation']);
