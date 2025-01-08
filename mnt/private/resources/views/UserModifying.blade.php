@@ -27,7 +27,7 @@
             <div class="shadow-sm p-3 mb-5 bg-body-secondary rounded">
                 <div class="mb-3">
                     <label for="inputAddress" class="form-label">Adresse :</label>
-                    <input type="text" class="form-control" id="inputAddress" name="inputAddress" value="{{ Session('user_address') }}"  max='255' required>
+                    <input type="text" class="form-control" id="inputAddress" name="inputAddress" placeholder="N° Rue Ville" title="N° Rue Ville" value="{{ Session('user_address') }}"  max='255' required>
                 </div>
                 <div class="mb-3">
                     <label for="inputPostalCode" class="form-label">Code postal :</label>

@@ -6,6 +6,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB ;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 
@@ -31,14 +33,21 @@ class ProfileController extends Controller
              'inputPostalCode.size' => 'Le code postal doit comporter exactement 5 caractères.'
         ]);
         
-        echo 'Email: '.$request->input('inputEmail') . '<br>'; 
-        echo 'Numéro de téléphone: ' . $request->input('inputPhoneNumber') . '<br>'; 
-        echo 'Adresse: ' . $request->input('inputAddress') . '<br>'; 
-        echo 'Code postal: ' . $request->input('inputPostalCode') . '<br>'; 
-        
-        exit;
+        $inputMail = $request->input('inputEmail'); 
+        $inputPhoneNumber = $request->input('inputPhoneNumber'); 
+        $inputAddress = $request->input('inputAddress'); 
+        $inputPostalCode = $request->input('inputPostalCode'); 
 
-        /*return view('MyProfile');*/
+        $testUpdate = DB::table('grp2_user')
+            ->where('user_id','=', session('user_id'))
+            ->update(['user_mail' => $inputMail,'user_phonenumber' => $inputPhoneNumber,'user_address' => $inputAddress,'user_postalcode' => $inputPostalCode]);
+
+        Session::put('user_mail',  $inputMail);
+        Session::put('user_phonenumber', $inputPhoneNumber);
+        Session::put('user_address', $inputAddress);
+        Session::put('user_postalcode', $inputPostalCode);
+        
+        return view('MyProfile');
     }
 
     /*Session('user_id');*/
