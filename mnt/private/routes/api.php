@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\{
@@ -8,14 +9,15 @@ use App\Http\Controllers\{
     LevelController,
     AbilityController,
     ValidationController,
-    ClubController
+    ClubController,
+    UserController,
 };
 
 // Routes d'authentification
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']); // Assurez-vous d'avoir la méthode 'register' dans AuthController
+Route::post('/register', [AuthController::class, 'register']);
 
-// Routes sans middleware 'auth:sanctum'
+// Routes accessibles sans middleware 'auth:sanctum'
 Route::get('/trainings', [TrainingController::class, 'index']);
 Route::get('/trainings/{id}', [TrainingController::class, 'show']);
 Route::post('/trainings', [TrainingController::class, 'store']);
@@ -58,10 +60,9 @@ Route::post('/clubs', [ClubController::class, 'store']);
 Route::put('/clubs/{id}', [ClubController::class, 'update']);
 Route::delete('/clubs/{id}', [ClubController::class, 'destroy']);
 
-Route::get('/clubs', [ClubController::class, 'index']);
-
-Route::get('api/documentation', function () {
-    return response()->json(['message' => 'Swagger docs!']);
-})->name('api.documentation');
+// Routes protégées par authentification
+Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/users/{id}', [UserController::class, 'show']);
+Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'showAuthenticatedUser']);
 
 ?>

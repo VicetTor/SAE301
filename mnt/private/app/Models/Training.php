@@ -40,8 +40,7 @@ class Training extends Model
     }
 
     
-    public function users()
-    {
+    public function users(){
         return $this->belongsToMany(User::class, 'grp2_attendee', 'TRAIN_ID', 'USER_ID');
     }
 }

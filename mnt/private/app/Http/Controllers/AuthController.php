@@ -43,29 +43,35 @@ class AuthController extends Controller {
      *     )
      * )
      */
-    public function login(Request $request){
-        // Validation des informations d'identification
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
+    public function login(Request $request) {
+        try {
+            // Validation des informations d'identification
+            $validated = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|string',
+            ]);
 
-        // Recherche de l'utilisateur avec l'email
-        $user = User::where('USER_MAIL', $validated['email'])->first();
+            // Recherche de l'utilisateur avec l'email
+            $user = User::where('USER_MAIL', $validated['email'])->first();
 
-        // Vérification de l'existence de l'utilisateur et du mot de passe
-        if (!$user || !Hash::check($validated['password'], $user->USER_PASSWORD)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            // Vérification de l'existence de l'utilisateur et du mot de passe
+            if (!$user || !Hash::check($validated['password'], $user->USER_PASSWORD)) {
+                return response()->json(['message' => 'Invalid credentials'], 401);
+            }
+
+            // Générer un token d'authentification
+            $token = $user->createToken('YourAppName')->plainTextToken;
+
+            return response()->json([
+                'message' => 'Successfully logged in',
+                'token' => $token,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Server error: ' . $e->getMessage()], 500);
         }
-
-        // Générer un token d'authentification
-        $token = $user->createToken('YourAppName')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Successfully logged in',
-            'token' => $token,
-        ]);
     }
+
 
     /**
      * @OA\Post(

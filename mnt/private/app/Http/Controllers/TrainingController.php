@@ -91,13 +91,22 @@ class TrainingController extends Controller
      *     )
      * )
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
+        // Validation des données
         $validated = $request->validate([
             'TRAIN_ID' => 'required|integer',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'responsable_id' => 'required|exists:users,id', // Vérifier que le responsable existe
         ]);
 
-        $training = Training::create($validated);
+        // Créer une nouvelle formation avec le responsable
+        $training = Training::create([
+            'TRAIN_ID' => $validated['TRAIN_ID'],
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'responsable_id' => $validated['responsable_id']
+        ]);
 
         return response()->json($training, 201); // 201 signifie "créé"
     }
