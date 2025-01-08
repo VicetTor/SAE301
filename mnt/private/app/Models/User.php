@@ -58,4 +58,13 @@ class User extends Model
     public function getAuthIdentifier() {
         return $this->USER_ID;
     }
+
+    public function evaluations() {
+        return $this->hasMany(Evaluation::class, 'user_id');
+    }
+
+    public function reports() {
+        return $this->hasMany(Report::class, 'user_id');
+    }
 }
+

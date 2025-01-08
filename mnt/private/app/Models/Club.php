@@ -43,6 +43,14 @@ class Club extends Model
     public function trainings() {
         return $this->hasMany(Training::class);
     }
+
+    public function reports() {
+        return $this->hasMany(Report::class, 'CLUB_ID');
+    }
+
+    public function evaluations() {
+        return $this->hasMany(Evaluation::class, 'CLUB_ID');
+    }
 }
 
 ?>
