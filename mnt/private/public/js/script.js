@@ -16,33 +16,13 @@ Statut.addEventListener("change", (event) => {
 
     }
 
-    else if(Statut.value == 2){
-        LevelPrepa.hidden = true;
-        LevelPrepaLable.hidden = true;
-
-        clearLevel()
-
-        for(var i = 3 ; i < 5; i++){
-            var opt = document.createElement('option');
-            opt.value = i;
-            opt.innerHTML = "Niveau " + i;
-            Level.appendChild(opt);
-        }
-
-        var opt = document.createElement('option');
-        opt.value = 5;
-        opt.innerHTML = "MF " + 1;
-        Level.appendChild(opt);
-
-    }
-
     else if(Statut.value == 3){
         LevelPrepa.hidden = true;
         LevelPrepaLable.hidden = true;
 
         clearLevel()
 
-        for(var i = 2 ; i < 5; i++){
+        for(var i = 2 ; i < 4; i++){
             var opt = document.createElement('option');
             opt.value = i;
             opt.innerHTML = "Niveau " + i;
@@ -62,7 +42,7 @@ Statut.addEventListener("change", (event) => {
 
         clearLevel()
 
-        for(var i = 1 ; i < 5; i++){
+        for(var i = 0 ; i < 3; i++){
             var opt = document.createElement('option');
             opt.value = i;
             opt.innerHTML = "Niveau " + i;
@@ -80,7 +60,7 @@ Level.addEventListener("change", (event) => {
 
 
 function checkLevel($valeur) {
-    var min = 1, max = 4;
+    var min = 1, max = 3;
     clearLevelPrepa();
     for (var i = min; i<=max; i++){
         if(i > $valeur){

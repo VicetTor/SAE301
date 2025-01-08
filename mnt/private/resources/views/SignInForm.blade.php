@@ -34,7 +34,9 @@
             <select name="TYPE_ID" id="TYPE_ID">
                 <option value=""></option>
                 @foreach($typeUser as $user)
-                    <option value="{{$user->TYPE_ID}}">{{$user->TYPE_LABEL}}</option>
+                    @if($user->TYPE_ID != 2)
+                        <option value="{{$user->TYPE_ID}}">{{$user->TYPE_LABEL}}</option>
+                    @endif
                 @endforeach
             </select>
             @error('TYPE_ID')

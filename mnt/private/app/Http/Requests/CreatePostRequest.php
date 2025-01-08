@@ -33,7 +33,7 @@ class CreatePostRequest extends FormRequest
             'USER_ADDRESS' => 'required|string|max:255',
             'USER_POSTALCODE' => 'required|integer|digits_between:5,5',
             'USER_LICENSENUMBER' => 'required|string|regex:/^A-\d{2}-\d{6}$/|unique:grp2_user,USER_LICENSENUMBER',
-            'USER_MEDICCERTIFICATEDATE' => 'required|date|before_or_equal:today',
+            'USER_MEDICCERTIFICATEDATE' => 'required|date|after_or_equal:last year',
             'USER_BIRTHDATE' => 'required|date|before_or_equal:today',
             'USER_PHONENUMBER' => 'required|numeric|digits_between:10,10|regex:/^0/',
         ];
