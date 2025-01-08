@@ -32,6 +32,7 @@
         <div>
             <label for="TYPE_ID">Statut</label>
             <select name="TYPE_ID" id="TYPE_ID">
+                <option value=""></option>
                 @foreach($typeUser as $user)
                     <option value="{{$user->TYPE_ID}}">{{$user->TYPE_LABEL}}</option>
                 @endforeach
@@ -116,9 +117,6 @@
         <div>
             <label for="LEVEL_ID">Level</label>
             <select name="LEVEL_ID" id="LEVEL_ID">
-                @foreach($levels as $level)
-                    <option value="{{$level->LEVEL_ID}}">{{$level->LEVEL_LABEL}}</option>
-                @endforeach
             </select>
             @error('LEVEL_ID')
             <span style="color: red;">{{ $message }}</span>
@@ -127,11 +125,8 @@
 
         <!-- Niveau préparé -->
         <div>
-            <label for="LEVEL_ID_RESUME">Level préparé</label>
+            <label for="LEVEL_ID_RESUME" id="LEVEL_ID_LABEL">Level préparé</label>
             <select name="LEVEL_ID_RESUME" id="LEVEL_ID_RESUME">
-                @foreach($levels as $level)
-                    <option value="{{$level->LEVEL_ID}}">{{$level->LEVEL_LABEL}}</option>
-                @endforeach
             </select>
             @error('LEVEL_ID_RESUME')
             <span style="color: red;">{{ $message }}</span>
@@ -139,11 +134,12 @@
         </div>
 
 
-
-
         <!-- Bouton d'inscription -->
         <div>
             <button type="submit">S'inscrire</button>
         </div>
     </form>
+
+    <script src="/js/script.js"></script>
+
 @endsection

@@ -28,7 +28,12 @@ class SignInController extends Controller
 
         $utilisateur->TYPE_ID = $request->input('TYPE_ID');
 
-        $utilisateur->LEVEL_ID_RESUME = $request->input('LEVEL_ID_RESUME');
+        if($request->input('TYPE_ID') == 4){
+            $utilisateur->LEVEL_ID_RESUME = $request->input('LEVEL_ID_RESUME');
+        }
+        else{
+            $utilisateur->LEVEL_ID_RESUME = NULL;
+        }
 
         $utilisateur->USER_MAIL = $request->input('USER_MAIL');
 
