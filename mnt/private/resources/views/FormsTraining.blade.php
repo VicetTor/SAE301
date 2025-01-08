@@ -60,73 +60,68 @@
 <form action="{{ route('validate.forms1') }}" method="POST">
     @csrf
 
-    <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-            <h4>Informations sur la formation</h4>
+    <!-- Responsable -->
+    <div class="mb-3">
+        <label for="TRAIN_RESPONSABLE_ID" class="form-label">Choix responsable</label>
+        <select name="TRAIN_RESPONSABLE_ID" id="TRAIN_RESPONSABLE_ID" class="form-select">
+            <option value=""></option>
+            @foreach($trainings as $training)
+                <option value="{{$training->USER_ID}}">{{$training->USER_FIRSTNAME . ' ' .$training->USER_LASTNAME}}</option>
+            @endforeach
+        </select>
+        @error('TRAIN_ID')
+        <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Responsable -->
+    <div class="mb-3">
+        <label for="TRAIN_ID" class="form-label">Choix du niveau</label>
+        <select name="TRAIN_ID" id="TRAIN_ID" class="form-select">
+            <option value=""></option>
+            @foreach($trainDatas as $trainData)
+                <option value="{{$trainData->TRAIN_ID}}">{{$trainData->TRAIN_ID}}</option>
+            @endforeach
+        </select>
+        @error('TRAIN_ID')
+        <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+
+    <!-- Initiateurs -->
+    <div class="dropdown mb-3">
+        <button class="btn btn-secondary w-100" type="button" id="initiatorDropdown" aria-expanded="false">
+            Choisissez vos initiateurs
+        </button>
+        <div class="dropdown-content" aria-labelledby="initiatorDropdown">
+            @foreach($trainings as $training)
+            <div class="checkbox-container">
+                <input type="checkbox" id="initiator{{$training->USER_ID}}" name="initiators[]" value="{{$training->USER_ID}}">
+                <label for="initiator{{$training->USER_ID}}">{{$training->USER_FIRSTNAME . ' ' .$training->USER_LASTNAME}}</label>
+            </div>
+            @endforeach
         </div>
-            <!-- Responsable -->
-            <div class="mb-3">
-                <label for="TRAIN_RESPONSABLE_ID" class="form-label">Choix responsable</label>
-                <select name="TRAIN_RESPONSABLE_ID" id="TRAIN_RESPONSABLE_ID" class="form-select">
-                    <option value=""></option>
-                    @foreach($trainings as $training)
-                        <option value="{{$training->USER_ID}}">{{$training->USER_FIRSTNAME . ' ' .$training->USER_LASTNAME}}</option>
-                    @endforeach
-                </select>
-                @error('TRAIN_ID')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
+    </div>
+
+    <!-- Élèves -->
+    <div class="dropdown mb-3">
+        <button class="btn btn-secondary w-100" type="button" id="studentDropdown" aria-expanded="false">
+            Choisissez vos élèves
+        </button>
+        <div class="dropdown-content" aria-labelledby="studentDropdown">
+            @foreach($studies as $studie)
+            <div class="checkbox-container">
+                <input type="checkbox" id="student{{$studie->USER_ID}}" name="students[]" value="{{$studie->USER_ID}}">
+                <label for="student{{$studie->USER_ID}}">{{$studie->USER_FIRSTNAME . ' ' .$studie->USER_LASTNAME}}</label>
             </div>
-
-            <!-- Niveau -->
-            <div class="mb-3">
-                <label for="TRAIN_ID" class="form-label">Choix du niveau</label>
-                <select name="TRAIN_ID" id="TRAIN_ID" class="form-select">
-                    <option value=""></option>
-                    @foreach($trainDatas as $trainData)
-                        <option value="{{$trainData->TRAIN_ID}}">{{$trainData->TRAIN_ID}}</option>
-                    @endforeach
-                </select>
-                @error('TRAIN_ID')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-
-
-            <!-- Initiateurs -->
-            <div class="dropdown mb-3">
-                <button class="btn btn-secondary w-100" type="button" id="initiatorDropdown" aria-expanded="false">
-                    Choisissez vos initiateurs
-                </button>
-                <div class="dropdown-content" aria-labelledby="initiatorDropdown">
-                    @foreach($trainings as $training)
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="initiator{{$training->USER_ID}}" name="initiators[]" value="{{$training->USER_ID}}">
-                        <label for="initiator{{$training->USER_ID}}">{{$training->USER_FIRSTNAME . ' ' .$training->USER_LASTNAME}}</label>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Élèves -->
-            <div class="dropdown mb-3">
-                <button class="btn btn-secondary w-100" type="button" id="studentDropdown" aria-expanded="false">
-                    Choisissez vos élèves
-                </button>
-                <div class="dropdown-content" aria-labelledby="studentDropdown">
-                    @foreach($studies as $studie)
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="student{{$studie->USER_ID}}" name="students[]" value="{{$studie->USER_ID}}">
-                        <label for="student{{$studie->USER_ID}}">{{$studie->USER_FIRSTNAME . ' ' .$studie->USER_LASTNAME}}</label>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-
-        <!-- Bouton d'inscription -->
-        <div>
-            <button type="submit">Valider</button>
+            @endforeach
         </div>
+    </div>
+
+    <!-- Bouton d'inscription -->
+    <div>
+        <button type="submit">Valider</button>
     </div>
 </form>
 
