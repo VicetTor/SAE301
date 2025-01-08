@@ -23,18 +23,37 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session"> Accueil </a> </li>
                         <?php 
+                        //Directeur Technique
                         if(Session('type_id') == 1){
-                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/modifying">Personnaliser Site</a></li>';
-                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/validate">Valider Niveau</a></li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Créer une formation </a> </li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan des formations </a> </li>';
+
+                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/validate">Valider niveau</a></li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Liste des adhérents </a> </li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Modération </a> </li>';
+
+                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/modifying">Personnaliser le site</a></li>';
+
                         }
-                        if(Session('type_id') == 1 || Session('type_id') == 2 || Session('type_id') == 3){
-                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Accéder Tableau Evolutif </a> </li>';
-                        }
+
+                        //Responsable Formation
                         if(Session('type_id') == 2){
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session/create"> Créer Séance </a> </li> ';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan des formations </a> </li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Liste des adhérents </a> </li>';
                         }
+
+                        //Initiateur
+                        if(Session('type_id') == 3){
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan des formations </a> </li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Liste des élèves </a> </li>';
+
+                        }
+
+                        //Élève
                         if(Session('type_id') == 4){
-                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/session">Voir Séances</a></li>';
+                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/session">Mes Séances</a></li>';
+                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/session">Mon bilan</a></li>';
                         }
                         ?>
                     </ul>
@@ -90,6 +109,5 @@
             </div>
         </nav>
     </footer>
-
 </body>
 </html>
