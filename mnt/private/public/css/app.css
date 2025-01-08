@@ -41,3 +41,56 @@ html,
     border-radius: 2rem !important;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 8px;
+    border: 1px solid darkblue;
+}
+thead {
+    background-color: rgb(214, 117, 33);
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+    table, thead, tbody, tr, td {
+        display: block;
+    }
+
+    thead {
+        display: none; 
+    }
+
+    tr {
+        margin-bottom: 15px;
+    }
+
+    td {
+        text-align: right;
+        padding-left: 10px;
+        position: relative;
+        border: none;
+    }
+
+    td:before {
+        content: attr(data-titre_colonne);
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        font-weight: bold;
+    }
+
+    .session-date {
+        font-weight: bold;
+        background-color: #f0f0f0;
+    }
+
+    td {
+        padding-left: 40%;
+    }
+}

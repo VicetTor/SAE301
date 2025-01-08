@@ -5,19 +5,16 @@
 @section('content')
 
 <?php
-
     use App\Models\Ability;
     use App\Models\Attend;
     use App\Models\Evaluation;
     use App\Models\Skill;
 
     $user_id = session('user_id');
-
     $level = session('level_id_resume');
     $skills = Skill::select('*')
         ->where('LEVEL_ID','=',$level)->get();
 
-        
     $skillsWithAbilities = [];
     $i = 0;
     foreach ($skills as $skill) {
@@ -29,14 +26,13 @@
         $i++;
     }
 
-
     $sessions = Attend::select('ATTEND.*', 'GRP2_USER.*')
     ->join('GRP2_ATTENDEE', 'GRP2_ATTENDEE.ATTE_ID', '=', 'ATTEND.ATTE_ID')
     ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID', '=', 'GRP2_USER.USER_ID')
     ->where('GRP2_USER.USER_ID', '=', $user_id)
     ->get();
 
-    $evaluationsChaqueSeance =[];
+    $evaluationsChaqueSeance = [];
     $i = 0;
     foreach($sessions as $session){
         $evaluations = Evaluation::select('*')
@@ -49,119 +45,93 @@
     }
 ?>
 
+<div>
+    @if(session()->missing('user_mail'))
+        <p> Vous êtes actuellement NON CONNECTÉ </p>
+    @endif
 
+    <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
+    <p> Votre progression vers le Niveau {{ session('level_id') }}</p>
 
-        @if(session()->missing('user_mail'))
-            <p> vous êtes actuelement NON CONNECTE </p>
-        @endif
-
-        <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
-        <p> Votre progression vers le Niveau {{ session('level_id') }}
-
-
-        <table>
+    <table>
         <thead>
-        <tr>
-            <th></th>
-            @foreach($skills as $skill)
-                @php
-                $nbAbility = $skill->count();
-                @endphp
-
-                <?php
-                $nombre = Ability::select('*')
-                ->where('SKILL_ID', '=', $skill->SKILL_ID)
-                ->count();
-                ?>
-
-                <!-- Ici sont généré les gros skills !-->
-                <th colspan="{{ $nombre }}">{{ $skill->SKILL_LABEL }}</th>
-            @endforeach
-        </tr>
-        </thead>
+            <tr>
+                <th>Date</th>
+                <th>Compétence</th>
+                <th>Aptitude</th>
+                <th>Évolution</th>
+            </tr> 
+        </thead>        
         <tbody>
-            <tr>
-            <th></th>
-            @php $nbAbility = 0; @endphp
-            @foreach($skillsWithAbilities as $skillId => $abilities)
-                @foreach($abilities as $ability)
-                    <td>
-                        <!-- Ici est généré le nom de chaque abilité !-->
-                    {{ $ability->ABI_LABEL }}
-                    </td>
-                    @php
-                        $nbAbility++;
-                    @endphp
-                @endforeach
-            @endforeach
-            </tr>
-
-            @php $i = 0; @endphp
-
-            @foreach($sessions as $session)
-            <tr>
-                <!-- Ici est générée la date de chaque session !-->
-                <td>
-                    {{$session->SESSION_DATE}}
-                </td>
+            @php 
+                $i = 0; 
+            @endphp
+            @foreach ($sessions as $session)
+                @php 
+                    $cpt = 0;
+                @endphp
                 
-                @foreach($skillsWithAbilities as $abilities)
-                    @foreach($abilities as $ability)
-                        @php
-                            $evaluationTrouvee = null;
-
-                            foreach($evaluationsChaqueSeance[$i] as $eval) {
-                                if ($eval->ABI_ID == $ability->ABI_ID) {
+                @foreach ($skills as $skill)
+                    @php
+                        $nombre = Ability::select('*')
+                            ->where('SKILL_ID', '=', $skill->SKILL_ID)
+                            ->count();
+                    @endphp
+                    @foreach($skillsWithAbilities as $skillId => $abilities)
+                        @foreach($abilities as $ability)
+                            @php
+                                $evaluationTrouvee = null;
+                                foreach($evaluationsChaqueSeance[$i] as $eval) {
                                     $evaluationTrouvee = $eval;
                                     break;
                                 }
-                            }
-                        @endphp
-
-                        <!-- Ici sont générées les cases "Absent", "En cours d'acquisition", ect...  !-->
-                        <td>
-                            @if($evaluationTrouvee)
-                                {{$evaluationTrouvee->STATUSTYPE_LABEL}}
-                            @else
-                            
-                            @endif
-                        </td>
+                            @endphp
+                            <tr>
+                                @if($evaluationTrouvee == $eval) 
+                                    @if($cpt == 0)
+                                        <!-- Date de la session affichée -->
+                                        <td rowspan="{{ $nombre * 7 + 1 }}" class="session-date">{{ $session->SESSION_DATE }}</td>
+                                    @endif
+                                    <!-- Compétence affichée -->
+                                    <td>{{ $skill->SKILL_LABEL }}</td> 
+                                    <!-- Aptitude affichée -->
+                                    <td>{{ $ability->ABI_LABEL }}</td>  
+                                    <!-- Évaluation de l'évolution -->
+                                    <td>{{ $evaluationTrouvee->STATUSTYPE_LABEL }}</td>
+                                @endif
+                            </tr>
+                            @php
+                                $cpt = 1; 
+                            @endphp
+                        @endforeach
                     @endforeach
                 @endforeach
-            </tr>
-
-
-            @php
-            $i++;
-            @endphp
-            @endforeach
-            
-        
-        
-    </tbody>
+                @php
+                    $i++;   
+                @endphp       
+            @endforeach    
+        </tbody>
     </table>
+</div>
 
-    <!-- Vous pouvez supprimer ce css bien sur cetait juste pour etre lisible en attendant !-->
-    <style>
-        table {
-        width: 50%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        font-family: Arial, sans-serif;
-        }
 
-        th, td {
-        padding: 10px;
-        text-align: left;
-        border: 1px solid #ddd;
-        }
 
-        th {
-        background-color: #f2f2f2;
+<script>
+    const table = document.querySelector("table");
+    const cells = table.getElementsByTagName("td");
+    for (let i = 0; i < cells.length; i++) {
+        const cell = cells[i];
+        const text = cell.textContent;
+        if (text === "Acquise") {
+            cell.style.backgroundColor = "green";
+        } 
+        else if (text === "En cours d'acquisition") {
+            cell.style.backgroundColor = "orange";
         }
+        else if (text === "Absent") {
+            cell.style.backgroundColor = "red";
+        }
+    }
+</script>
 
-        tr:nth-child(even) {
-        background-color: #f9f9f9;
-        }
-    </style>
-    @endsection
+@endsection
