@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Level extends Model
+class Year extends Model
 {
     use HasFactory;
     public $timestamps = false;
@@ -15,13 +15,12 @@ class Level extends Model
      *
      * @var string
      */
-    protected $table = 'GRP2_LEVEL';
-
+    protected $table = 'GRP2_YEAR';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'LEVEL_ID';
+    protected $primaryKey = 'club_id';
 }

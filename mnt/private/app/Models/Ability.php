@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Level extends Model
+class Ability extends Model
 {
     use HasFactory;
     public $timestamps = false;
@@ -15,7 +15,7 @@ class Level extends Model
      *
      * @var string
      */
-    protected $table = 'GRP2_LEVEL';
+    protected $table = 'GRP2_ABILITY';
 
 
     /**
@@ -23,5 +23,5 @@ class Level extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'LEVEL_ID';
+    protected $primaryKey = 'ABI_ID';
 }
