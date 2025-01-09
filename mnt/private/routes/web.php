@@ -32,6 +32,11 @@ Route::get('/session',function(){
     return view('SessionsPage');
 })->name('session');
 
+Route::get('/TableBilan',function(){
+    return view('TableBilan');
+})->name('TableBilan');
+
+
 Route::get('/session/create',function(){
     return view('SessionCreate');
 })->name('session.create');
