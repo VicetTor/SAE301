@@ -37,7 +37,9 @@ class SignInController extends Controller
 
         $utilisateur->USER_MAIL = $request->input('USER_MAIL');
 
-        $utilisateur->USER_PASSWORD = (Random::generate(6));
+        $password_inscription = (Random::generate(6));
+
+        $utilisateur->USER_PASSWORD = Hash::make($password_inscription);
 
         $utilisateur->USER_FIRSTNAME = $request->input('USER_FIRSTNAME');
 
@@ -59,6 +61,8 @@ class SignInController extends Controller
         $utilisateur->USER_ISACTIVE = 1;
 
         $utilisateur->save();
+
+        return redirect()->route('connexion',['password'=>$password_inscription]);
     }
 
 }
