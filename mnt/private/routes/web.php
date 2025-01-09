@@ -58,8 +58,16 @@ Route::get('/sheet', function(){
     return view('EvolutiveSheet');
 });
 
+// Route pour supprimer la session
+Route::delete('/sessions/supprimer/{id}', [App\http\Controllers\SessionDelete::class, 'destroy'])->name('sessionsDelete');
 
-Route::get('/session/view', [App\Http\Controllers\SessionViewController::class, 'create']);
+
+// Route pour modifier une session
+Route::get('/sessions/modifier/{id}', [SessionModifier::class, 'edit'])->name('sessionsModifing');
+
+Route::get('/session/view', [App\Http\Controllers\SessionViewController::class, 'create'])->name('session.view');
+
+
 
 // Afficher le formulaire de création
 Route::get('/session/create', [App\Http\Controllers\SessionController::class, 'create'])->name('sessions.create');
