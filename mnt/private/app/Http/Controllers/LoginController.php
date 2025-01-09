@@ -51,7 +51,7 @@ class LoginController extends Controller
             }
 
             Session::flash('fail', 1);
-            //return back()->withInput();
+            return back()->withInput();
         }
     }
 }
