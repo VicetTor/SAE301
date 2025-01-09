@@ -6,15 +6,32 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB ;
 
 class ModificationUserController extends Controller {
 
     // Affiche la page avec tous les utilisateurs
     public function show() {
+
+        if (session('type_id') != 4) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
+
+        $club = DB::table('report')
+        ->where('report.user_id' , '=', Session('user_id'))
+        ->first();
+        
+
         $users = User::where('USER_ISACTIVE', 1)
-                      ->where('TYPE_ID', '!=', 1)
+                    ->join('report' , 'report.user_id', '=','grp2_user.user_id')
+                      ->where('TYPE_ID', '!=', 4)
+                      ->where('CLUB_ID', '=', $club->CLUB_ID)
                       ->get();
         
+     
         $canEdit = session('type_id') == 4; 
 
         if($canEdit) {
@@ -26,6 +43,13 @@ class ModificationUserController extends Controller {
 
     // Recherche les utilisateurs par nom ou numéro de licence
     public function search(Request $request) {
+        if (session('type_id') != 4) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
+
         $searchTerm = $request->input('search');
         $users = User::where('USER_FIRSTNAME', 'LIKE', "%$searchTerm%")
                     ->orWhere('USER_LASTNAME', 'LIKE', "%$searchTerm%")
@@ -34,13 +58,17 @@ class ModificationUserController extends Controller {
         
         $canEdit = Auth::check() && Auth::user()->TYPE_ID == 4; 
 
+        
         return view('ModificationUser', ['users' => $users, 'canEdit' => $canEdit]);
     }
 
     // Affiche la page pour modifier un utilisateur
     public function edit($id) {
         if (session('type_id') != 4) {
-            return redirect()->route('modification.users')->with('error', 'Vous n\'êtes pas autorisé à modifier des utilisateurs.');
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
         }
         
         $user = User::find($id); 
@@ -49,8 +77,12 @@ class ModificationUserController extends Controller {
 
     // Met à jour les informations d'un utilisateur
     public function update(Request $request, $id) {
+       
         if (session('type_id') != 4) {
-            return redirect()->route('modification.users')->with('error', 'Vous n\'êtes pas autorisé à modifier des utilisateurs.');
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
         }
 
         $user = User::find($id); 

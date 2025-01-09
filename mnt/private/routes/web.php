@@ -17,9 +17,10 @@ use App\Http\Controllers\EvaluationController;
 |
 */
 
-Route::get('/', function () {
-    return view('Home');
-});
+
+
+
+Route::get('/home',[App\Http\Controllers\HomeController::class, 'dataClub'])->name('home');
 
 
 Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create'])->name('connexion');
