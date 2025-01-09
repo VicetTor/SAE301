@@ -28,11 +28,16 @@ class SignInController extends Controller
 
         $utilisateur->TYPE_ID = $request->input('TYPE_ID');
 
-        $utilisateur->LEVEL_ID_RESUME = $request->input('LEVEL_ID_RESUME');
+        if($request->input('TYPE_ID') == 1){
+            $utilisateur->LEVEL_ID_RESUME = $request->input('LEVEL_ID_RESUME');
+        }
+        else{
+            $utilisateur->LEVEL_ID_RESUME = NULL;
+        }
 
         $utilisateur->USER_MAIL = $request->input('USER_MAIL');
 
-        $utilisateur->USER_PASSWORD = Hash::make(Random::generate(16));
+        $utilisateur->USER_PASSWORD = (Random::generate(6));
 
         $utilisateur->USER_FIRSTNAME = $request->input('USER_FIRSTNAME');
 
@@ -49,6 +54,9 @@ class SignInController extends Controller
         $utilisateur->USER_LICENSENUMBER = $request->input('USER_LICENSENUMBER');
 
         $utilisateur->USER_MEDICCERTIFICATEDATE = $request->input('USER_MEDICCERTIFICATEDATE');
+
+        $utilisateur->USER_ISFIRSTLOGIN = 1;
+        $utilisateur->USER_ISACTIVE = 1;
 
         $utilisateur->save();
     }

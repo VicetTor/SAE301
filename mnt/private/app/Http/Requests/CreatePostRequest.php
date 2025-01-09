@@ -26,14 +26,14 @@ class CreatePostRequest extends FormRequest
         return [
             'TYPE_ID' => 'required|integer',
             'LEVEL_ID' => 'required|integer',
-            'LEVEL_ID_RESUME' => 'required|integer',
+            'LEVEL_ID_RESUME' => 'integer',
             'USER_MAIL' => 'required|email',
             'USER_LASTNAME' => 'required|string|max:25',
             'USER_FIRSTNAME' => 'required|string|max:25',
             'USER_ADDRESS' => 'required|string|max:255',
-            'USER_POSTALCODE' => 'required|integer|min:1000|max:99999',
-            'USER_LICENSENUMBER' => 'required|string|regex:/^A-\d{2}-\d{7}$/|unique:grp2_user,USER_LICENSENUMBER',
-            'USER_MEDICCERTIFICATEDATE' => 'required|date|before_or_equal:today',
+            'USER_POSTALCODE' => 'required|integer|digits_between:5,5',
+            'USER_LICENSENUMBER' => 'required|string|regex:/^A-\d{2}-\d{6}$/|unique:grp2_user,USER_LICENSENUMBER',
+            'USER_MEDICCERTIFICATEDATE' => 'required|date|after_or_equal:last year',
             'USER_BIRTHDATE' => 'required|date|before_or_equal:today',
             'USER_PHONENUMBER' => 'required|numeric|digits_between:10,10|regex:/^0/',
         ];

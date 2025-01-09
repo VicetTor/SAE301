@@ -40,7 +40,7 @@ class User extends Model
      *     @OA\Property(property="USER_MEDICCERTIFICATEDATE", type="string", format="date", description="Date du certificat médical de l'utilisateur")
      * )
      */
- 
+
     public function formationsResponsable() {
         return $this->hasMany(Training::class, 'type_id');
     }

@@ -30,6 +30,10 @@ Route::get('/profile',function(){
     return view('MyProfile');
 })->name('profile');
 
+Route::get('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'show'])->name('firstconnexion');
+Route::post('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'fill'])->name('firstconnexion');
+
+
 Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
 
 Route::post('/user', function(){
