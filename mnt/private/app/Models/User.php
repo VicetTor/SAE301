@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,27 +20,30 @@ class User extends Authenticatable
         'USER_ADDRESS', 'USER_POSTALCODE', 'USER_LICENSENUMBER', 'USER_MEDICCERTIFICATEDATE'
     ];
 
-    /**
-     * @OA\Schema(
-     *     schema="User",
-     *     type="object",
-     *     required={"USER_ID", "USER_MAIL", "USER_FIRSTNAME", "USER_LASTNAME"},
-     *     @OA\Property(property="USER_ID", type="integer", description="ID de l'utilisateur"),
-     *     @OA\Property(property="USER_MAIL", type="string", description="Email de l'utilisateur"),
-     *     @OA\Property(property="USER_PASSWORD", type="string", description="Mot de passe de l'utilisateur"),
-     *     @OA\Property(property="USER_FIRSTNAME", type="string", description="Prénom de l'utilisateur"),
-     *     @OA\Property(property="USER_LASTNAME", type="string", description="Nom de l'utilisateur"),
-     *     @OA\Property(property="USER_PHONENUMBER", type="string", description="Numéro de téléphone de l'utilisateur"),
-     *     @OA\Property(property="USER_BIRTHDATE", type="string", format="date", description="Date de naissance de l'utilisateur"),
-     *     @OA\Property(property="USER_ADDRESS", type="string", description="Adresse de l'utilisateur"),
-     *     @OA\Property(property="USER_POSTALCODE", type="string", description="Code postal de l'utilisateur"),
-     *     @OA\Property(property="USER_LICENSENUMBER", type="string", description="Numéro de licence de l'utilisateur"),
-     *     @OA\Property(property="USER_MEDICCERTIFICATEDATE", type="string", format="date", description="Date du certificat médical de l'utilisateur")
-     * )
-     */
+    // Relations
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'USER_ID');
+    }
 
-    public function formationsResponsable() {
-        return $this->hasMany(Training::class, 'type_id');
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class, 'USER_ID');
+    }
+
+    public function level()
+    {
+        return $this->belongsTo(Level::class, 'LEVEL_ID');
+    }
+
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'grp2_user_skill', 'USER_ID', 'SKILL_ID');
+    }
+
+    public function club()
+    {
+        return $this->belongsTo(Club::class, 'CLUB_ID');
     }
 
     public function getAuthPassword() {
@@ -54,14 +56,6 @@ class User extends Authenticatable
 
     public function getAuthIdentifier() {
         return $this->USER_ID;
-    }
-
-    public function evaluations() {
-        return $this->hasMany(Evaluation::class, 'user_id');
-    }
-
-    public function reports() {
-        return $this->hasMany(Report::class, 'user_id');
     }
 }
 ?>

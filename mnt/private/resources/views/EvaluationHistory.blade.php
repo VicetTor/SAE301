@@ -30,41 +30,11 @@
             <tr>
                 <td>{{ $evaluation->user->USER_FIRSTNAME }}</td>
                 <td>{{ $evaluation->user->USER_LASTNAME }}</td>
-                <td>
-                    @if($evaluation->club)
-                        {{ $evaluation->club->CLUB_NAME }}
-                    @else
-                        Pas de club associé
-                    @endif
-                </td>
-                <td>
-                    @if($evaluation->validation_date)
-                        {{ $evaluation->validation_date }}
-                    @else
-                        Pas de date de validation
-                    @endif
-                </td>
-                <td>{{ $evaluation->LEVEL_ID }}</td>
-                <td>
-                    @if($evaluation->level)
-                        {{ $evaluation->level->LEVEL_LABEL }}
-                    @else
-                        Pas de niveau associé
-                    @endif
-                <td>
-                    @if($evaluation->skill)
-                        {{ $evaluation->skill->Skill_Label }}
-                    @else
-                        Pas de compétence associée
-                    @endif
-                </td>
-                <td>
-                    @if($evaluation->observation)
-                        {{ $evaluation->observation }}
-                    @else
-                        Pas d'observation
-                    @endif
-                </td>
+                <td>{{ optional($evaluation->user->reports->first()->club)->CLUB_NAME ?? 'Pas de club associé' }}</td>
+                <td>{{ $evaluation->validation->VALID_DATE ?? 'Pas de date de validation' }}</td>
+                <td>{{ $evaluation->validation->level->LEVEL_LABEL ?? 'Pas de niveau associé' }}</td>
+                <td>{{ $evaluation->validation->skill->SKILL_LABEL ?? 'Pas de compétence associée' }}</td>
+                <td>{{ $evaluation->EVAL_OBSERVATION ?? 'Pas d\'observation' }}</td>
             </tr>
         @endforeach
     </tbody>

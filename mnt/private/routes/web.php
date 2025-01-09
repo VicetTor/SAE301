@@ -73,9 +73,7 @@ Route::get('/modification/users/{id}/edit', [ModificationUserController::class, 
 Route::post('/modification/users/{id}/delete', [ModificationUserController::class, 'delete'])->name('modification.users.delete');
 Route::put('/modification/users/{id}/update', [ModificationUserController::class, 'update'])->name('modification.users.update');
 
-// Route pour afficher l'historique des évaluations d'un utilisateur dans un club
-Route::get('/evaluations/historique/{userId}/{clubId}', [EvaluationController::class, 'historiqueEvaluations'])
-    ->name('evaluations.historique');
-
 Route::get('/evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
+
+Route::get('/evaluations/historique/{userId}/{clubId}', [EvaluationController::class, 'historiqueEvaluations'])->name('evaluations.historique');
     
