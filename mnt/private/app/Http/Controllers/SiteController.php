@@ -9,15 +9,28 @@ class SiteController extends Controller
 {
     public function showEditForm()
     {
+        $clubID=DB::table('REPORT')
+        ->select(('grp2_club.CLUB_ID'))
+        ->join('grp2_club','grp2_club.club_id','=','report.club_id')
+        ->where('user_id', '=', Session('user_id'))
+        ->first();
+
+        if ($clubID) {
+            $clubID = $clubID->CLUB_ID; // Extract the actual CLUB_ID value
+        } else {
+            // Handle the case where no record is found
+            return redirect()->back()->withErrors('Club ID not found.');
+        }
+
         // Charger les paramètres existants depuis la table GRP2_SITE
-        $site = DB::table('GRP2_SITE')->where('CLUB_ID', 1)->first(); // Remplacez 1 par l'ID du club actuel
+        $site = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first(); // Remplacez 1 par l'ID du club actuel
         
         // Si aucune donnée n'est trouvée, définissez des valeurs par défaut
         $siteName = $site->SITE_NAME ?? 'Secoule';
         $siteColor = $site->SITE_COLOR ?? '#005C8F';
         $siteLogo = $site->SITE_LOGO ? 'data:image/png;base64,' . base64_encode($site->SITE_LOGO) : null;
 
-        return view('SiteModifing', compact('siteName', 'siteColor', 'siteLogo'));
+        return view('SiteModifying', compact('siteName', 'siteColor', 'siteLogo'));
     }
 
     public function updateSite(Request $request)
@@ -34,6 +47,19 @@ class SiteController extends Controller
         $siteColor = $request->input('site_color');
         $logoData = null;
 
+        $clubID=DB::table('REPORT')
+        ->select('grp2_club.CLUB_ID')
+        ->join('grp2_club','grp2_club.club_id','=','report.club_id')
+        ->where('user_id', '=', Session('user_id'))
+        ->first();
+
+        if ($clubID) {
+            $clubID = $clubID->CLUB_ID; // Extract the actual CLUB_ID value
+        } else {
+            // Handle the case where no record is found
+            return redirect()->back()->withErrors('Club ID not found.');
+        }
+
         // Si un logo est téléchargé, convertir le fichier en données binaires
         if ($request->hasFile('site_logo')) {
             $logo = $request->file('site_logo');
@@ -41,11 +67,11 @@ class SiteController extends Controller
         }
 
         // Vérifier si une entrée existe déjà pour le club (CLUB_ID = 1)
-        $existingSite = DB::table('GRP2_SITE')->where('CLUB_ID', 1)->first();
+        $existingSite = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first();
 
         if ($existingSite) {
             // Mettre à jour les données existantes
-            DB::table('GRP2_SITE')->where('CLUB_ID', 1)->update([
+            DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->update([
                 'SITE_NAME' => $siteName,
                 'SITE_COLOR' => $siteColor,
                 'SITE_LOGO' => $logoData ?? $existingSite->SITE_LOGO,

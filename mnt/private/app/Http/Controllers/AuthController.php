@@ -8,6 +8,7 @@ use App\Models\User;
 use OpenApi\Annotations as OA;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller {
     /**
@@ -50,23 +51,47 @@ class AuthController extends Controller {
                 'email' => 'required|email',
                 'password' => 'required|string',
             ]);
-
+    
             // Recherche de l'utilisateur avec l'email
             $user = User::where('USER_MAIL', $validated['email'])->first();
-
+    
             // Vérification de l'existence de l'utilisateur et du mot de passe
             if (!$user || !Hash::check($validated['password'], $user->USER_PASSWORD)) {
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
-
+    
+            // Retrieve the user's club ID from the report or related table
+            $clubID = DB::table('REPORT')
+                ->join('grp2_club', 'grp2_club.club_id', '=', 'report.club_id')
+                ->where('user_id', '=', $user->id)  // Assuming you have a user_id in the report table
+                ->value('grp2_club.CLUB_ID');
+            
+            // Retrieve the site settings for this club
+            $site = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first();
+    
+            // Get site color and store it in the session
+            $siteColor = $site->SITE_COLOR ?? '#005C8F'; // Default color if not found
+            
+            // Store color in session for dynamic use in frontend
+            session(['site_color' => $siteColor]);
+    
             // Générer un token d'authentification
             $token = $user->createToken('YourAppName')->plainTextToken;
-
+    
             return response()->json([
                 'message' => 'Successfully logged in',
                 'token' => $token,
+                'site_color' => $siteColor,  // Return the color of the site
+                'user' => [
+                    'id' => $user->id,
+                    'email' => $user->USER_MAIL,
+                    'first_name' => $user->USER_FIRSTNAME,
+                    'last_name' => $user->USER_LASTNAME,
+                    'club_name' => $site->SITE_NAME,
+                    'club_color' => $siteColor,
+                    'club_logo' => $site->SITE_LOGO ? 'data:image/png;base64,' . base64_encode($site->SITE_LOGO) : null,
+                ],
             ]);
-
         } catch (\Exception $e) {
             return response()->json(['message' => 'Server error: ' . $e->getMessage()], 500);
         }
