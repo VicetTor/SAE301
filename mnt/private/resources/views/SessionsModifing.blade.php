@@ -1,6 +1,6 @@
 @extends('Base')
-@section('title','Création séance')
-@section('navBarTitle', "Création d'une séance")
+@section('title','Modification séance')
+@section('navBarTitle', "Modification séance")
 @section('content')
 
 

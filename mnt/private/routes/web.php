@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\FormsTrainingController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SessionController;
+
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\ModificationUserController;
 use App\Http\Controllers\EvaluationController;
@@ -100,6 +102,24 @@ Route::get('/validate', function () {
 Route::get('/sheet', function () {
     return view('EvolutiveSheet');
 });
+
+// Route pour supprimer la session
+Route::delete('/sessions/supprimer/{id}', [App\http\Controllers\SessionDelete::class, 'destroy'])->name('sessionsDelete');
+
+
+// Route pour modifier une session
+Route::get('/sessions/modifier/{id}', [App\Http\Controllers\SessionModifier::class, 'edit'])->name('sessionsModifing');
+Route::post('sessions/modifier/{id}', [App\Http\Controllers\SessionModifier::class, 'store']);
+
+Route::get('/session/view', [App\Http\Controllers\SessionViewController::class, 'create'])->name('session.view');
+
+
+
+// Afficher le formulaire de création
+Route::get('/session/create', [App\Http\Controllers\SessionController::class, 'create'])->name('sessions.create');
+
+// Enregistrer une nouvelle séance
+Route::post('/session/create', [App\Http\Controllers\SessionController::class, 'store']);
 
 Route::get('/forms-training', [FormsTrainingController::class, 'show'])->name('forms.views.dt.creation');
 Route::post('/forms-training/validate1', [FormsTrainingController::class, 'validateForms'])->name('validate.forms1');

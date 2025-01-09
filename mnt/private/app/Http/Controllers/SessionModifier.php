@@ -11,12 +11,12 @@ use App\Models\User;
 use App\Models\Report;
 use Ramsey\Uuid\Type\Integer;
 
-class SessionController extends Controller
+class SessionModifier extends Controller
 {
     /**
      * Affiche le formulaire de création d'une séance.
      */
-    public function create()
+    public function edit()
     {
         // Récupere le club du responsable de formation
         $club = Report::select('CLUB_ID')
@@ -57,13 +57,13 @@ class SessionController extends Controller
         ];*/
 
         // Retourner la vue avec les données
-        return view('SessionCreate', compact('users', 'aptitudes', 'initiators'));
+        return view('SessionsModifing', compact('users', 'aptitudes', 'initiators'));
     }
 
     /**
      * Enregistre une nouvelle séance.
      */
-    public function store(SessionRequest $request)
+    public function store(SessionRequest $request, $id)
     {
 
         //$dateTime = $validated['date'] . ' ' . $validated['time'];
@@ -71,25 +71,36 @@ class SessionController extends Controller
 
         $time = $request->DATE . ' ' . $request->time;
 
-        // Enregistrer la nouvelle séance dans la table GRP2_SESSION
-        DB::table('grp2_session')->insert([
+        //Update la seance
+        DB::table('grp2_session')
+        ->where('SESS_ID', $id)
+        ->update([
             'SESS_DATE' => $time,
-            'SESSTYPE_ID' => 1,
             'TRAIN_ID' => session('train_id'),
-            'SESS_ID' => $sumSESSION + 1
         ]);
+        
 
+        DB::table('grp2_attendee')
+        ->where('SESS_ID', $id)
+        ->delete();
+
+
+        DB::table('grp2_evaluation')
+        ->where('SESS_ID', $id)
+        ->delete();
 
 
         for($i=0 ; $i < sizeof($request->user_id);$i++){
 
             $sumATTENDEE = DB::table('grp2_attendee')->max('ATTE_ID');
 
+            
+            
             DB::table('grp2_attendee')->insert([
                 'ATTE_ID' => $sumATTENDEE + 1,
-                'SESS_ID' => $sumSESSION + 1,
-                'USER_ID' => $request->user_id[$i],
-                'USER_ID_ATTENDEE' => $request->initiator_id[$i],
+                'SESS_ID' => $id,
+                'USER_ID' => $request->initiator_id[$i],
+                'USER_ID_ATTENDEE' => $request->user_id[$i],
             ]);
 
             if($request->aptitude_id1[$i] != "Choix des aptitudes"){
@@ -100,7 +111,7 @@ class SessionController extends Controller
                     'EVAL_ID' => $sumEVALUATION + 1,
                     'STATUSTYPE_ID' => 1,
                     'USER_ID' => $request->user_id[$i],
-                    'SESS_ID' => $sumSESSION + 1,
+                    'SESS_ID' => $id,
                     'ABI_ID' => $request->aptitude_id1[$i],
                     'EVAL_OBSERVATION' => "",
                 ]);
@@ -114,7 +125,7 @@ class SessionController extends Controller
                     'EVAL_ID' => $sumEVALUATION + 1,
                     'STATUSTYPE_ID' => 1,
                     'USER_ID' => $request->user_id[$i],
-                    'SESS_ID' => $sumSESSION + 1,
+                    'SESS_ID' => $id,
                     'ABI_ID' => $request->aptitude_id2[$i],
                     'EVAL_OBSERVATION' => "",
                 ]);
@@ -128,7 +139,7 @@ class SessionController extends Controller
                     'EVAL_ID' => $sumEVALUATION + 1,
                     'STATUSTYPE_ID' => 1,
                     'USER_ID' => $request->user_id[$i],
-                    'SESS_ID' => $sumSESSION + 1,
+                    'SESS_ID' => $id,
                     'ABI_ID' => $request->aptitude_id3[$i],
                     'EVAL_OBSERVATION' => "",
                 ]);
@@ -137,6 +148,6 @@ class SessionController extends Controller
 
 
         // Rediriger avec un message de succès
-        return redirect()->route('sessions.create')->with('success', 'Séance créée avec succès !');
+        return redirect()->route('session.view')->with('success', 'Séance créée avec succès !');
     }
 }
