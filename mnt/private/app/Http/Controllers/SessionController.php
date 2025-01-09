@@ -65,12 +65,11 @@ class SessionController extends Controller
      */
     public function store(SessionRequest $request)
     {
-        
 
         //$dateTime = $validated['date'] . ' ' . $validated['time'];
         $sumSESSION = DB::table('GRP2_SESSION')->max('SESS_ID');
 
-        $time = $request->date . ' ' . $request->time;
+        $time = $request->DATE . ' ' . $request->time;
 
         // Enregistrer la nouvelle séance dans la table GRP2_SESSION
         DB::table('GRP2_SESSION')->insert([
@@ -80,7 +79,7 @@ class SessionController extends Controller
             'SESS_ID' => $sumSESSION + 1
         ]);
 
-        
+
 
         for($i=0 ; $i < sizeof($request->user_id);$i++){
 
@@ -93,7 +92,7 @@ class SessionController extends Controller
                 'USER_ID_ATTENDEE' => $request->initiator_id[$i],
             ]);
 
-            for($j=$i*3 ; $j <$i*3+3;$j++){
+            if($request->aptitude_id1[$i] != "Choix des aptitudes"){
 
                 $sumEVALUATION = DB::table('GRP2_EVALUATION')->max('EVAL_ID');
 
@@ -102,12 +101,40 @@ class SessionController extends Controller
                     'STATUSTYPE_ID' => 1,
                     'USER_ID' => $request->user_id[$i],
                     'SESS_ID' => $sumSESSION + 1,
-                    'ABI_ID' => $request->aptitude_id[$j],
+                    'ABI_ID' => $request->aptitude_id1[$i],
+                    'EVAL_OBSERVATION' => "",
+                ]);
+            }
+
+            if($request->aptitude_id2[$i] != "Choix des aptitudes"){
+
+                $sumEVALUATION = DB::table('GRP2_EVALUATION')->max('EVAL_ID');
+
+                DB::table('GRP2_EVALUATION')->insert([
+                    'EVAL_ID' => $sumEVALUATION + 1,
+                    'STATUSTYPE_ID' => 1,
+                    'USER_ID' => $request->user_id[$i],
+                    'SESS_ID' => $sumSESSION + 1,
+                    'ABI_ID' => $request->aptitude_id2[$i],
+                    'EVAL_OBSERVATION' => "",
+                ]);
+            }
+
+            if($request->aptitude_id3[$i] != "Choix des aptitudes"){
+
+                $sumEVALUATION = DB::table('GRP2_EVALUATION')->max('EVAL_ID');
+
+                DB::table('GRP2_EVALUATION')->insert([
+                    'EVAL_ID' => $sumEVALUATION + 1,
+                    'STATUSTYPE_ID' => 1,
+                    'USER_ID' => $request->user_id[$i],
+                    'SESS_ID' => $sumSESSION + 1,
+                    'ABI_ID' => $request->aptitude_id3[$i],
                     'EVAL_OBSERVATION' => "",
                 ]);
             }
         }
-        
+
 
         // Rediriger avec un message de succès
         return redirect()->route('sessions.create')->with('success', 'Séance créée avec succès !');

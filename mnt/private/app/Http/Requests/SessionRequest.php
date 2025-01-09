@@ -24,7 +24,12 @@ class SessionRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' 
+            'DATE' => 'required|after_or_equal:today',
+            'time' => 'required',
+            'lieu' => 'required|in:Milieu Naturel,Piscine',
+            'user_id.*' => 'required|exists:grp2_user,USER_ID',
+            'aptitude_id1.0' => 'required|exists:grp2_ability,ABI_ID',
+            'initiator_id.*' => 'required|exists:grp2_user,USER_ID',
         ];
     }
 }

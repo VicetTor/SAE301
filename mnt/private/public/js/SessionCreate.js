@@ -1,6 +1,17 @@
 Buttom = document.getElementById("button");
+ButtonMax = 8;
 
-Buttom.addEventListener("click", addDiv)
+
+Buttom.addEventListener("click", function (event) {
+    if(ButtonMax > 0){
+        addDiv();
+        ButtonMax--;
+    }
+    else{
+        alert("Attention vous puvait ajoutée au maximun 10 éléves")
+    }
+})
+
 
 function addDiv() {
     const newDiv = document.createElement("div");
@@ -39,7 +50,7 @@ const divAptitude1 = document.createElement("div");
 const selectAptitude1 = document.createElement("select");
 selectAptitude1.classList.add("form-select");
 selectAptitude1.style.width = "200px";
-selectAptitude1.name = "aptitude_id[]";
+selectAptitude1.name = "aptitude_id1[]";
 selectAptitude1.required = true;
 
 const defaultOptionAptitude1 = document.createElement("option");
@@ -63,7 +74,7 @@ const divAptitude2 = document.createElement("div");
 const selectAptitude2 = document.createElement("select");
 selectAptitude2.classList.add("form-select");
 selectAptitude2.style.width = "200px";
-selectAptitude2.name = "aptitude_id[]";
+selectAptitude2.name = "aptitude_id2[]";
 selectAptitude2.required = true;
 
 const defaultOptionAptitude2 = document.createElement("option");
@@ -87,7 +98,7 @@ const divAptitude3 = document.createElement("div");
 const selectAptitude3 = document.createElement("select");
 selectAptitude3.classList.add("form-select");
 selectAptitude3.style.width = "200px";
-selectAptitude3.name = "aptitude_id[]";
+selectAptitude3.name = "aptitude_id3[]";
 selectAptitude3.required = true;
 
 const defaultOptionAptitude3 = document.createElement("option");
