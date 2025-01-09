@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 
 
-Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create']);
+Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create'])->name('connexion');
 Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConnect']);
 
 

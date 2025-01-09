@@ -18,33 +18,39 @@
                         <div class="card-body p-5 text-center">
                                 <h1 class="fw-bold mb-5">CONNEXION</h1>
                                 <form method="POST" action="">
-                                @csrf    
-
+                                @csrf
+                                    <p class="alert alert-info" style="font-size: 0.9em;">
+                                        <strong>Information :</strong> Si c'est votre première connexion, votre mot de passe se trouve dans l'URL après le paramètre <code>password=</code>.
+                                    </p>
                                     <div data-mdb-input-init class="mb-4">
                                         <label for="mail" class="form-label">Adresse mail</label>
                                         <input class="form-control form-control-lg" for="mail" name="email" type="email" id="email" value="" placeholder="exemple@mail.fr" required />
+                                        @error('email')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div data-mdb-input-init class="mb-4">
                                         <label class="form-label" for="mdp">Mot de passe</label>
-                                        <input class="form-control form-control-lg" type="password" id="password" name="password" placeholder="*****" AUTOCOMPLETE=OFF required />
+                                        <input class="form-control form-control-lg" type="password" id="password" name="password" placeholder="*****" autocomplete="new-password" required />
+                                        @error('password')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <br>
                                     <button data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-outline-dark btn-lg px-5" type="submit" name="connexion">Connexion</button>
                                 </form>
-                                @if(session('fail') == 1)
-                                    <p> Erreur </p>
-                                @endif
+
+
+                            @if(session('fail') == 1)
+                                <p class="text-danger mt-3">Erreur : Identifiants incorrects.</p>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <?php
-    use Illuminate\Support\Facades\Session;
-    Session::put('fail', 0);
-    ?>
 </body>
 
 </html>
