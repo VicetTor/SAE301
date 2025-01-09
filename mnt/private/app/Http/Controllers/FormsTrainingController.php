@@ -144,4 +144,17 @@ class FormsTrainingController extends Controller {
         // Retour avec succès
         return view('TrainingHome');
     }
+
+    public function showModificationTechnical() {
+        $abilities = DB::table('grp2_ability')
+        ->get();
+        return view('TrainingModificationTechnical', ['abilities'=>$abilities]);
+    }
+    public function UpdateAbilities(Request $request) {
+        DB::table('grp2_ability')
+            ->where('abi_id', '=', $request->abilitie_id)
+            ->update(['abi_label' => $request->new_abilitie_id]);
+        // Retour avec succès
+        return view('TrainingHome');
+    }
 }
