@@ -15,7 +15,7 @@ class ModificationUserController extends Controller {
      *
      * @return \Illuminate\Contracts\View\View
      */
-    
+
     public function show() {
 
         if (session('type_id') != 4) {
@@ -28,15 +28,15 @@ class ModificationUserController extends Controller {
         $club = DB::table('report')
         ->where('report.user_id' , '=', Session('user_id'))
         ->first();
-        
+
 
         $users = User::where('USER_ISACTIVE', 1)
                     ->join('report' , 'report.user_id', '=','grp2_user.user_id')
                       ->where('TYPE_ID', '!=', 4)
                       ->where('CLUB_ID', '=', $club->CLUB_ID)
                       ->get();
-        
-        $canEdit = session('type_id') == 4; 
+
+        $canEdit = session('type_id') == 4;
 
         // If the user has edit permissions, show the modification page.
         if ($canEdit) {
@@ -92,9 +92,9 @@ class ModificationUserController extends Controller {
                     ->orWhere('USER_LASTNAME', 'LIKE', "%$searchTerm%")
                     ->orWhere('USER_LICENSENUMBER', 'LIKE', "%$searchTerm%")
                     ->get();
-        
+
         // Check if the authenticated user has edit permissions (TYPE_ID == 4).
-        $canEdit = Auth::check() && Auth::user()->TYPE_ID == 4; 
+        $canEdit = Auth::check() && Auth::user()->TYPE_ID == 4;
 
         return view('ModificationUser', ['users' => $users, 'canEdit' => $canEdit]);
     }
@@ -107,6 +107,9 @@ class ModificationUserController extends Controller {
      */
 
     public function edit($id) {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Only users with TYPE_ID == 4 can edit users.
         if (session('type_id') != 4) {
             return redirect()->route('home');
@@ -114,7 +117,7 @@ class ModificationUserController extends Controller {
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
-        
+
         // Find the user by ID.
         $user = User::find($id);
 
@@ -174,7 +177,7 @@ class ModificationUserController extends Controller {
      * )
      */
     public function update(Request $request, $id) {
-       
+
         if (session('type_id') != 4) {
             return redirect()->route('home');
         }
@@ -239,6 +242,9 @@ class ModificationUserController extends Controller {
      * )
      */
     public function delete($id) {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Only users with TYPE_ID == 4 can delete users.
         if (session('type_id') != 4) {
             return redirect()->route('modification.users')->with('error', 'You are not authorized to delete users.');

@@ -45,19 +45,43 @@ Route::post('/firstconnexion', [App\Http\Controllers\FirstConnexionController::c
 Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
 
 Route::post('/user', function(){
+    if (session('user_id') == null) {
+        return redirect()->route('connexion');
+    }
     return view('MyProfile');
 });
 
 Route::get('/TableBilan',function(){
+    if (session('user_id') == null) {
+        return redirect()->route('connexion');
+    }
+    if (session('type_id') == 4) {
+        return redirect()->route('home');
+    }
+    if (session('type_id') == 3) {
+        return redirect()->route('home');
+    }
     return view('TableBilan');
 })->name('TableBilan');
 
 Route::get('/session/create',function(){
+    if (session('user_id') == null) {
+        return redirect()->route('connexion');
+    }
+    if (session('type_id') == 1) {
+        return redirect()->route('home');
+    }
     return view('SessionCreate');
 })->name('session.create');
 
 // Route to display the form for creating a session
 Route::get('/session/create/form',function(){
+    if (session('user_id') == null) {
+        return redirect()->route('connexion');
+    }
+    if (session('type_id') == 1) {
+        return redirect()->route('home');
+    }
     return view('SessionCreateForm');
 })->name('session.create.form');
 
@@ -67,16 +91,31 @@ Route::post('/site/update', [App\Http\Controllers\SiteController::class, 'update
 
 // Route for modifying site details page
 Route::get('/modifying', function(){
+    if (session('user_id') == null) {
+        return redirect()->route('connexion');
+    }
+    if (session('type_id') == 1) {
+        return redirect()->route('home');
+    }
     return view('SiteModifying');
 });
 
 // Route for students sheet page
 Route::get('/students', function(){
+    if (session('user_id') == null) {
+        return redirect()->route('connexion');
+    }
+    if (session('type_id') == 1) {
+        return redirect()->route('home');
+    }
     return view('StudentsSheet');
 })->name('students');
 
 // User modification routes
 Route::get('/user', function(){
+    if (session('user_id') == null) {
+        return redirect()->route('connexion');
+    }
     return view('UserModifying');
 });
 
@@ -95,11 +134,20 @@ Route::post('/', [App\Http\Controllers\HomeController::class, 'dataClub'])->name
 
 // Route for validation page
 Route::get('/validate', function () {
+    if (session('user_id') == null) {
+        return redirect()->route('connexion');
+    }
+    if (session('type_id') == 1) {
+        return redirect()->route('home');
+    }
     return view('ValidateLevel');
 });
 
 // Route for the evolutive sheet
 Route::get('/sheet', function () {
+    if (session('user_id') == null) {
+        return redirect()->route('connexion');
+    }
     return view('EvolutiveSheet');
 });
 
@@ -149,7 +197,7 @@ Route::get('/export-training-data', [App\Http\Controllers\TrainingController::cl
 
 // Route for displaying training graph
 Route::get('/training-graph', [App\Http\Controllers\TrainingController::class, 'showTrainingGraph'])->name('trainingGraph');
-    
+
 Route::get('/choixEleve', [App\Http\Controllers\StudentController::class, 'getEleves']);
 Route::post('/updateEvaluation', [App\Http\Controllers\EvaluationController::class, 'updateEvaluation']);
 ?>
