@@ -40,12 +40,13 @@ class SessionController extends Controller
             ->where('grp2_user.user_id', '=', session('user_id')) // Filter by user ID from the session
             ->get(); // Retrieve all matching records
 
-        // Return the 'SessionsPage' view and pass the fetched data to the view
-        return view('SessionsPage', [
-            'club' => $club, // Club information for the user
-            'sessions' => $sessions, // User's session details
-            'abilities' => $abilities // User's abilities associated with sessions
-        ]);
+
+        $initiator = DB::table('grp2_attendee')
+            ->join('grp2_user','grp2_attendee.user_id','=','grp2_user.user_id')
+            ->where('grp2_attendee.user_id_attendee', '=', session('user_id'))
+            ->first();
+
+        return view('SessionsPage',['club'=>$club, 'sessions'=>$sessions, 'abilities'=>$abilities,'initiator'=>$initiator]);
 
         // The comment suggests that the retrieved data (models) should be stored in variables 
         // and passed to the view in an array, following Blade template conventions.

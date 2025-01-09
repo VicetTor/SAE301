@@ -69,7 +69,21 @@
 <form action="{{ route('validate.forms1') }}" method="POST" onsubmit="return validateForm()">
     @csrf
 
-    <!-- Responsable selection -->
+    <!-- Niveau -->
+    <div class="mb-3">
+        <label for="TRAIN_ID" class="form-label">Choix du niveau</label>
+        <select name="TRAIN_ID" id="TRAIN_ID" class="form-select">
+            <option value=""></option>
+            @foreach($trainDatas as $trainData)
+                <option value="{{$trainData->TRAIN_ID}}">{{'Niveau de formation' . ' ' . $trainData->TRAIN_ID}}</option>
+            @endforeach
+        </select>
+        @error('TRAIN_ID')
+        <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Responsable -->
     <div class="mb-3">
         <label for="TRAIN_RESPONSABLE_ID" class="form-label">Choix responsable</label>
         <select name="TRAIN_RESPONSABLE_ID" id="TRAIN_RESPONSABLE_ID" class="form-select">

@@ -93,10 +93,13 @@ Route::get('/sheet', function () {
     return view('EvolutiveSheet');
 });
 
-// Routes for forms training, validating forms
-Route::get('/forms-training', [FormsTrainingController::class, 'show']);
+Route::get('/forms-training', [FormsTrainingController::class, 'show'])->name('forms.views.dt.creation');
 Route::post('/forms-training/validate1', [FormsTrainingController::class, 'validateForms'])->name('validate.forms1');
-Route::post('/forms-training/validate2', [FormsTrainingController::class, 'validateForms2'])->name('validate.forms2');
+Route::get('/formation-accueil', [FormsTrainingController::class, 'showTrainingHome']);
+Route::get('/forms-modification-add', [FormsTrainingController::class, 'showUpdateTrainingAdd'])->name('forms.views.edit.responsable.add');
+Route::post('/forms-modification-add', [FormsTrainingController::class, 'UpdateTraining']);
+Route::get('/forms-modification-remove', [FormsTrainingController::class, 'showUpdateTrainingRemove'])->name('forms.views.edit.responsable.remove');
+Route::post('/forms-modification-remove', [FormsTrainingController::class, 'RemoveTraining']);
 
 // Routes for modifying user details, searching and editing users
 Route::get('/modification/users', [ModificationUserController::class, 'show'])->name('modification.users'); // Show user modification page
@@ -116,5 +119,7 @@ Route::get('/export-training-data', [App\Http\Controllers\TrainingController::cl
 
 // Route for displaying training graph
 Route::get('/training-graph', [App\Http\Controllers\TrainingController::class, 'showTrainingGraph'])->name('trainingGraph');
-
+    
+Route::get('/choixEleve', [App\Http\Controllers\StudentController::class, 'getEleves']);
+Route::post('/updateEvaluation', [App\Http\Controllers\EvaluationController::class, 'updateEvaluation']);
 ?>

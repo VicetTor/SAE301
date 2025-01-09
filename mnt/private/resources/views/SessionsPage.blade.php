@@ -1,14 +1,12 @@
 @extends('Base')
 @section('title','Page des séances')
-<link href="../public/css/Session.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 @section('content')
 
     <!-- Start a session with a verification flag set to 0 -->
     {{session(['verify' => '0'])}}
-    
-    <div class="seances">
-        <h3> <strong> Mes Séances : </strong> </h3>
+    <div>
+        <h3 class="m-2 text-center"> <strong> Mes Séances : </strong> </h3>
         <br>
 
         <!-- Carousel displaying sessions -->
@@ -29,23 +27,19 @@
                             @foreach($chunk as $session)
                                 <!-- Check if the session ID is different from the stored session ID in 'verify' -->
                                 @if($session->SESS_ID != session('verify'))
-                                    
-                                    <!-- Card for each session -->
-                                    <div class="card m-5" style="width: 18rem;">
-                                        <!-- Store the current session ID in the session for verification -->
+                                    <div class="card m-5 rounded-5" style="width: 18rem;">
                                         {{ session(['verify' => $session->SESS_ID]) }}
                                         <div class="card-body">
                                             <h5 class="card-title">Prochaine Séance</h5>
                                             <div class="card-text">
-                                                
-                                                <!-- Display session date -->
-                                                <h4 class="fw-bold p-2 fs-4"> {{$session->SESS_DATE}}</h4>
-                                                
+                                                <h4 class="fw-bold p-2 fs-4">
+                                                    {{ strtoupper(\Carbon\Carbon::parse($session->SESS_DATE)->locale('fr')->translatedFormat('l')) }}
+                                                    {{ \Carbon\Carbon::parse($session->SESS_DATE)->locale('fr')->translatedFormat('d F Y à H:i') }}
+                                                </h4>
                                                 <div class="shadow-sm p-2 bg-body-tertiary rounded">
-                                                    <!-- Display session level -->
+                                                    <h4 class="fw-bold p-2 fs-6">Initateur:&nbsp;{{$initiator->USER_FIRSTNAME}} {{$initiator->USER_LASTNAME}}</h4>
                                                     <h4 class="fw-bold p-2 fs-6">Niveau :&nbsp;{{$session->LEVEL_ID}}</h4>
-                                                    <div class="shadow-sm bg-body-secondary rounded">
-                                                        <!-- Display skill information -->
+                                                    <div class="shadow-sm p-2 bg-body-secondary rounded">
                                                         <h4 class="fw-bold p-2 fs-6">Compétence C{{$session->SKILL_ID}} : </h4><p class="p-2 fs-6"> {{$session->SKILL_LABEL}}</p>
                                                         <div class="shadow-sm p-2 bg-dark-subtle rounded">
                                                             <!-- Display abilities related to this session -->
@@ -60,7 +54,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
