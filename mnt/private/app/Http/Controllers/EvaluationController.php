@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Evaluation;
 use App\Models\Club;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class EvaluationController extends Controller
 {
@@ -38,7 +39,13 @@ class EvaluationController extends Controller
             return response()->json(['message' => 'Aucune évaluation trouvée pour cet utilisateur dans ce club.'], 404);
         }
     
-        return view('EvaluationHistory', compact('evaluations'));
+        $canEdit = session('type_id') == 4 || session('type_id') == 3;
+
+        if($canEdit) {
+            return view('EvaluationHistory', compact('evaluations'));
+        } else {
+            return view('Home');
+        }
     }
 
     public function search(Request $request) {
@@ -83,7 +90,13 @@ class EvaluationController extends Controller
 
     
         // Retourner les évaluations à la vue
-        return view('EvaluationHistory', compact('evaluations'));
+        $canEdit = session('type_id') == 4 || session('type_id') == 3;
+
+        if($canEdit) {
+            return view('EvaluationHistory', compact('evaluations'));
+        } else {
+            return view('Home');
+        }
     }
 }
 ?>
