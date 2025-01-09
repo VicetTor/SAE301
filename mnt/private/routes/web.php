@@ -42,6 +42,11 @@ Route::post('/user', function(){
     return view('MyProfile');
 });
 
+Route::get('/TableBilan',function(){
+    return view('TableBilan');
+})->name('TableBilan');
+
+
 Route::get('/session/create',function(){
     return view('SessionCreate');
 })->name('session.create');
