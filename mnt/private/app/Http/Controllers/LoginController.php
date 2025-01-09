@@ -11,11 +11,13 @@ use Illuminate\Support\Facades\Session;
 class LoginController extends Controller
 {
 
-    function create(){
+    function create()
+    {
         return view('ConnexionPage');
     }
 
-    function tryConnect(Request $request){
+    function tryConnect(Request $request)
+    {
 
         $request->validate([
             'email' => 'required|email',
@@ -25,8 +27,8 @@ class LoginController extends Controller
         $mail = $request->input('email');
         $password = $request->input('password');
 
-        $user =USER::where('USER_MAIL','=',$mail)->first();;
-        if($user && Hash::check($password, $user->USER_PASSWORD)){
+        $user = USER::where('USER_MAIL', '=', $mail)->first();;
+        if ($user && Hash::check($password, $user->USER_PASSWORD)) {
             echo $user;
             Session::put('user_mail', $user->USER_MAIL);
             Session::put('user_firstname', $user->USER_FIRSTNAME);
@@ -41,13 +43,13 @@ class LoginController extends Controller
             Session::put('level_id', $user->LEVEL_ID);
             Session::put('level_id_resume', $user->LEVEL_ID_RESUME);
             Session::put('type_id', $user->TYPE_ID);
-            if($user->USER_ISFIRSTLOGIN == 1) {
-               return redirect()->route('firstconnexion', ['user' => $user]);
+            if ($user->USER_ISFIRSTLOGIN == 1) {
+                return redirect()->route('firstconnexion', ['user' => $user]);
             }
             return redirect()->route('students');
-        }else{
+        } else {
             for ($i = 1; $i <= 10; $i++) {
-                echo "    -----    ".$i." ".$password." : ".Hash::make($password);
+                echo "    -----    " . $i . " " . $password . " : " . Hash::make($password);
             }
 
             Session::flash('fail', 1);
@@ -55,5 +57,3 @@ class LoginController extends Controller
         }
     }
 }
-
-?>

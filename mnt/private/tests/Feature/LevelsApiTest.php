@@ -1,111 +1,170 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class DatabaseTest extends TestCase
 {
-    private $pdo;
+    use RefreshDatabase;
 
-    protected function setUp(): void
+    public function test_success()
     {
-        $this->pdo = new PDO('sqlite::memory:');
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Create the table
-        $this->pdo->exec(<<<SQL
-            CREATE TABLE `to_date` (
-                `CLUB_ID` INT NOT NULL,
-                `ANNU_YEAR` DATE NOT NULL,
-                `CLUB_INSCRIPTIONNB` INT NOT NULL,
-                `CLUB_NBDEGREEOBTAINED` INT NOT NULL
-            );
-        SQL);
-
-        // Insert initial data
-        $this->pdo->exec(<<<SQL
-            INSERT INTO `to_date` (`CLUB_ID`, `ANNU_YEAR`, `CLUB_INSCRIPTIONNB`, `CLUB_NBDEGREEOBTAINED`) VALUES
-            (1, '2024-01-01', 48, 2),
-            (1, '2025-01-01', 50, 3),
-            (2, '2022-01-01', 45, 5);
-        SQL);
+        $response = $this->get('/api/levels');
+        $response->assertStatus(200);
     }
 
-    public function testRowCount(): void
+    public function test_get7()
     {
-        $stmt = $this->pdo->query('SELECT COUNT(*) FROM `to_date`');
-        $rowCount = $stmt->fetchColumn();
-        $this->assertEquals(3, $rowCount, 'The number of rows should be 3.');
+        $response = $this->get('/api/levels');
+        $response->assertJsonCount(7);
     }
 
-    public function testInsertData(): void
+    public function test_get0Ok()
     {
-        $this->pdo->exec("INSERT INTO `to_date` (`CLUB_ID`, `ANNU_YEAR`, `CLUB_INSCRIPTIONNB`, `CLUB_NBDEGREEOBTAINED`) VALUES (3, '2023-01-01', 30, 1);");
-
-        $stmt = $this->pdo->query('SELECT COUNT(*) FROM `to_date`');
-        $rowCount = $stmt->fetchColumn();
-        $this->assertEquals(4, $rowCount, 'After inserting, the number of rows should be 4.');
+        $response = $this->get('/api/levels');
+        $this->assertTrue($response[0]['LEVEL_ID'] == 0);
     }
 
-    public function testRetrieveData(): void
-    {
-        $stmt = $this->pdo->query('SELECT * FROM `to_date` WHERE `CLUB_ID` = 1');
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // public function test_successful_login_with_valid_user()
+    // {
+    //     $user = User::factory()->create([
+    //         'USER_MAIL' => 'eleve1@secool.fr',
+    //         'USER_PASSWORD' => Hash::make('Password123')
+    //     ]);
 
-        $this->assertCount(2, $result, 'There should be 2 rows for CLUB_ID 1.');
-        $this->assertEquals('2024-01-01', $result[0]['ANNU_YEAR'], 'The first year for CLUB_ID 1 should be 2024-01-01.');
-    }
+    //     $response = $this->post(route('connexion'), [
+    //         'email' => 'eleve1@secool.fr',
+    //         'password' => 'Password123'
+    //     ]);
 
-    public function testUpdateData(): void
-    {
-        $this->pdo->exec("UPDATE `to_date` SET `CLUB_INSCRIPTIONNB` = 60 WHERE `CLUB_ID` = 1 AND `ANNU_YEAR` = '2024-01-01';");
+    //     $response->assertRedirect(route('students'));
+    //     $this->assertEquals(session('USER_MAIL'), 'eleve1@secool.fr');
+    // }
 
-        $stmt = $this->pdo->query('SELECT `CLUB_INSCRIPTIONNB` FROM `to_date` WHERE `CLUB_ID` = 1 AND `ANNU_YEAR` = "2024-01-01"');
-        $result = $stmt->fetchColumn();
+    // public function test_failed_login_with_invalid_password()
+    // {
+    //     $user = User::factory()->create([
+    //         'USER_MAIL' => 'eleve1@secool.fr',
+    //         'USER_PASSWORD' => Hash::make('badPassword1')
+    //     ]);
 
-        $this->assertEquals(60, $result, 'The CLUB_INSCRIPTIONNB for CLUB_ID 1 in 2024 should be updated to 60.');
-    }
+    //     $response = $this->post(route('connexion'), [
+    //         'email' => 'eleve1@secool.fr',
+    //         'password' => 'wrongpassword'
+    //     ]);
 
-    public function testDeleteData(): void
-    {
-        $this->pdo->exec("DELETE FROM `to_date` WHERE `CLUB_ID` = 2;");
+    //     $response->assertSessionHas('fail', 1);
+    // }
 
-        $stmt = $this->pdo->query('SELECT COUNT(*) FROM `to_date`');
-        $rowCount = $stmt->fetchColumn();
+    // public function test_login_validation()
+    // {
+    //     $response = $this->post(route('connexion'), [
+    //         'email' => '',
+    //         'password' => 'Password123'
+    //     ]);
+    //     $response->assertSessionHasErrors('email');
 
-        $this->assertEquals(2, $rowCount, 'After deletion, the number of rows should be 2.');
-    }
+    //     $response = $this->post(route('connexion'), [
+    //         'email' => 'eleve1@secool.fr',
+    //         'password' => ''
+    //     ]);
+    //     $response->assertSessionHasErrors('password');
+    // }
 
+    // public function test_club_name_displayed_for_logged_in_user()
+    // {
+    //     // Création d'un utilisateur avec un club spécifique
+    //     $user = User::factory()->create([
+    //         'USER_MAIL' => 'eleve1@secool.fr',
+    //         'USER_PASSWORD' => bcrypt('password123'),
+    //         'user_id' => 1 // ID utilisateur fictif
+    //     ]);
 
+    //     // Connexion simulée
+    //     $this->actingAs($user);
 
+    //     // Simuler la réponse de la requête DB
+    //     DB::shouldReceive('table')
+    //         ->once()
+    //         ->with('REPORT')
+    //         ->andReturnSelf()
+    //         ->shouldReceive('select')
+    //         ->once()
+    //         ->with('CLUB_NAME')
+    //         ->andReturnSelf()
+    //         ->shouldReceive('join')
+    //         ->once()
+    //         ->with('grp2_club', 'grp2_club.club_id', '=', 'report.club_id')
+    //         ->andReturnSelf()
+    //         ->shouldReceive('where')
+    //         ->once()
+    //         ->with('user_id', '=', $user->id)
+    //         ->andReturnSelf()
+    //         ->shouldReceive('first')
+    //         ->once()
+    //         ->andReturn((object) ['CLUB_NAME' => 'ClubPlongee']);
 
-    public function testDeleteEntries()
-    {
-        for ($i = 1; $i <= 1000; $i++) {
-            $this->pdo->exec("DELETE FROM to_date WHERE CLUB_ID = $i");
+    //     // Envoi de la requête pour afficher la page
+    //     $response = $this->get('/');
 
-            $stmt = $this->pdo->query("SELECT * FROM to_date WHERE CLUB_ID = $i");
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    //     // Vérifier que le nom du club est bien affiché
+    //     $response->assertSee('Bienvenue sur <strong>ClubPlongee</strong>', false);
+    // }
 
-            $this->assertFalse($result);
-        }
-    }
+    // public function test_modification_button_visibility_for_non_admin_user()
+    // {
+    //     // Création d'un utilisateur sans droits administratifs
+    //     $user = User::factory()->create([
+    //         'USER_MAIL' => 'eleve1@secool.fr',
+    //         'USER_PASSWORD' => bcrypt('password123'),
+    //         'type_id' => 2, // Utilisateur sans droits admin
+    //     ]);
 
+    //     // Connexion simulée
+    //     $this->actingAs($user);
 
-    public function testEdgeCaseDates()
-    {
-        $this->pdo->exec("INSERT INTO to_date (CLUB_ID, ANNU_YEAR, CLUB_INSCRIPTIONNB, CLUB_NBDEGREEOBTAINED) VALUES
-            (2000, '1900-01-01', 10, 1),
-            (2001, '2100-01-01', 20, 2)");
+    //     // Envoi de la requête pour la page d'accueil
+    //     $response = $this->get('/');
 
-        $stmt = $this->pdo->query("SELECT * FROM to_date WHERE CLUB_ID = 2000");
-        $result1 = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->assertEquals('1900-01-01', $result1['ANNU_YEAR']);
+    //     // Vérifier que le bouton "Modération" n'est pas présent
+    //     $response->assertDontSee('Modération');
+    // }
 
-        $stmt = $this->pdo->query("SELECT * FROM to_date WHERE CLUB_ID = 2001");
-        $result2 = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->assertEquals('2100-01-01', $result2['ANNU_YEAR']);
-    }
+    // public function test_modification_button_visibility_for_admin_user()
+    // {
+    //     // Création d'un utilisateur avec droits administratifs
+    //     $admin = User::factory()->create([
+    //         'USER_MAIL' => 'admin@secool.fr',
+    //         'USER_PASSWORD' => bcrypt('adminpassword'),
+    //         'type_id' => 4, // Administrateur
+    //     ]);
 
+    //     // Connexion simulée
+    //     $this->actingAs($admin);
+
+    //     // Envoi de la requête pour la page d'accueil
+    //     $response = $this->get('/');
+
+    //     // Vérifier que le bouton "Modération" est présent
+    //     $response->assertSee('Modération');
+    // }
+
+    // public function test_redirect_to_home_after_login()
+    // {
+    //     $user = User::factory()->create([
+    //         'USER_MAIL' => 'eleve1@secool.fr',
+    //         'USER_PASSWORD' => bcrypt('password123'),
+    //     ]);
+
+    //     // Connexion simulée
+    //     $this->actingAs($user);
+
+    //     // Envoi de la requête pour la page d'accueil
+    //     $response = $this->get('/');
+
+    //     // Vérifier que la page d'accueil est bien affichée
+    //     $response->assertStatus(200);
+    // }
 }
-
-?>
