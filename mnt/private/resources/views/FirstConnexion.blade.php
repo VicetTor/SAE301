@@ -4,7 +4,6 @@
 
 @section('content')
 
-    <!-- Current password input section -->
     <div>
         <label for="USER_PASSWORD">Mot de passe Actuel</label>
         <input type="text" id="USER_PASSWORD" name="USER_PASSWORD" value={{$utilisateur->USER_PASSWORD}}>

@@ -29,6 +29,7 @@
     <tbody>
         <!-- Loop through each user and display their details in the table rows -->
         @foreach ($users as $user)
+        @if($user->USER_ID != Session('user_id'))
         <tr>
             <!-- User's first name -->
             <td>{{ $user->USER_FIRSTNAME }}</td>
@@ -51,6 +52,7 @@
                 @endif
             </td>
         </tr>
+        @endif
         @endforeach
     </tbody>
 </table>

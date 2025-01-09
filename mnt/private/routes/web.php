@@ -17,10 +17,10 @@ use App\Http\Controllers\EvaluationController;
 |
 */
 
-// Home route, returns the 'Home' view when visiting the root URL
-Route::get('/', function () {
-    return view('Home');
-});
+
+
+
+Route::get('/home',[App\Http\Controllers\HomeController::class, 'dataClub'])->name('home');
 
 // Routes for login and registration
 Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create'])->name('connexion'); // Show login form
@@ -41,7 +41,14 @@ Route::post('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::c
 // Route to display the session page
 Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
 
-// Route for the user profile update form
+Route::post('/user', function(){
+    return view('MyProfile');
+});
+
+Route::get('/TableBilan',function(){
+    return view('TableBilan');
+})->name('TableBilan');
+
 Route::get('/session/create',function(){
     return view('SessionCreate');
 })->name('session.create');

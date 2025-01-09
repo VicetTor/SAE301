@@ -62,15 +62,12 @@ class LoginController extends Controller
             Session::put('level_id', $user->LEVEL_ID);
             Session::put('level_id_resume', $user->LEVEL_ID_RESUME);
             Session::put('type_id', $user->TYPE_ID);
-
-            // Check if it is the user's first login.
-            if ($user->USER_ISFIRSTLOGIN == 1) {
-                // Redirect to the first login page with the user data.
-                return redirect()->route('firstconnexion', ['user' => $user]);
+            if($user->USER_ISFIRSTLOGIN == 1) {
+               return redirect()->route('firstconnexion', ['user' => $user]);
             }
-
-            // Redirect authenticated users to the students page.
             return redirect()->route('students');
+
+
         } else {
             // Debugging: Print hashed variations of the password.
             // Note: This is insecure and should not be included in production.

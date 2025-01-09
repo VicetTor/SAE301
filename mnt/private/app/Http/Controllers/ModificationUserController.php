@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User; // Importing the User model
-use Illuminate\Http\Request; // For handling HTTP requests
-use Illuminate\Support\Facades\Auth; // For authentication
-use Illuminate\Support\Facades\Session; // For session management
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class ModificationUserController extends Controller {
 
@@ -15,12 +16,25 @@ class ModificationUserController extends Controller {
      * @return \Illuminate\Contracts\View\View
      */
     public function show() {
-        // Fetch users who are active and not admins (TYPE_ID != 1).
+
+        if (session('type_id') != 4) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
+
+        $club = DB::table('report')
+        ->where('report.user_id' , '=', Session('user_id'))
+        ->first();
+        
+
         $users = User::where('USER_ISACTIVE', 1)
-                      ->where('TYPE_ID', '!=', 1)
+                    ->join('report' , 'report.user_id', '=','grp2_user.user_id')
+                      ->where('TYPE_ID', '!=', 4)
+                      ->where('CLUB_ID', '=', $club->CLUB_ID)
                       ->get();
         
-        // Check if the current user has the appropriate permissions (TYPE_ID == 4).
         $canEdit = session('type_id') == 4; 
 
         // If the user has edit permissions, show the modification page.
@@ -39,7 +53,13 @@ class ModificationUserController extends Controller {
      * @return \Illuminate\Contracts\View\View
      */
     public function search(Request $request) {
-        // Get the search term from the request.
+        if (session('type_id') != 4) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
+
         $searchTerm = $request->input('search');
 
         // Query users matching the search term in first name, last name, or license number.
@@ -51,7 +71,6 @@ class ModificationUserController extends Controller {
         // Check if the authenticated user has edit permissions (TYPE_ID == 4).
         $canEdit = Auth::check() && Auth::user()->TYPE_ID == 4; 
 
-        // Return the modification page view with the search results.
         return view('ModificationUser', ['users' => $users, 'canEdit' => $canEdit]);
     }
 
@@ -64,7 +83,10 @@ class ModificationUserController extends Controller {
     public function edit($id) {
         // Only users with TYPE_ID == 4 can edit users.
         if (session('type_id') != 4) {
-            return redirect()->route('modification.users')->with('error', 'You are not authorized to edit users.');
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
         }
         
         // Find the user by ID.
@@ -82,9 +104,12 @@ class ModificationUserController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id) {
-        // Only users with TYPE_ID == 4 can update user information.
+       
         if (session('type_id') != 4) {
-            return redirect()->route('modification.users')->with('error', 'You are not authorized to update users.');
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
         }
 
         // Find the user by ID.

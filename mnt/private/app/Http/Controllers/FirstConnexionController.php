@@ -15,11 +15,10 @@ class FirstConnexionController extends Controller
      * @param  Request  $request  The HTTP request object.
      * @return \Illuminate\View\View  The view for first connection.
      */
-    public function show(Request $request) {
-        // Retrieve the user ID from the query parameters
-        $utilisateurId = $request->query('utilisateur');
-        
-        // Fetch the user from the database using the user ID
+
+    public function show(Request $request){
+
+        $utilisateurId = $request->query('user');
         $utilisateur = DB::table('grp2_user')
             ->where('grp2_user.user_id', '=', $utilisateurId)
             ->first();
