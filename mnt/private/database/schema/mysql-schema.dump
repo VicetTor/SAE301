@@ -1,0 +1,321 @@
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_ability`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_ability` (
+  `ABI_ID` int(11) NOT NULL,
+  `SKILL_ID` int(11) NOT NULL,
+  `ABI_LABEL` varchar(255) NOT NULL,
+  PRIMARY KEY (`ABI_ID`),
+  KEY `I_FK_GRP2_ABILITY_GRP2_SKILL` (`SKILL_ID`),
+  CONSTRAINT `FK_GRP2_ABILITY_GRP2_SKILL` FOREIGN KEY (`SKILL_ID`) REFERENCES `grp2_skill` (`SKILL_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_attendee`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_attendee` (
+  `ATTE_ID` int(11) NOT NULL,
+  `SESS_ID` int(11) NOT NULL,
+  `USER_ID` bigint(6) NOT NULL,
+  `USER_ID_ATTENDEE` bigint(6) NOT NULL,
+  PRIMARY KEY (`ATTE_ID`),
+  KEY `I_FK_GRP2_ATTENDEE_GRP2_SESSION` (`SESS_ID`),
+  KEY `I_FK_GRP2_ATTENDEE_GRP2_USER` (`USER_ID`),
+  KEY `I_FK_GRP2_ATTENDEE_GRP2_USER1` (`USER_ID_ATTENDEE`),
+  CONSTRAINT `FK_GRP2_ATTENDEE_GRP2_SESSION` FOREIGN KEY (`SESS_ID`) REFERENCES `grp2_session` (`SESS_ID`),
+  CONSTRAINT `FK_GRP2_ATTENDEE_GRP2_USER` FOREIGN KEY (`USER_ID`) REFERENCES `grp2_user` (`USER_ID`),
+  CONSTRAINT `FK_GRP2_ATTENDEE_GRP2_USER1` FOREIGN KEY (`USER_ID_ATTENDEE`) REFERENCES `grp2_user` (`USER_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_club`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_club` (
+  `CLUB_ID` bigint(6) NOT NULL,
+  `CLUB_NAME` varchar(255) NOT NULL,
+  `CLUB_POSTALCODE` char(5) NOT NULL,
+  `CLUB_CITY` varchar(255) NOT NULL,
+  `CLUB_ADDRESS` varchar(255) NOT NULL,
+  PRIMARY KEY (`CLUB_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_evaluation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_evaluation` (
+  `EVAL_ID` int(11) NOT NULL,
+  `STATUSTYPE_ID` bigint(1) NOT NULL,
+  `USER_ID` bigint(6) NOT NULL,
+  `SESS_ID` int(11) NOT NULL,
+  `ABI_ID` int(11) NOT NULL,
+  `EVAL_OBSERVATION` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`EVAL_ID`),
+  KEY `I_FK_GRP2_EVALUATION_GRP2_STATUSTYPE` (`STATUSTYPE_ID`),
+  KEY `I_FK_GRP2_EVALUATION_GRP2_USER` (`USER_ID`),
+  KEY `I_FK_GRP2_EVALUATION_GRP2_SESSION` (`SESS_ID`),
+  KEY `I_FK_GRP2_EVALUATION_GRP2_ABILITY` (`ABI_ID`),
+  CONSTRAINT `FK_GRP2_EVALUATION_GRP2_ABILITY` FOREIGN KEY (`ABI_ID`) REFERENCES `grp2_ability` (`ABI_ID`),
+  CONSTRAINT `FK_GRP2_EVALUATION_GRP2_SESSION` FOREIGN KEY (`SESS_ID`) REFERENCES `grp2_session` (`SESS_ID`),
+  CONSTRAINT `FK_GRP2_EVALUATION_GRP2_STATUSTYPE` FOREIGN KEY (`STATUSTYPE_ID`) REFERENCES `grp2_statustype` (`STATUSTYPE_ID`),
+  CONSTRAINT `FK_GRP2_EVALUATION_GRP2_USER` FOREIGN KEY (`USER_ID`) REFERENCES `grp2_user` (`USER_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_level`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_level` (
+  `LEVEL_ID` int(11) NOT NULL,
+  `LEVEL_LABEL` varchar(255) NOT NULL,
+  PRIMARY KEY (`LEVEL_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_session` (
+  `SESS_ID` int(11) NOT NULL,
+  `TRAIN_ID` int(11) NOT NULL,
+  `SESSTYPE_ID` int(11) NOT NULL,
+  `SESS_DATE` datetime NOT NULL,
+  PRIMARY KEY (`SESS_ID`),
+  KEY `I_FK_GRP2_SESSION_GRP2_TRAINING` (`TRAIN_ID`),
+  KEY `I_FK_GRP2_SESSION_GRP2_SESSIONTYPE` (`SESSTYPE_ID`),
+  CONSTRAINT `FK_GRP2_SESSION_GRP2_SESSIONTYPE` FOREIGN KEY (`SESSTYPE_ID`) REFERENCES `grp2_sessiontype` (`SESSTYPE_ID`),
+  CONSTRAINT `FK_GRP2_SESSION_GRP2_TRAINING` FOREIGN KEY (`TRAIN_ID`) REFERENCES `grp2_training` (`TRAIN_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_sessiontype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_sessiontype` (
+  `SESSTYPE_ID` int(11) NOT NULL,
+  `SESSTYPE_LABEL` varchar(255) NOT NULL,
+  PRIMARY KEY (`SESSTYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_site`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_site` (
+  `PK_GRP2_SITE` int(11) NOT NULL AUTO_INCREMENT,
+  `CLUB_ID` bigint(6) unsigned NOT NULL,
+  `SITE_NAME` varchar(255) NOT NULL,
+  `SITE_COLOR` varchar(7) NOT NULL,
+  `SITE_LOGO` longblob DEFAULT NULL,
+  PRIMARY KEY (`PK_GRP2_SITE`),
+  KEY `I_FK_GRP2_USER_GRP2_CLUB` (`PK_GRP2_SITE`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_skill`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_skill` (
+  `SKILL_ID` int(11) NOT NULL,
+  `LEVEL_ID` int(11) NOT NULL,
+  `SKILL_LABEL` varchar(255) NOT NULL,
+  PRIMARY KEY (`SKILL_ID`),
+  KEY `I_FK_GRP2_SKILL_GRP2_LEVEL` (`LEVEL_ID`),
+  CONSTRAINT `FK_GRP2_SKILL_GRP2_LEVEL` FOREIGN KEY (`LEVEL_ID`) REFERENCES `grp2_level` (`LEVEL_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_statustype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_statustype` (
+  `STATUSTYPE_ID` bigint(1) NOT NULL,
+  `STATUSTYPE_LABEL` char(32) NOT NULL,
+  PRIMARY KEY (`STATUSTYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_training`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_training` (
+  `TRAIN_ID` int(11) NOT NULL,
+  PRIMARY KEY (`TRAIN_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_typeuser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_typeuser` (
+  `TYPE_ID` int(11) NOT NULL,
+  `TYPE_LABEL` varchar(255) NOT NULL,
+  PRIMARY KEY (`TYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_user` (
+  `USER_ID` bigint(6) NOT NULL,
+  `LEVEL_ID` int(11) NOT NULL,
+  `TYPE_ID` int(11) NOT NULL,
+  `TRAIN_ID` int(11) DEFAULT NULL,
+  `LEVEL_ID_RESUME` int(11) DEFAULT NULL,
+  `USER_MAIL` varchar(255) NOT NULL,
+  `USER_PASSWORD` varchar(255) NOT NULL,
+  `USER_FIRSTNAME` varchar(255) NOT NULL,
+  `USER_LASTNAME` varchar(255) NOT NULL,
+  `USER_PHONENUMBER` char(13) DEFAULT NULL,
+  `USER_BIRTHDATE` date NOT NULL,
+  `USER_ADDRESS` varchar(255) NOT NULL,
+  `USER_POSTALCODE` char(5) NOT NULL,
+  `USER_LICENSENUMBER` char(32) NOT NULL,
+  `USER_MEDICCERTIFICATEDATE` date NOT NULL,
+  `USER_ISFIRSTLOGIN` int(11) NOT NULL,
+  `USER_ISACTIVE` int(11) NOT NULL,
+  PRIMARY KEY (`USER_ID`),
+  KEY `I_FK_GRP2_USER_GRP2_LEVEL` (`LEVEL_ID`),
+  KEY `I_FK_GRP2_USER_GRP2_TYPEUSER` (`TYPE_ID`),
+  KEY `I_FK_GRP2_USER_GRP2_TRAINING` (`TRAIN_ID`),
+  KEY `I_FK_GRP2_USER_GRP2_LEVEL1` (`LEVEL_ID_RESUME`),
+  CONSTRAINT `FK_GRP2_USER_GRP2_LEVEL` FOREIGN KEY (`LEVEL_ID`) REFERENCES `grp2_level` (`LEVEL_ID`),
+  CONSTRAINT `FK_GRP2_USER_GRP2_LEVEL1` FOREIGN KEY (`LEVEL_ID_RESUME`) REFERENCES `grp2_level` (`LEVEL_ID`),
+  CONSTRAINT `FK_GRP2_USER_GRP2_TRAINING` FOREIGN KEY (`TRAIN_ID`) REFERENCES `grp2_training` (`TRAIN_ID`),
+  CONSTRAINT `FK_GRP2_USER_GRP2_TYPEUSER` FOREIGN KEY (`TYPE_ID`) REFERENCES `grp2_typeuser` (`TYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_validation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_validation` (
+  `VALID_ID` bigint(4) NOT NULL,
+  `SKILL_ID` int(11) NOT NULL,
+  `ABI_ID` int(11) NOT NULL,
+  `LEVEL_ID` int(11) NOT NULL,
+  `EVAL_ID` int(11) NOT NULL,
+  `VALID_DATE` date DEFAULT NULL,
+  PRIMARY KEY (`VALID_ID`),
+  KEY `I_FK_GRP2_VALIDATION_GRP2_SKILL` (`SKILL_ID`),
+  KEY `I_FK_GRP2_VALIDATION_GRP2_ABILITY` (`ABI_ID`),
+  KEY `I_FK_GRP2_VALIDATION_GRP2_LEVEL` (`LEVEL_ID`),
+  KEY `I_FK_GRP2_VALIDATION_GRP2_EVALUATION` (`EVAL_ID`),
+  CONSTRAINT `FK_GRP2_VALIDATION_GRP2_ABILITY` FOREIGN KEY (`ABI_ID`) REFERENCES `grp2_ability` (`ABI_ID`),
+  CONSTRAINT `FK_GRP2_VALIDATION_GRP2_EVALUATION` FOREIGN KEY (`EVAL_ID`) REFERENCES `grp2_evaluation` (`EVAL_ID`),
+  CONSTRAINT `FK_GRP2_VALIDATION_GRP2_LEVEL` FOREIGN KEY (`LEVEL_ID`) REFERENCES `grp2_level` (`LEVEL_ID`),
+  CONSTRAINT `FK_GRP2_VALIDATION_GRP2_SKILL` FOREIGN KEY (`SKILL_ID`) REFERENCES `grp2_skill` (`SKILL_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_year`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_year` (
+  `ANNU_YEAR` date NOT NULL,
+  PRIMARY KEY (`ANNU_YEAR`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `personal_access_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `report`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `report` (
+  `CLUB_ID` bigint(6) NOT NULL,
+  `USER_ID` bigint(6) NOT NULL,
+  `ANNU_YEAR` date NOT NULL,
+  PRIMARY KEY (`CLUB_ID`,`USER_ID`,`ANNU_YEAR`),
+  KEY `I_FK_REPORT_GRP2_CLUB` (`CLUB_ID`),
+  KEY `I_FK_REPORT_GRP2_USER` (`USER_ID`),
+  KEY `I_FK_REPORT_GRP2_YEAR` (`ANNU_YEAR`),
+  CONSTRAINT `FK_REPORT_GRP2_CLUB` FOREIGN KEY (`CLUB_ID`) REFERENCES `grp2_club` (`CLUB_ID`),
+  CONSTRAINT `FK_REPORT_GRP2_USER` FOREIGN KEY (`USER_ID`) REFERENCES `grp2_user` (`USER_ID`),
+  CONSTRAINT `FK_REPORT_GRP2_YEAR` FOREIGN KEY (`ANNU_YEAR`) REFERENCES `grp2_year` (`ANNU_YEAR`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `to_date`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `to_date` (
+  `CLUB_ID` bigint(6) NOT NULL,
+  `ANNU_YEAR` date NOT NULL,
+  `CLUB_INSCRIPTIONNB` bigint(4) DEFAULT NULL,
+  `CLUB_NBDEGREEOBTAINED` char(32) DEFAULT NULL,
+  PRIMARY KEY (`CLUB_ID`,`ANNU_YEAR`),
+  KEY `I_FK_TO_DATE_GRP2_CLUB` (`CLUB_ID`),
+  KEY `I_FK_TO_DATE_GRP2_YEAR` (`ANNU_YEAR`),
+  CONSTRAINT `FK_TO_DATE_GRP2_CLUB` FOREIGN KEY (`CLUB_ID`) REFERENCES `grp2_club` (`CLUB_ID`),
+  CONSTRAINT `FK_TO_DATE_GRP2_YEAR` FOREIGN KEY (`ANNU_YEAR`) REFERENCES `grp2_year` (`ANNU_YEAR`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+INSERT INTO `migrations` VALUES (5,'2025_01_08_205035_add_club_id_to_evaluations_table',1);

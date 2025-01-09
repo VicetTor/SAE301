@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class ConnectionPageTest extends TestCase
 {
 
     use RefreshDatabase;
@@ -15,7 +15,7 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
+    public function test_connection_valid_user_and_return_home_page()
     {
         $response = $this->get('/connexion');
 

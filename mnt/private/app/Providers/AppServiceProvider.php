@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $clubID = DB::table('REPORT')
+        $clubID = DB::table('report')
             ->select('grp2_club.CLUB_ID')
             ->join('grp2_club', 'grp2_club.club_id', '=', 'report.club_id')
             ->where('user_id', '=', Session('user_id'))
