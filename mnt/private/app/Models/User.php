@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use OpenApi\Annotations as OA;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {

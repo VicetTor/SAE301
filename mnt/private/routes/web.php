@@ -18,10 +18,7 @@ Route::get('/', function () {
     return view('Home');
 });
 
-/* CONNEXION */
-Route::get('/connexion',function(){
-    return view('ConnexionPage');
-})->name('connexion');
+
 
 Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create']);
 Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConnect']);
@@ -30,15 +27,6 @@ Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConn
 Route::get('/inscription',function(){
     return view('SignInForm');
 })->name('inscription');
-
-
-Route::get('/profile',function(){
-    return view('MyProfile');
-})->name('profile');
-
-Route::post('/user', function(){
-    return view('MyProfile');
-});
 
 
 Route::get('/session',function(){
@@ -76,7 +64,7 @@ Route::get('/user', function(){
 Route::post('/infoUserUpdate',[App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate');
 Route::get('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate');
-
+Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 
 Route::get('/validate', function(){
     return view('ValidateLevel');
