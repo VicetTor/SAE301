@@ -24,9 +24,16 @@ class TemporaryPasswordController extends Controller {
             return redirect()->route('connexion');
         }   
 
+        $club =DB::table('report')
+        ->where('report.user_id' , '=', Session('user_id'))
+        ->first();  
+        $clubId = $club->CLUB_ID;
+
         $users = DB::table('grp2_user')
+        ->join('report','report.user_id','=','grp2_user.user_id')
+        ->where('report.club_id', '=',  $clubId)
         ->where('USER_ISFIRSTLOGIN', '=', 1)
-                ->get();
+        ->get();
                 
         return view('TemporaryPassword', ['users' => $users]);
     }
