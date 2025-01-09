@@ -63,7 +63,6 @@
         <tbody>
             @php 
                 $i = 0; 
-                $j = 0; 
             @endphp
             
             @foreach ($sessions as $session)
@@ -100,7 +99,7 @@
                 <td rowspan="{{ $taille }}" class="session-date">
                     {{ $session->SESS_DATE }}
                 </td>
-                @php $debug = 0; @endphp
+
                 @foreach ($skills as $skill)
                     
                 <?php
@@ -116,7 +115,7 @@
 
                     <!-- insére les compétences -->
                     <td rowspan="{{$nombre}}" class="skill">
-                        {{ $skill->SKILL_LABEL }} {{$nbSkills}}
+                        {{ $skill->SKILL_LABEL }}
                     </td>
 
                     <?php
@@ -166,13 +165,12 @@
                         @endphp
                     @endforeach
                     </td>
-                    @php $debug++; @endphp
+                    
 
                 @endforeach
                 </td>
                 @php
                     $i++;  
-                    $j++; 
                 @endphp 
             @endforeach
         </tbody>
