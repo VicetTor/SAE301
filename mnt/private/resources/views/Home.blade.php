@@ -5,7 +5,7 @@
 @section('content')
 <div>
     @foreach($clubName as $club)
-        <h2 class="text-center">Bienvenue sur <span style="color:blue"> <strong>{{ $club }} </strong></span> 🐬</h2> 
+        <h2 class="text-center darkblue-text">Bienvenue sur <span> <strong>{{ $club }} </strong></span> 🐬</h2> 
     
         <div class="container py-5">
             <div class="card shadow border-0">

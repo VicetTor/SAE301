@@ -1,5 +1,5 @@
 :root {
-    --site-color: #005c8f; /* Valeur par défaut */
+    --site-color: #1aff75; /* Valeur par défaut */
 }
 
 .gray-bg {
@@ -15,6 +15,9 @@ html,
     background-color: var(--site-color);
 }
 
+.darkblue-text {
+    color: var(--site-color);
+}
 .body-base {
     display: flex;
     flex-direction: column;
