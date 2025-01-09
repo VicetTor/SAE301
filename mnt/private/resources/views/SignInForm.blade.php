@@ -185,4 +185,6 @@
             <button type="submit" class="btn btn-outline-primary range">S'inscrire</button>
         </div>
     </form>
+
+    <script src="/js/script.js"></script>
 @endsection
