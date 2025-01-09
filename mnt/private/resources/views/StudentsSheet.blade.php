@@ -80,7 +80,17 @@ $eleves = User::select('*')
         <table id=tabletable>
 
         </table>
-        
+        <!-- Popup Overlay -->
+<div id="popup" class="popup-overlay" style="display: none;">
+    <div class="popup-content">
+        <span class="popup-close">&times;</span>
+        <h3>Contenu de la session</h3>
+        <div id="popup-body">
+            <!-- Le contenu de la session sera inséré ici via AJAX -->
+        </div>
+    </div>
+</div>
+
             
         
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -129,9 +139,58 @@ $(document).on('change', '#selectEleve', function() {
     });
 });
 
+$(document).on('click', '.eval-btn', function() {
+    var evalId = $(this).data('eval-id');
+    var statutId = $(this).val();
+    var userId = $(this).data('user-id');
+    var abiId = $(this).data('abi-id');
+    var sessId = $(this).data('sess-id');
+
+    $.ajax({
+        url: '/commentaireEval',
+        type: 'GET',
+        data: {
+            eval_id: evalId,
+            statut_id: statutId,
+            user_id: userId,
+            abi_id: abiId,
+            sess_id: sessId,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            // Afficher la popup et son contenu
+            $('#popup').html(response.html);
+            $('#popup').fadeIn(); // Afficher la popup
+
+            // Ajouter l'événement pour fermer la popup quand on clique sur la croix
+            $('.popup-close').on('click', function() {
+                $('#popup').fadeOut(); // Fermer la popup
+            });
+
+            // Fermer la popup si on clique en dehors
+            $(window).on('click', function(event) {
+                if ($(event.target).hasClass('popup-overlay')) {
+                    $('#popup').fadeOut(); // Fermer la popup
+                }
+            });
+        },
+        error: function() {
+            console.log("Erreur lors de l'appel AJAX.");
+        }
+    });
+});
 
     
+$('.popup-close').on('click', function() {
+        $('#popup').fadeOut(); // Ferme la popup
+    });
 
+    // Ferme la popup si l'utilisateur clique à l'extérieur de la popup
+    $(window).on('click', function(event) {
+        if ($(event.target).hasClass('popup-overlay')) {
+            $('#popup').fadeOut(); // Ferme la popup
+        }
+    });
 
 });
 
@@ -200,6 +259,57 @@ td.select-cell select {
         padding: 8px;
     }
 }
+
+
+/* Popup - Fond de la popup */
+.popup-overlay {
+    display: none;
+    position: absolute;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fond sombre */
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenu de la popup */
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Bouton de fermeture (croix) */
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Animation d'apparition */
+.popup-overlay {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animation d'apparition de la popup */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 
     </style>
     
