@@ -1,6 +1,6 @@
 @extends('Base')
 
-@section('title','a définir')
+@section('title','Tableau Progression')
 
 @section('content')
 
@@ -14,76 +14,72 @@ use App\Models\Skill;
 use App\Models\StatusType;
 use App\Models\User;
 
-    $user_id = session('user_id');
+$user_id = session('user_id');
 
-    $level = session('level_id');
-    $skills = Skill::select('*')
-        ->where('LEVEL_ID','=',$level)->get();
-
-        
-    $skillsWithAbilities = [];
-    $i = 0;
-    foreach ($skills as $skill) {
-        $abilities = Ability::select('*')
-            ->where('SKILL_ID', '=', $skill->SKILL_ID)
+$level = session('level_id');
+$skills = Skill::select('*')
+    ->where('LEVEL_ID','=',$level)->get();
+       
+$skillsWithAbilities = [];
+$i = 0;
+foreach ($skills as $skill) {
+    $abilities = Ability::select('*')
+        ->where('SKILL_ID', '=', $skill->SKILL_ID)
             ->get();
-    
-        $skillsWithAbilities[$i] = $abilities;
-        $i++;
-    }
+    $skillsWithAbilities[$i] = $abilities;
+    $i++;
+}
 
-
-    $sessions = Attendee::select('*', 'GRP2_USER.*')
+$sessions = Attendee::select('*', 'GRP2_USER.*')
     ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_ATTENDEE', '=', 'GRP2_USER.USER_ID')
-    ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
-    ->where('GRP2_USER.USER_ID', '=', $user_id)
-    ->get();    
-
-    $evaluationsChaqueSeance =[];
-    $i = 0;
-    foreach($sessions as $session){
-        $evaluations = Evaluation::select('*')
-            ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
+        ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
+            ->where('GRP2_USER.USER_ID', '=', $user_id)
+                ->get();    
+$evaluationsChaqueSeance =[];
+$i = 0;
+foreach($sessions as $session){
+    $evaluations = Evaluation::select('*')
+        ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
             ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
-            ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
-            ->get();
-        $evaluationsChaqueSeance[$i] = $evaluations;
-        $i++;
-    }
+                ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
+                    ->get();
+    $evaluationsChaqueSeance[$i] = $evaluations;
+    $i++;
+}
 
-    $statustype = StatusType::select('*')->get();
-
-    $eleves = User::select('*')
+$statustype = StatusType::select('*')->get();
+$eleves = User::select('*')
     ->where('TYPE_ID', '=', 1)
-    ->get();
+        ->get();
 
-    ?>
+?>
 
-        <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
-        <p> Vous etes niveau {{ session('level_id') }}
 
-        <select id="selectEleve">
-            <option value="" disabled selected>Sélectionner un élève</option>
-            @foreach($eleves as $eleve)
-                <option value="{{ $eleve->USER_ID }}">
-                    {{$eleve->USER_FIRSTNAME}} {{$eleve->USER_LASTNAME}} {{$eleve->USER_ID}}
-                </option>
-            @endforeach
-        </select>
+@if(session('type_id') != 3)
+    <h1>Vous n'avez les droits nécéssaires</h1>
+    <script>
+        window.stop();
+    </script>
+@endif
 
-        <h1 id="result">Tableau évolutif des étudiants</h1>
+<p class="fw-medium fs-3"> Vous êtes connecté(e) en tant que : {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
+
+<div class="form-floating">
+  <select class="form-select" id="selectEleve" aria-label="Floating label select example">
+    <option selected>Sélectionner un élève ici</option>
+    @foreach($eleves as $eleve)
+        <option value="{{ $eleve->USER_ID }}">
+            {{$eleve->USER_FIRSTNAME}} {{$eleve->USER_LASTNAME}} {{$eleve->USER_ID}}
+        </option>
+    @endforeach
+  </select>
+</div>
+
+<p class="fst-italic fs-5" id="result">Merci de bien vouloir choisir un(e) élève </p>
 
         <table id=tabletable>
 
         </table>
-
-        <div id="popup" class="popup">
-        <div class="popup-content">
-            <div id="popup-body">
-                  
-            </div>
-        </div>
-    </div>'
         
             
         
@@ -115,67 +111,33 @@ $(document).on('change', '#selectEleve', function() {
         var abiId = $(this).data('abi-id');
         var sessId = $(this).data('sess-id');
 
-        $.ajax({
-            url: '/updateEvaluation',
-            type: 'POST',
-            data: {
-                eval_id: evalId,
-                statut_id: statutId,
-                user_id: userId,
-                abi_id: abiId,
-                sess_id: sessId,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-            },
-            error: function() {
-            }
-        });
+    $.ajax({
+        url: '/updateEvaluation',
+        type: 'POST',
+        data: {
+            eval_id: evalId,
+            statut_id: statutId,
+            user_id: userId,
+            abi_id: abiId,
+            sess_id: sessId,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+        },
+        error: function() {
+        }
     });
+});
 
 
-    $(document).on('click   ', '.evalForm', function() {
-        var evalId = $(this).data('eval-id');
-        var statutId = $(this).val();
-        var userId = $(this).data('user-id');
-        var abiId = $(this).data('abi-id');
-        var sessId = $(this).data('sess-id');
-        console.log('Chalut');
-        $.ajax({
-            url: '/commentaireEval',
-            type: 'POST',
-            data: {
-                eval_id: evalId,
-                statut_id: statutId,
-                user_id: userId,
-                abi_id: abiId,
-                sess_id: sessId,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                openPopup(response.html);
-            },
-            error: function() {
-                alert('Une erreur est survenue.');
-            }
-        });
-    });
+    
 
 
 });
 
 
 
-function openPopup(content) {
-    document.getElementById('popup-body').innerHTML = content;
-    document.getElementById('popup').style.display = 'flex';
-}
 
-
-    // Ferme la pop-up
-    function closePopup() {
-        document.getElementById('popup').style.display = 'none';
-    }
     </script>
 
 
@@ -183,7 +145,6 @@ function openPopup(content) {
     </tbody>
     </table>
 
-    <!-- Vous pouvez supprimer ce css cetait juste pour etre lisible en attendant !-->
     <style>
 table {
     width: 100%;
@@ -228,6 +189,7 @@ td.select-cell select {
     padding: 5px;
 }
 
+/* Mobile responsiveness */
 @media (max-width: 768px) {
     table {
         width: 100%;
@@ -237,22 +199,6 @@ td.select-cell select {
     td, th {
         padding: 8px;
     }
-}
-
-.popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-.popup-content{
-    background-color: white;
 }
 
     </style>
