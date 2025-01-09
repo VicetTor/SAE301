@@ -11,89 +11,103 @@ use Illuminate\Support\Facades\DB;
 class EvaluationController extends Controller
 {
     /**
-     * Affiche l'historique des évaluations pour un utilisateur et un club donnés.
+     * Displays the evaluation history for a given user and club.
      *
-     * @param  int  $userId
-     * @param  int  $clubId
+     * @param  int  $userId  The ID of the user.
+     * @param  int  $clubId  The ID of the club.
      * @return \Illuminate\Http\Response
      */
     public function historiqueEvaluations($userId, $clubId) {
-        // Récupérer l'utilisateur et le club
+        // Retrieve the user and the club by their IDs
         $user = User::find($userId);
         $club = Club::find($clubId);
     
-        // Vérifier si l'utilisateur et le club existent
+        // Check if the user and the club exist
         if (!$user || !$club) {
-            return response()->json(['message' => 'Utilisateur ou club non trouvé.'], 404);
+            return response()->json(['message' => 'User or club not found.'], 404);
         }
     
-        // Récupérer les évaluations de l'utilisateur pour le club spécifié
+        // Retrieve the evaluations for the specified user and club
         $evaluations = Evaluation::with(['user', 'validation.level', 'validation.skill'])
             ->where('USER_ID', $userId)
             ->whereHas('user.reports', function ($query) use ($clubId) {
+                // Filter evaluations based on reports associated with the specified club
                 $query->where('CLUB_ID', $clubId);
             })
             ->get();
     
-        // Si aucune évaluation n'est trouvée
+        // If no evaluations are found, return a 404 response
         if ($evaluations->isEmpty()) {
-            return response()->json(['message' => 'Aucune évaluation trouvée pour cet utilisateur dans ce club.'], 404);
+            return response()->json(['message' => 'No evaluations found for this user in this club.'], 404);
         }
     
+        // Check if the current session user has editing privileges
         $canEdit = session('type_id') == 4 || session('type_id') == 3;
 
-        if($canEdit) {
+        // Render the appropriate view based on user privileges
+        if ($canEdit) {
             return view('EvaluationHistory', compact('evaluations'));
         } else {
             return view('Home');
         }
     }
 
+    /**
+     * Search for evaluations based on various filters.
+     *
+     * @param  Request  $request  The HTTP request object.
+     * @return \Illuminate\Http\Response
+     */
     public function search(Request $request) {
+        // Retrieve the search term and optional user/club filters from the request
         $searchTerm = $request->input('search');
         $userId = $request->input('userId');
         $clubId = $request->input('clubId');       
     
-        // Construire la requête pour filtrer les évaluations
+        // Build the query to filter evaluations
         $evaluationsQuery = Evaluation::query()
-            ->with(['user', 'validation.level', 'validation.skill', 'user.reports']) // Charger les relations nécessaires
+            ->with(['user', 'validation.level', 'validation.skill', 'user.reports']) // Load related data
             ->where(function ($query) use ($searchTerm) {
                 $query->whereHas('user', function ($query) use ($searchTerm) {
+                    // Search for the term in user details
                     $query->where('USER_FIRSTNAME', 'like', '%' . $searchTerm . '%')
                         ->orWhere('USER_LASTNAME', 'like', '%' . $searchTerm . '%')
                         ->orWhere('USER_LICENSENUMBER', 'like', '%' . $searchTerm . '%');
                 })
                 ->orWhereHas('user.reports.club', function ($query) use ($searchTerm) {
+                    // Search for the term in club details
                     $query->where('CLUB_NAME', 'like', '%' . $searchTerm . '%');
                 })
                 ->orWhereHas('validation.level', function ($query) use ($searchTerm) {
+                    // Search for the term in level details
                     $query->where('LEVEL_LABEL', 'like', '%' . $searchTerm . '%');
                 })
                 ->orWhereHas('validation.skill', function ($query) use ($searchTerm) {
+                    // Search for the term in skill details
                     $query->where('SKILL_LABEL', 'like', '%' . $searchTerm . '%');
                 });
             });
     
-        // Si un userId est passé, ajouter un filtre
+        // Apply user ID filter if provided
         if ($userId) {
             $evaluationsQuery->where('USER_ID', $userId);
         }
     
-        // Si un clubId est passé, ajouter un filtre
+        // Apply club ID filter if provided
         if ($clubId) {
             $evaluationsQuery->whereHas('user.reports', function ($query) use ($clubId) {
                 $query->where('CLUB_ID', $clubId);
             });
         }
     
-        // Exécuter la requête et récupérer les résultats
+        // Execute the query and retrieve the results
         $evaluations = $evaluationsQuery->get();
 
-    
-        // Retourner les évaluations à la vue
+        // Check if the current session user has editing privileges
         $canEdit = session('type_id') == 4 || session('type_id') == 3;
 
-        if($canEdit) {
+        // Render the appropriate view based on user privileges
+        if ($canEdit) {
             return view('EvaluationHistory', compact('evaluations'));
         } else {
             return view('Home');

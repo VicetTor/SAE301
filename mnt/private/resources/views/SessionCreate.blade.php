@@ -4,11 +4,11 @@
 @section('content')
 
 
-<!-- ligne 1 -->
-
+<!-- Line 1: Date and Time Selection -->
 <div class="range">
     <div>    
-    <p>Date</p>
+        <p>Date</p>
+        <!-- Dropdown to select the date -->
         <select class="form-select" style="width:200px">
             <option selected>Sélectionner la date</option>
             <option value="1">8/01/2025</option>
@@ -18,6 +18,7 @@
     </div>
     <div>
         <p>Heure</p>
+        <!-- Dropdown to select the time -->
         <select class="form-select" style="width:200px">
             <option selected>Sélectionner l'heure</option>
             <option value="1">6 h 00</option>
@@ -29,11 +30,11 @@
     </div>
 </div>
     
-<!-- ligne 2 -->
-
+<!-- Line 2: Student and Skills Selection -->
 <div class="range">
     <div> 
         <p>Elève</p>
+        <!-- Dropdown to select the student -->
         <select class="form-select" style="width:200px">
             <option selected>choix de l'élève</option>
             <option value="1">Fabienne Jort</option>
@@ -44,49 +45,53 @@
         </select>
     </div>
     <div> 
-    <p>Aptitude 1</p>
-    <select class="form-select" style="width:200px">
-        <option selected>Choix des aptitude</option>
-        <option value="1">A1 : s'équilibrer</option>
-        <option value="2">A2 : Respecter le millieu</option>
-        <option value="3">A3 : S'immerger</option>
-    </select>
+        <p>Aptitude 1</p>
+        <!-- Dropdown to select skill 1 -->
+        <select class="form-select" style="width:200px">
+            <option selected>Choix des aptitude</option>
+            <option value="1">A1 : s'équilibrer</option>
+            <option value="2">A2 : Respecter le millieu</option>
+            <option value="3">A3 : S'immerger</option>
+        </select>
     </div>
     <div> 
-    <p>Aptitude 2</p>
-    <select class="form-select" style="width:200px">
-        <option selected>Choix des aptitude</option>
-        <option value="1">A1 : s'équilibrer</option>
-        <option value="2">A2 : Respecter le millieu</option>
-        <option value="3">A3 : S'immerger</option>
-    </select>
+        <p>Aptitude 2</p>
+        <!-- Dropdown to select skill 2 -->
+        <select class="form-select" style="width:200px">
+            <option selected>Choix des aptitude</option>
+            <option value="1">A1 : s'équilibrer</option>
+            <option value="2">A2 : Respecter le millieu</option>
+            <option value="3">A3 : S'immerger</option>
+        </select>
     </div>
     <div> 
-    <p>Aptitude 3</p>
-    <select class="form-select" style="width:200px">
-        <option selected>Choix des aptitude</option>
-        <option value="1">A1 : s'équilibrer</option>
-        <option value="2">A2 : Respecter le millieu</option>
-        <option value="3">A3 : S'immerger</option>
-    </select>
+        <p>Aptitude 3</p>
+        <!-- Dropdown to select skill 3 -->
+        <select class="form-select" style="width:200px">
+            <option selected>Choix des aptitude</option>
+            <option value="1">A1 : s'équilibrer</option>
+            <option value="2">A2 : Respecter le millieu</option>
+            <option value="3">A3 : S'immerger</option>
+        </select>
     </div>
     <div> 
-    <p>Initiateur</p>
-    <select class="form-select" style="width:200px">
-        <option selected>Choix de l'Initiateur</option>
-        <option value="1">Catherine Laroche</option>
-        <option value="2">Pierre Cailloux</option>
-        <option value="3">Jo Laucéan</option>
-    </select>
+        <p>Initiateur</p>
+        <!-- Dropdown to select the initiator -->
+        <select class="form-select" style="width:200px">
+            <option selected>Choix de l'Initiateur</option>
+            <option value="1">Catherine Laroche</option>
+            <option value="2">Pierre Cailloux</option>
+            <option value="3">Jo Laucéan</option>
+        </select>
     </div>
 </div> 
 
    
-<!-- ligne 3  -->
-
+<!-- Line 3: Additional Student Selection -->
 <div class="range">
     <div> 
         <p>Elève</p>
+        <!-- Dropdown to select another student -->
         <select class="form-select" style="width:200px">
             <option selected>choix de l'élève</option>
             <option value="1">Fabienne Jort</option>
@@ -97,60 +102,66 @@
         </select>
     </div>
     <div> 
-    <p>Aptitude 1</p>
-    <select class="form-select" style="width:200px">
-        <option selected>Choix des aptitude</option>
-        <option value="1">A1 : s'équilibrer</option>
-        <option value="2">A2 : Respecter le millieu</option>
-        <option value="3">A3 : S'immerger</option>
-    </select>
+        <p>Aptitude 1</p>
+        <!-- Dropdown to select skill 1 -->
+        <select class="form-select" style="width:200px">
+            <option selected>Choix des aptitude</option>
+            <option value="1">A1 : s'équilibrer</option>
+            <option value="2">A2 : Respecter le millieu</option>
+            <option value="3">A3 : S'immerger</option>
+        </select>
     </div>
     <div> 
-    <p>Aptitude 2</p>
-    <select class="form-select" style="width:200px">
-        <option selected>Choix des aptitude</option>
-        <option value="1">A1 : s'équilibrer</option>
-        <option value="2">A2 : Respecter le millieu</option>
-        <option value="3">A3 : S'immerger</option>
-    </select>
+        <p>Aptitude 2</p>
+        <!-- Dropdown to select skill 2 -->
+        <select class="form-select" style="width:200px">
+            <option selected>Choix des aptitude</option>
+            <option value="1">A1 : s'équilibrer</option>
+            <option value="2">A2 : Respecter le millieu</option>
+            <option value="3">A3 : S'immerger</option>
+        </select>
     </div>
     <div> 
-    <p>Aptitude 3</p>
-    <select class="form-select" style="width:200px">
-        <option selected>Choix des aptitude</option>
-        <option value="1">A1 : s'équilibrer</option>
-        <option value="2">A2 : Respecter le millieu</option>
-        <option value="3">A3 : S'immerger</option>
-    </select>
+        <p>Aptitude 3</p>
+        <!-- Dropdown to select skill 3 -->
+        <select class="form-select" style="width:200px">
+            <option selected>Choix des aptitude</option>
+            <option value="1">A1 : s'équilibrer</option>
+            <option value="2">A2 : Respecter le millieu</option>
+            <option value="3">A3 : S'immerger</option>
+        </select>
     </div>
     <div> 
-    <p>Initiateur</p>
-    <select class="form-select" style="width:200px">
-        <option selected>Choix de l'Initiateur</option>
-        <option value="1">Catherine Laroche</option>
-        <option value="2">Pierre Cailloux</option>
-        <option value="3">Jo Laucéan</option>
-    </select>
+        <p>Initiateur</p>
+        <!-- Dropdown to select the initiator -->
+        <select class="form-select" style="width:200px">
+            <option selected>Choix de l'Initiateur</option>
+            <option value="1">Catherine Laroche</option>
+            <option value="2">Pierre Cailloux</option>
+            <option value="3">Jo Laucéan</option>
+        </select>
     </div>
 </div> 
 
+<!-- New student entries will appear here -->
 <div id="addStudent">
-        <!-- Les nouvelles lignes pour les élèves pour les séances apparaîtront ici -->
 </div>
 
-
+<!-- Button to add new students to the session -->
 <div class="range">
     <div>
         <button class="btn btn-outline-warning range" onclick="addDiv()">Ajouter un élève</button>  
     </div>
 </div>
 
+<!-- Line for additional information -->
 <div class="range">    
     <div>
         <input type="text" placeholder="Information(s) complémentaire(s)" size=80px style="height: 70px; border-radius:20px; border-color:#005C8F;">
     </div>
 </div>
   
+<!-- Line for action buttons -->
 <div class="range">
     <div> 
         <button type="button" class="btn btn-outline-danger">Retour</button>
@@ -159,7 +170,5 @@
         <button type="button" class="btn btn-outline-primary">Valider</button>
     </div>
 </div>
-
-
 
 @endsection

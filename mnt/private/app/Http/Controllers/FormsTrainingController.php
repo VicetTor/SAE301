@@ -2,105 +2,88 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreatePostRequest;
-use App\Models\Level;
-use App\Models\typeUser;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Nette\Utils\Random;
 use Illuminate\Support\Facades\Session;
 
-class FormsTrainingController extends Controller {
+class FormsTrainingController extends Controller
+{
+
     public function show() {
+        // Retrieve all trainers (users with type_id = 3)
         $trainings = DB::table('grp2_user')
-        ->where('type_id','=','2')
-        ->where('train_id', '=', '0')
+        ->where('type_id','=','3')
+        ->get();
+
+        $studies = DB::table('grp2_user')
+        ->where('type_id','=','4')
         ->get();
 
         $trainDatas = DB::table('grp2_training')
-        ->where('train_id', '!=', 0)
-        
         ->get();
 
+        $levelIds = DB::table('grp2_level')
+        ->get();
+
+        // Check if the current user has permissions to edit (type_id = 4)
         $canEdit = session('type_id') == 4;
 
         if($canEdit) {
-            return view('FormsTraining',['trainings'=>$trainings, 'trainDatas'=>$trainDatas]);
+            return view('FormsTraining',['trainings'=>$trainings, 'studies'=>$studies, 'trainDatas'=>$trainDatas, 'levelIds'=>$levelIds]);
         } else {
             return view('Home');
         }
     }
 
+    /**
+     * Validate and process the training forms data for trainers and students.
+     *
+     * @param  Request  $request  Incoming request containing form data.
+     * @return \Illuminate\Http\RedirectResponse Redirect back with success or error messages.
+     */
     public function validateForms(Request $request) {
-        DB::update('update grp2_user set type_id = ? where user_id = ?', [3, $request->TRAIN_RESPONSABLE_ID]);
-
-        DB::update('update grp2_user set train_id = ? where user_id = ?', [$request->TRAIN_ID, $request->TRAIN_RESPONSABLE_ID]);
-
-        return view('TrainingHome');
-    }
-
-    public function showTrainingHome() {
-        
-        return view('TrainingHome');
-    }
-
-    public function showUpdateTrainingAdd() {
-
-        $students = DB::table('grp2_user')
-        ->where('type_id','=','2')
-        ->where('train_id', '=', '0')
-        ->get();
-
-        $studies = DB::table('grp2_user')
-        ->where('type_id','=','1')
-        ->where('train_id', '=', '0')
-        ->get();
-
-        return view('FormsModificationAdd',['trainings' =>  $students,'studies' => $studies]);
-    }
-
-    public function showUpdateTrainingRemove() {
-
-        $students = DB::table('grp2_user')
-        ->where('type_id','=','2')
-        ->where('train_id', '=', session('train_id'))
-        ->get();
-
-        $studies = DB::table('grp2_user')
-        ->where('type_id','=','1')
-        ->where('train_id', '=', session('train_id'))
-        ->get();
-
-        return view('FormsModificationRemove',['trainings' =>  $students,'studies' => $studies]);
-    }
-
-
-    public function UpdateTraining(Request $request){
-        
-        $students = $request->input('students', []);
-        $initiators = $request->input('initiators', []);
-
+        // Valider les entrées
+        $request->validate([
+            'TRAIN_RESPONSABLE_ID' => 'required|exists:grp2_user,USER_ID',
+            'TRAIN_ID' => 'required|exists:grp2_training,TRAIN_ID',
+            'initiators' => 'required|array|min:1',
+            'students' => 'required|array|min:1'
+        ], [
+            'TRAIN_RESPONSABLE_ID.required' => 'Le champ responsable est obligatoire.',
+            'TRAIN_RESPONSABLE_ID.exists' => 'Le responsable sélectionné est invalide.',
+            'TRAIN_ID.required' => 'Le champ niveau est obligatoire.',
+            'TRAIN_ID.exists' => 'Le niveau sélectionné est invalide.',
+            'initiators.required' => 'Le champ initiateurs est obligatoire.',
+            'initiators.array' => 'Le champ initiateurs doit être un tableau.',
+            'initiators.min' => 'Vous devez sélectionner au moins un initiateur.',
+            'students.required' => 'Le champ élèves est obligatoire.',
+            'students.array' => 'Le champ élèves doit être un tableau.',
+            'students.min' => 'Vous devez sélectionner au moins un élève.'
+        ]);
+    
         // Récupérer les initiateurs et étudiants
+        $initiators = $request->input('initiators', []);
+        $students = $request->input('students', []);
         $formationId = $request->input('formation_id');
     
         // Calculer le nombre maximum d'élèves autorisés
         $maxStudents = count($initiators) * 2;
-    
-        // Vérifier que le nombre d'étudiants ne dépasse pas le maximum autorisé
+
+        // Check if the number of students exceeds the allowed maximum
         if (count($students) > $maxStudents) {
-            return redirect()->back()->withErrors(['students' => 'Le nombre d\'étudiants sélectionnés dépasse le maximum autorisé en fonction du nombre d\'initiateurs.']);
+            return redirect()->back()->withErrors([
+                'students' => 'The number of selected students exceeds the allowed maximum based on the number of initiators.'
+            ]);
         }
-    
-        // Boucle pour les initiateurs
+
+        // Assign training ID to each initiator
         foreach ($initiators as $initiatorId) {
             DB::table('grp2_user')
                 ->where('USER_ID', '=', $initiatorId)
                 ->update(['TRAIN_ID' => session('train_id')]);
         }
-    
-        // Boucle pour les étudiants
+
+        // Assign training ID to each student
         foreach ($students as $studentId) {
             DB::table('grp2_user')
                 ->where('USER_ID', '=', $studentId)
@@ -108,39 +91,50 @@ class FormsTrainingController extends Controller {
         }
     
         // Retour avec succès
-        return view('TrainingHome');
+        return redirect()->back()->with('success', 'Les initiateurs et étudiants ont été mis à jour avec succès!');
+    }
+    
+    public function validateForms2(Request $request) {
+        // Valider les entrées
+        $request->validate([
+            'LEVEL_ID' => 'required|exists:grp2_level,LEVEL_ID',
+            'SKILL_LABEL' => 'required|string|max:255'
+        ], [
+            'LEVEL_ID.required' => 'Le champ niveau est obligatoire.',
+            'LEVEL_ID.exists' => 'Le niveau sélectionné est invalide.',
+            'SKILL_LABEL.required' => 'Le champ titre de la compétence est obligatoire.',
+            'SKILL_LABEL.string' => 'Le titre de la compétence doit être une chaîne de caractères.',
+            'SKILL_LABEL.max' => 'Le titre de la compétence ne doit pas dépasser 255 caractères.'
+        ]);
+    
+        // On regarde le nombre de skills qu'il y a et on rajoute plus un au nombre de skills pour le skill_id
+        $skills = DB::table('grp2_skill')->get();
+        $skill_id = count($skills) + 1;
+    
+        // Insérer une donnée dans la table grp2_skill
+        DB::table('grp2_skill')->insert([
+            'SKILL_ID' => $skill_id,
+            'LEVEL_ID' => $request->LEVEL_ID,
+            'SKILL_LABEL' => $request->SKILL_LABEL,
+        ]);
+    
+        // Retour avec succès
+        return redirect()->back()->with('success', 'L\'ajout d\'une compétence a été effectué avec succès!');
     }
 
-    public function RemoveTraining(Request $request){
-        
-        $students = $request->input('students', []);
-        $initiators = $request->input('initiators', []);
+    public function showModificationTechnical() {
+        $abilities = DB::table('grp2_ability')
+        ->get();
 
-        // Récupérer les initiateurs et étudiants
-        $formationId = $request->input('formation_id');
-    
-        // Calculer le nombre maximum d'élèves autorisés
-        $maxStudents = count($initiators) * 2;
-    
-        // Vérifier que le nombre d'étudiants ne dépasse pas le maximum autorisé
-        if (count($students) > $maxStudents) {
-            return redirect()->back()->withErrors(['students' => 'Le nombre d\'étudiants sélectionnés dépasse le maximum autorisé en fonction du nombre d\'initiateurs.']);
-        }
-    
-        // Boucle pour les initiateurs
-        foreach ($initiators as $initiatorId) {
-            DB::table('grp2_user')
-                ->where('USER_ID', '=', $initiatorId)
-                ->update(['TRAIN_ID' => 0]);
-        }
-    
-        // Boucle pour les étudiants
-        foreach ($students as $studentId) {
-            DB::table('grp2_user')
-                ->where('USER_ID', '=', $studentId)
-                ->update(['TRAIN_ID' => 0]);
-        }
-    
+        return view('TrainingModificationTechnical', ['abilities'=>$abilities]);
+    }
+
+    public function UpdateAbilities(Request $request) {
+
+        DB::table('grp2_ability')
+            ->where('abi_id', '=', $request->abilitie_id)
+            ->update(['abi_label' => $request->new_abilitie_id]);
+
         // Retour avec succès
         return view('TrainingHome');
     }

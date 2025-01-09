@@ -6,12 +6,17 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\DB ;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    /**
+     * Fetch the club name associated with the logged-in user and display it on the Home page.
+     *
+     * @return \Illuminate\View\View The Home view with the club name data.
+     */
     function dataClub(){
         if(Session('user_id') !=null){
 

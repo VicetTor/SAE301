@@ -1,43 +1,43 @@
-@extends('Base')
+@extends('Base') <!-- Extends the "Base" layout template -->
 
-@section('title', 'Historique des évaluations')
+@section('title', 'Historique des évaluations') <!-- Sets the page title to "Evaluation History" -->
 
-@section('content')
+@section('content') <!-- Starts the content section that will be injected into the base layout -->
 
-<h1 class="my-4">Historique des évaluations</h1>
+<h1 class="my-4">Historique des évaluations</h1> <!-- Heading for the page displaying evaluation history -->
 
-<!-- Formulaire de recherche -->
-<form method="GET" action="{{ route('evaluations.search') }}" class="d-flex mb-4">
-    <input type="text" name="search" class="form-control me-2" placeholder="Nom, Licence, Club, Niveau ou Compétence" value="{{ request()->get('search') }}">
-    <button type="submit" class="btn btn-primary">Rechercher</button>
+<!-- Search Form -->
+<form method="GET" action="{{ route('evaluations.search') }}" class="d-flex mb-4"> <!-- A GET form for searching evaluations -->
+    <input type="text" name="search" class="form-control me-2" placeholder="Nom, Licence, Club, Niveau ou Compétence" value="{{ request()->get('search') }}"> <!-- Search input field where the user can type a search term -->
+    <button type="submit" class="btn btn-primary">Rechercher</button> <!-- Submit button for the search form -->
 </form>
 
-<!-- Tableau des évaluations -->
-<table class="table">
+<!-- Evaluations Table -->
+<table class="table"> <!-- Table to display evaluation records -->
     <thead>
-        <tr>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Club</th>
-            <th>Date de Validation</th>
-            <th>Niveau</th>
-            <th>Compétence</th>
-            <th>Observation</th>
+        <tr> <!-- Table header -->
+            <th>Prénom</th> <!-- Column for First Name -->
+            <th>Nom</th> <!-- Column for Last Name -->
+            <th>Club</th> <!-- Column for Club -->
+            <th>Date de Validation</th> <!-- Column for Validation Date -->
+            <th>Niveau</th> <!-- Column for Level -->
+            <th>Compétence</th> <!-- Column for Skill -->
+            <th>Observation</th> <!-- Column for Observation -->
         </tr>
     </thead>
     <tbody>
-        @foreach($evaluations as $evaluation)
-            <tr>
-                <td>{{ $evaluation->user->USER_FIRSTNAME }}</td>
-                <td>{{ $evaluation->user->USER_LASTNAME }}</td>
-                <td>{{ optional($evaluation->user->reports->first()->club)->CLUB_NAME ?? 'Pas de club associé' }}</td>
-                <td>{{ $evaluation->validation->VALID_DATE ?? 'Pas de date de validation' }}</td>
-                <td>{{ $evaluation->validation->level->LEVEL_LABEL ?? 'Pas de niveau associé' }}</td>
-                <td>{{ $evaluation->validation->skill->SKILL_LABEL ?? 'Pas de compétence associée' }}</td>
-                <td>{{ $evaluation->EVAL_OBSERVATION ?? 'Pas d\'observation' }}</td>
+        @foreach($evaluations as $evaluation) <!-- Iterates through all evaluations in the $evaluations variable -->
+            <tr> <!-- Row for each evaluation -->
+                <td>{{ $evaluation->user->USER_FIRSTNAME }}</td> <!-- Displays the user's first name -->
+                <td>{{ $evaluation->user->USER_LASTNAME }}</td> <!-- Displays the user's last name -->
+                <td>{{ optional($evaluation->user->reports->first()->club)->CLUB_NAME ?? 'Pas de club associé' }}</td> <!-- Displays the club name, or a default message if no club is associated -->
+                <td>{{ $evaluation->validation->VALID_DATE ?? 'Pas de date de validation' }}</td> <!-- Displays the validation date, or a default message if none exists -->
+                <td>{{ $evaluation->validation->level->LEVEL_LABEL ?? 'Pas de niveau associé' }}</td> <!-- Displays the evaluation level, or a default message if none exists -->
+                <td>{{ $evaluation->validation->skill->SKILL_LABEL ?? 'Pas de compétence associée' }}</td> <!-- Displays the evaluation skill, or a default message if none exists -->
+                <td>{{ $evaluation->EVAL_OBSERVATION ?? 'Pas d\'observation' }}</td> <!-- Displays the evaluation observation, or a default message if none exists -->
             </tr>
         @endforeach
     </tbody>
 </table>
 
-@endsection
+@endsection <!-- Ends the content section -->

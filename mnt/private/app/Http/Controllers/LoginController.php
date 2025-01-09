@@ -2,32 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
+use App\Models\User; // Importing the User model
+use Illuminate\Http\Request; // Importing the Request class for handling HTTP requests
+use Illuminate\Support\Facades\DB; // Importing the DB facade for database interactions
+use Illuminate\Support\Facades\Hash; // Importing Hash for password hashing
+use Illuminate\Support\Facades\Session; // Importing Session for session management
 
 class LoginController extends Controller
 {
 
-    function create(){
+    /**
+     * Displays the login page.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    function create()
+    {
+        // Return the view for the login page.
         return view('ConnexionPage');
     }
 
-    function tryConnect(Request $request){
-
+    /**
+     * Attempts to authenticate the user with the provided email and password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     */
+    function tryConnect(Request $request)
+    {
+        // Validate the incoming request to ensure required fields are present and valid.
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
+            'email' => 'required|email', // Email must be valid.
+            'password' => 'required|min:6', // Password must have a minimum length of 6 characters.
         ]);
 
+        // Retrieve email and password from the request input.
         $mail = $request->input('email');
         $password = $request->input('password');
 
-        $user =USER::where('USER_MAIL','=',$mail)->first();;
-        if($user && Hash::check($password, $user->USER_PASSWORD)){
+        // Query the database for a user matching the provided email.
+        $user = User::where('USER_MAIL', '=', $mail)->first();
+
+        // Check if a user is found and the provided password matches the hashed password in the database.
+        if ($user && Hash::check($password, $user->USER_PASSWORD)) {
+            // Debugging purpose: Print user object (not recommended in production).
             echo $user;
+
+            // Store user information in the session for subsequent requests.
             Session::put('user_mail', $user->USER_MAIL);
             Session::put('user_firstname', $user->USER_FIRSTNAME);
             Session::put('user_lastname', $user->USER_LASTNAME);
@@ -45,9 +66,19 @@ class LoginController extends Controller
                return redirect()->route('firstconnexion', ['user' => $user]);
             }
             return redirect()->route('students');
-        }else{
 
+
+        } else {
+            // Debugging: Print hashed variations of the password.
+            // Note: This is insecure and should not be included in production.
+            for ($i = 1; $i <= 10; $i++) {
+                echo "    -----    " . $i . " " . $password . " : " . Hash::make($password);
+            }
+
+            // Flash a failure message to the session for feedback.
             Session::flash('fail', 1);
+
+            // Redirect back to the login page with the previously entered input.
             return back()->withInput();
         }
     }
