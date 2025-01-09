@@ -8,8 +8,6 @@ use Tests\TestCase;
 class ConnectionPageTest extends TestCase
 {
 
-    use RefreshDatabase;
-
     /**
      * A basic test example.
      *

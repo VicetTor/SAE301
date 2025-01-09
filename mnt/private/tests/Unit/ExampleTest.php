@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 class ExampleTest extends TestCase
 {
-    use RefreshDatabase;
 
     /**
      * A basic test example.

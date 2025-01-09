@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Session;
 
 class HomeDataTest extends TestCase
 {
-    use RefreshDatabase;
 
 
     // /**

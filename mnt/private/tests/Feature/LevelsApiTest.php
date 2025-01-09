@@ -7,7 +7,6 @@ use Tests\TestCase;
 
 class DatabaseTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function test_success()
     {
