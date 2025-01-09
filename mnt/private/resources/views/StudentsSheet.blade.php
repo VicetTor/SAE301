@@ -101,6 +101,39 @@ $(document).on('change', '#selectEleve', function() {
             alert('Une erreur est survenue.');
         }
     });
+
+    $(document).on('change', '.scroll', function() {
+    var evalId = $(this).data('eval-id');
+    var statutId = $(this).val(); // Récupère la valeur du statut sélectionné
+    var userId = $(this).data('user-id');
+    var abiId = $(this).data('abi-id');
+    var sessId = $(this).data('sess-id');
+
+    // Envoie la mise à jour de l'évaluation via AJAX
+    $.ajax({
+        url: '/updateEvaluation', // Assurez-vous que cette route est correcte
+        type: 'POST',
+        data: {
+            eval_id: evalId,
+            statut_id: statutId,
+            user_id: userId,
+            abi_id: abiId,
+            sess_id: sessId,
+            _token: '{{ csrf_token() }}' // Assurez-vous d'inclure le token CSRF
+        },
+        success: function(response) {
+            alert(response.message); // Affiche un message de succès
+        },
+        error: function() {
+            alert('Une erreur est survenue pendant la mise à jour.');
+        }
+    });
+});
+
+
+    
+
+
 });
 
 
