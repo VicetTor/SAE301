@@ -46,9 +46,6 @@ class LoginController extends Controller
             }
             return redirect()->route('students');
         }else{
-            for ($i = 1; $i <= 10; $i++) {
-                echo "    -----    ".$i." ".$password." : ".Hash::make($password);
-            }
 
             Session::flash('fail', 1);
             return back()->withInput();

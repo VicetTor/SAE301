@@ -17,9 +17,10 @@ use App\Http\Controllers\EvaluationController;
 |
 */
 
-Route::get('/', function () {
-    return view('Home');
-});
+
+
+
+Route::get('/home',[App\Http\Controllers\HomeController::class, 'dataClub'])->name('home');
 
 
 Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create'])->name('connexion');
@@ -41,6 +42,11 @@ Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->
 Route::post('/user', function(){
     return view('MyProfile');
 });
+
+Route::get('/TableBilan',function(){
+    return view('TableBilan');
+})->name('TableBilan');
+
 
 Route::get('/session/create',function(){
     return view('SessionCreate');
