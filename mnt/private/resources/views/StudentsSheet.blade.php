@@ -1,6 +1,6 @@
 @extends('Base')
 
-@section('title','a définir')
+@section('title','Tableau Progression')
 
 @section('content')
 
@@ -14,76 +14,78 @@ use App\Models\Skill;
 use App\Models\StatusType;
 use App\Models\User;
 
+$user_id = session('user_id');
 
-
-
-    $user_id = session('user_id');
-
-    $level = session('level_id');
-    $skills = Skill::select('*')
-        ->where('LEVEL_ID','=',$level)->get();
-
-        
-    $skillsWithAbilities = [];
-    $i = 0;
-    foreach ($skills as $skill) {
-        $abilities = Ability::select('*')
-            ->where('SKILL_ID', '=', $skill->SKILL_ID)
+$level = session('level_id');
+$skills = Skill::select('*')
+    ->where('LEVEL_ID','=',$level)->get();
+       
+$skillsWithAbilities = [];
+$i = 0;
+foreach ($skills as $skill) {
+    $abilities = Ability::select('*')
+        ->where('SKILL_ID', '=', $skill->SKILL_ID)
             ->get();
-    
-        $skillsWithAbilities[$i] = $abilities;
-        $i++;
-    }
+    $skillsWithAbilities[$i] = $abilities;
+    $i++;
+}
 
-
-    $sessions = Attendee::select('*', 'GRP2_USER.*')
+$sessions = Attendee::select('*', 'GRP2_USER.*')
     ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_ATTENDEE', '=', 'GRP2_USER.USER_ID')
-    ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
-    ->where('GRP2_USER.USER_ID', '=', $user_id)
-    ->get();    
-
-    $evaluationsChaqueSeance =[];
-    $i = 0;
-    foreach($sessions as $session){
-        $evaluations = Evaluation::select('*')
-            ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
+        ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
+            ->where('GRP2_USER.USER_ID', '=', $user_id)
+                ->get();    
+$evaluationsChaqueSeance =[];
+$i = 0;
+foreach($sessions as $session){
+    $evaluations = Evaluation::select('*')
+        ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
             ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
-            ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
-            ->get();
-        $evaluationsChaqueSeance[$i] = $evaluations;
-        $i++;
-    }
+                ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
+                    ->get();
+    $evaluationsChaqueSeance[$i] = $evaluations;
+    $i++;
+}
 
-    $statustype = StatusType::select('*')->get();
-
-    $eleves = User::select('*')
+$statustype = StatusType::select('*')->get();
+$eleves = User::select('*')
     ->where('TYPE_ID', '=', 1)
-    ->get();
+        ->get();
 
-    ?>
-        @if(session('type_id') != 3)
-            <h1>Vous n'avez les droits nécéssaires</h1>
-            <script>
-                window.stop();
-            </script>
-        @endif
+?>
 
-        <h1> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </h1>
 
-        <select id="selectEleve">
-            <option value="" disabled selected>Sélectionner un élève</option>
-            @foreach($eleves as $eleve)
-                <option value="{{ $eleve->USER_ID }}">
-                    {{$eleve->USER_FIRSTNAME}} {{$eleve->USER_LASTNAME}} {{$eleve->USER_ID}}
-                </option>
-            @endforeach
-        </select>
 
-        <h1 id="result">Choisissez un étudiant</h1>
 
-        <table id=tabletable>
 
-        </table>
+
+
+
+@if(session('type_id') != 3)
+    <h1>Vous n'avez les droits nécéssaires</h1>
+    <script>
+        window.stop();
+    </script>
+@endif
+
+<p class="fw-medium fs-3"> Vous êtes connecté(e) en tant que : {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
+
+<div class="form-floating">
+  <select class="form-select" id="selectEleve" aria-label="Floating label select example">
+    <option selected>Sélectionner un élève ici</option>
+    @foreach($eleves as $eleve)
+        <option value="{{ $eleve->USER_ID }}">
+            {{$eleve->USER_FIRSTNAME}} {{$eleve->USER_LASTNAME}} {{$eleve->USER_ID}}
+        </option>
+    @endforeach
+  </select>
+</div>
+
+<p class="fst-italic fs-5" id="result">Merci de bien vouloir choisir un(e) élève </p>
+
+<table id=tabletable>
+    
+</table>
         
             
         

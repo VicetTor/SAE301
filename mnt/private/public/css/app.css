@@ -75,8 +75,15 @@ th {
 thead {
     background-color: rgb(214, 117, 33);
 }
+
 tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+.form-floating{
+    margin-left: 2%;
+    margin-bottom: 3%;
+    width: 20%;
 }
 
 @media (max-width: 768px) {
