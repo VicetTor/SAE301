@@ -3,7 +3,7 @@ LevelPrepa = document.getElementById("LEVEL_ID_RESUME");
 LevelPrepaLable = document.getElementById("LEVEL_ID_LABEL");
 Level = document.getElementById("LEVEL_ID");
 Statut.addEventListener("change", (event) => {
-    if(Statut.value == 1){
+    if(Statut.value == 4){
         LevelPrepa.hidden = true;
         LevelPrepaLable.hidden = true;
 

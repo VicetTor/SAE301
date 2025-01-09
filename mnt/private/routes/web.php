@@ -24,6 +24,9 @@ Route::get('/connexion',function(){
 Route::get('/inscription',[\App\Http\Controllers\SignInController::class,'show'])->name('inscription');
 Route::post('/inscription',[\App\Http\Controllers\SignInController::class,'signIn'])->name('inscriptionValidate');
 
+Route::get('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'show'])->name('firstconnexion');
+Route::post('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'fill'])->name('firstconnexion');
+
 Route::get('/profile',function(){
     return view('MyProfile');
 })->name('profile');
