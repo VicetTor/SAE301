@@ -1,12 +1,11 @@
 @extends('Base')
 @section('title','Page des séances')
-<link href="../public/css/Session.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 @section('content')
 
     {{session(['verify' => '0'])}}
-    <div class="seances">
-        <h3> <strong> Mes Séances : </strong> </h3>
+    <div>
+        <h3 class="m-2 text-center"> <strong> Mes Séances : </strong> </h3>
 
         <br>
         <div id="sessionsCarousel" class="carousel carousel-dark slide " data-bs-ride="carousel">
@@ -24,8 +23,7 @@
                         <div class="d-flex justify-content-center">
                             @foreach($chunk as $session)
                                 @if($session->SESS_ID != session('verify'))
-
-                                    <div class="card m-5" style="width: 18rem;">
+                                    <div class="card m-5 rounded-5" style="width: 18rem;">
                                         {{ session(['verify' => $session->SESS_ID]) }}
                                         <div class="card-body">
                                             <h5 class="card-title">Prochaine Séance</h5>
@@ -37,7 +35,7 @@
                                                 <div class="shadow-sm p-2 bg-body-tertiary rounded">
                                                     <h4 class="fw-bold p-2 fs-6">Initateur:&nbsp;{{$initiator->USER_FIRSTNAME}} {{$initiator->USER_LASTNAME}}</h4>
                                                     <h4 class="fw-bold p-2 fs-6">Niveau :&nbsp;{{$session->LEVEL_ID}}</h4>
-                                                    <div class="shadow-sm bg-body-secondary rounded">
+                                                    <div class="shadow-sm p-2 bg-body-secondary rounded">
                                                         <h4 class="fw-bold p-2 fs-6">Compétence C{{$session->SKILL_ID}} : </h4><p class="p-2 fs-6"> {{$session->SKILL_LABEL}}</p>
                                                         <div class="shadow-sm p-2 bg-dark-subtle rounded">
                                                             @foreach($abilities as $ability)
