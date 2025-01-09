@@ -17,7 +17,14 @@ class ExampleTest extends TestCase
      */
     public function test_example()
     {
-        $response = $this->get('/connexion');
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_example2()
+    {
+        $response = $this->get('/');
 
         $response->assertStatus(200);
     }
