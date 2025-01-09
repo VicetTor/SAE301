@@ -18,6 +18,8 @@ class SignInController extends Controller
      *
      * @return \Illuminate\View\View
      */
+
+    
     public function show(){
         // Return the 'SignInForm' view with data for user types, levels, and users
         return view('SignInForm', [
@@ -32,6 +34,43 @@ class SignInController extends Controller
      *
      * @param  \App\Http\Requests\CreatePostRequest  $request
      * @return \Illuminate\Http\RedirectResponse
+     */
+
+    /**
+     * @OA\Post(
+     *     path="/api/signin",
+     *     summary="Handle the sign-in process by validating and creating a new user",
+     *     tags={"SignIn"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"USER_MAIL", "USER_FIRSTNAME", "USER_LASTNAME", "USER_PHONENUMBER", "USER_BIRTHDATE", "USER_ADDRESS", "USER_POSTALCODE", "USER_LICENSENUMBER", "USER_MEDICCERTIFICATEDATE", "LEVEL_ID", "TYPE_ID"},
+     *             @OA\Property(property="USER_MAIL", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="USER_FIRSTNAME", type="string", example="John"),
+     *             @OA\Property(property="USER_LASTNAME", type="string", example="Doe"),
+     *             @OA\Property(property="USER_PHONENUMBER", type="string", example="123-456-7890"),
+     *             @OA\Property(property="USER_BIRTHDATE", type="string", format="date", example="1990-01-01"),
+     *             @OA\Property(property="USER_ADDRESS", type="string", example="123 Main St"),
+     *             @OA\Property(property="USER_POSTALCODE", type="string", example="12345"),
+     *             @OA\Property(property="USER_LICENSENUMBER", type="string", example="A1234567"),
+     *             @OA\Property(property="USER_MEDICCERTIFICATEDATE", type="string", format="date", example="2025-01-09"),
+     *             @OA\Property(property="LEVEL_ID", type="integer", example=1),
+     *             @OA\Property(property="TYPE_ID", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User signed in successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="password", type="string", example="randompassword")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid input"
+     *     )
+     * )
      */
     public function signIn(CreatePostRequest $request){
         // Create a new User instance

@@ -15,6 +15,7 @@ class ModificationUserController extends Controller {
      *
      * @return \Illuminate\Contracts\View\View
      */
+    
     public function show() {
 
         if (session('type_id') != 4) {
@@ -52,6 +53,30 @@ class ModificationUserController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\View\View
      */
+
+    /**
+     * @OA\Get(
+     *     path="/api/users/search",
+     *     summary="Searches for users by first name, last name, or license number",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         required=true,
+     *         description="Search term",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of users matching the search term",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/User"))
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function search(Request $request) {
         if (session('type_id') != 4) {
             return redirect()->route('home');
@@ -80,6 +105,7 @@ class ModificationUserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Contracts\View\View
      */
+
     public function edit($id) {
         // Only users with TYPE_ID == 4 can edit users.
         if (session('type_id') != 4) {
@@ -102,6 +128,50 @@ class ModificationUserController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
+     */
+
+    /**
+     * @OA\Put(
+     *     path="/api/users/{id}",
+     *     summary="Updates a user's information",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="User ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"USER_FIRSTNAME", "USER_LASTNAME", "USER_LICENSENUMBER", "USER_MAIL", "USER_PHONENUMBER", "USER_ADDRESS", "USER_POSTALCODE", "TYPE_ID", "LEVEL_ID_RESUME", "USER_MEDICCERTIFICATEDATE"},
+     *             @OA\Property(property="USER_FIRSTNAME", type="string"),
+     *             @OA\Property(property="USER_LASTNAME", type="string"),
+     *             @OA\Property(property="USER_LICENSENUMBER", type="string"),
+     *             @OA\Property(property="USER_MAIL", type="string"),
+     *             @OA\Property(property="USER_PHONENUMBER", type="string"),
+     *             @OA\Property(property="USER_ADDRESS", type="string"),
+     *             @OA\Property(property="USER_POSTALCODE", type="string"),
+     *             @OA\Property(property="TYPE_ID", type="integer"),
+     *             @OA\Property(property="LEVEL_ID_RESUME", type="integer"),
+     *             @OA\Property(property="USER_MEDICCERTIFICATEDATE", type="string", format="date")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User information successfully updated",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string", example="User information successfully updated"))
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     )
+     * )
      */
     public function update(Request $request, $id) {
        
@@ -139,6 +209,34 @@ class ModificationUserController extends Controller {
      *
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
+     */
+
+    /**
+     * @OA\Delete(
+     *     path="/api/users/{id}",
+     *     summary="Deactivates a user by setting USER_ISACTIVE to 0",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="User ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User successfully deactivated",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string", example="User successfully deactivated"))
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     )
+     * )
      */
     public function delete($id) {
         // Only users with TYPE_ID == 4 can delete users.

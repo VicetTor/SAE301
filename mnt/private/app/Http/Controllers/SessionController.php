@@ -11,6 +11,29 @@ class SessionController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
+
+    /**
+     * @OA\Get(
+     *     path="/api/sessions",
+     *     summary="Displays the session details and related data for the user",
+     *     tags={"Session"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Session details displayed successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="club", type="object", @OA\Property(property="club_name", type="string")),
+     *             @OA\Property(property="sessions", type="array", @OA\Items(type="object")),
+     *             @OA\Property(property="abilities", type="array", @OA\Items(type="object")),
+     *             @OA\Property(property="initiator", type="object", @OA\Property(property="user_id", type="integer"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function show()
     {
         // Fetches the club name associated with the user by joining the user, report, and club tables.

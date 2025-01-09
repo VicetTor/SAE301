@@ -6,6 +6,17 @@ use App\Models\Skill;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *     schema="Skill",
+ *     type="object",
+ *     required={"LEVEL_ID", "SKILL_LABEL"},
+ *     @OA\Property(property="id", type="integer", description="Skill ID"),
+ *     @OA\Property(property="LEVEL_ID", type="integer", description="Level ID"),
+ *     @OA\Property(property="SKILL_LABEL", type="string", description="Skill Label")
+ * )
+ */
+
 class SkillController extends Controller
 {
     /**
@@ -223,4 +234,3 @@ class SkillController extends Controller
         return response()->json(['message' => 'Skill deleted successfully']);
     }
 }
-?>

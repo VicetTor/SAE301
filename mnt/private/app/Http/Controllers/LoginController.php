@@ -12,9 +12,15 @@ class LoginController extends Controller
 {
 
     /**
-     * Displays the login page.
-     *
-     * @return \Illuminate\Contracts\View\View
+     * @OA\Get(
+     *     path="/api/login",
+     *     summary="Displays the login page",
+     *     tags={"Login"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login page displayed successfully"
+     *     )
+     * )
      */
     function create()
     {

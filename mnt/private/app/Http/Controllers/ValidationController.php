@@ -6,6 +6,22 @@ use App\Models\Validation;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *     schema="Validation",
+ *     type="object",
+ *     required={"SKILL_ID", "ABI_ID", "LEVEL_ID", "EVAL_ID", "VALID_DATE"},
+ *     @OA\Property(property="id", type="integer", description="Validation ID"),
+ *     @OA\Property(property="SKILL_ID", type="integer", description="Skill ID"),
+ *     @OA\Property(property="ABI_ID", type="integer", description="Ability ID"),
+ *     @OA\Property(property="LEVEL_ID", type="integer", description="Level ID"),
+ *     @OA\Property(property="EVAL_ID", type="integer", description="Evaluation ID"),
+ *     @OA\Property(property="VALID_DATE", type="string", format="date", description="Validation Date"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Creation Timestamp"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Update Timestamp")
+ * )
+ */
+
 class ValidationController extends Controller
 {
     /**
@@ -231,4 +247,3 @@ class ValidationController extends Controller
         return response()->json(['message' => 'Validation deleted successfully']);
     }
 }
-?>
