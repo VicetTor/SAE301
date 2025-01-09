@@ -51,3 +51,20 @@ html,
 .margin-right{
     margin-right:25px;
 }
+
+.divCarousel {
+    height: 100%;
+    padding: 0px;
+
+    .carousel-inner {
+        height: 100%;
+
+        .carousel-item {
+            height: 100%;
+        }
+    }
+
+    .carousel-item img {
+        height: 100%;
+    }
+}

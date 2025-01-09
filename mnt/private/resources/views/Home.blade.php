@@ -3,6 +3,10 @@
 @section('title','Accueil')
 
 @section('content')
+@foreach($clubName as $club)
+    <h1 class="text-center">{{ $club }}</h1>
+@endforeach
 
-<h1>accueil</h1>
+
+
 @endsection
