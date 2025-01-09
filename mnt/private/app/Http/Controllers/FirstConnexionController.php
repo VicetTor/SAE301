@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session; // Importing Session for session management
 
 class FirstConnexionController extends Controller
 {
@@ -16,12 +17,17 @@ class FirstConnexionController extends Controller
      * @return \Illuminate\View\View  The view for first connection.
      */
 
+     public $utilisateurId = null;
+
+
     public function show(Request $request){
 
         $utilisateurId = $request->query('user');
         $utilisateur = DB::table('grp2_user')
             ->where('grp2_user.user_id', '=', $utilisateurId)
             ->first();
+
+        Session::put('user_id',$utilisateurId);
 
         // Pass the retrieved user data to the 'FirstConnexion' view
         return view('FirstConnexion', ['utilisateur' => $utilisateur]);
@@ -34,31 +40,36 @@ class FirstConnexionController extends Controller
      * @return \Illuminate\Http\Response|\Illuminate\Routing\Redirector  Redirect to login or show the form.
      */
     public function fill(Request $request) {
-        // Retrieve the user ID from the query parameters
-        $utilisateurId = $request->query('utilisateur');
+         // Get the new, and confirmation password from the request
 
-        // Fetch the user from the database using the user ID
-        $utilisateur = DB::table('grp2_user')
-            ->where('grp2_user.user_id', '=', $utilisateurId)
-            ->first();
+         $inputNewPswd = $request->input('inputNewPassword'); 
+         $inputPswdVerif = $request->input('inputPasswordVerif'); 
+ 
+         // Fetch the user's current password from the database
+         $userPswd = DB::table('grp2_user')
+             ->select('*')
+             ->where('USER_ID','=', Session('user_id')) // Find the user by user_id (from session)
+             ->first();
+ 
+         // Check if the entered current password matches the one in the database
+         
+             // Check if the new password matches the confirmation
+             if($inputNewPswd === $inputPswdVerif){
+                 // Update the user's password in the database
+                 $testUpdate = DB::table('grp2_user')
+                     ->where('user_id','=', Session('user_id'))
+                     ->update(['user_password' => Hash::make($inputNewPswd), 'user_isfirstlogin' => 0]); // Hash the new password before saving
+ 
+                 // Redirect to the profile page with a success message
+                
 
-        // Get the new password from the form input
-        $newPassword = $request->input('USER_PASSWORD');
-
-        // If no password is provided, return the form view with the user data
-        if (!$newPassword) {
-            return view('FirstConnexion', ['utilisateur' => $utilisateur]);
-        }
-
-        // Update the user's password and mark the first login flag as false
-        DB::table('grp2_user')
-            ->where('grp2_user.user_id', '=', $utilisateurId)
-            ->update([
-                'grp2_user.user_password' => Hash::make($newPassword), // Hash the new password for security
-                'grp2_user.user_isfirstlogin' => 0 // Set the first login flag to false
-            ]);
-
-        // Redirect the user to the login page after successfully setting a new password
-        return redirect()->route('connexion');
+                 return redirect()->route('home');
+             }
+             else
+             {
+                 // Return an error if the new password doesn't match the confirmation
+                 Session::flush();
+                 return redirect()->back()->withErrors(['inputNewPassword' => 'The new password does not match the verification.']);
+             }
     }
 }

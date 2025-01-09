@@ -65,16 +65,10 @@ class LoginController extends Controller
             if($user->USER_ISFIRSTLOGIN == 1) {
                return redirect()->route('firstconnexion', ['user' => $user]);
             }
-            return redirect()->route('students');
+            return redirect()->route('home');
 
 
         } else {
-            // Debugging: Print hashed variations of the password.
-            // Note: This is insecure and should not be included in production.
-            for ($i = 1; $i <= 10; $i++) {
-                echo "    -----    " . $i . " " . $password . " : " . Hash::make($password);
-            }
-
             // Flash a failure message to the session for feedback.
             Session::flash('fail', 1);
 

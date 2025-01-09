@@ -35,8 +35,9 @@ Route::get('/profile',function(){
 })->name('profile');
 
 // Routes for the first time login process
-Route::get('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'show'])->name('firstconnexion'); // Show the first login form
-Route::post('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'fill'])->name('firstconnexion'); // Handle first login form submission
+Route::get('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'show'])->name('firstconnexion'); // Show the first login forms
+
+Route::post('/firstconnexion', [App\Http\Controllers\FirstConnexionController::class, 'fill'])->name('firstconnexion'); // Update user password
 
 // Route to display the session page
 Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
