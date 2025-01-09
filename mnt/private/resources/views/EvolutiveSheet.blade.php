@@ -1,16 +1,23 @@
 @extends('Base')
 
-@section('title','a définir')
+@section('title','Progression')
 
 @section('content')
 
-    <?php
+<?php
 
+<<<<<<< HEAD
 use App\Models\Ability;
 use App\Models\Attend;
 use App\Models\Attendee;
 use App\Models\Evaluation;
 use App\Models\Skill;
+=======
+    use App\Models\Ability;
+    use App\Models\Attend;
+    use App\Models\Evaluation;
+    use App\Models\Skill;
+>>>>>>> bc06bd16a6f2bc794e77fcc204b8fbb02d407654
 
     $user_id = session('user_id');
 
@@ -48,15 +55,12 @@ use App\Models\Skill;
         $evaluationsChaqueSeance[$i] = $evaluations;
         $i++;
     }
-
-
-
-    ?>
+?>
 
 
 
         @if(session()->missing('user_mail'))
-            <p> PAS CONNECTE </p>
+            <p> vous êtes actuelement NON CONNECTE </p>
         @endif
 
         <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>

@@ -36,7 +36,7 @@ class StudentController extends Controller
     }
 
     $sessions = Attendee::select('*', 'GRP2_USER.*')
-    ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID', '=', 'GRP2_USER.USER_ID')
+    ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_ATTENDEE', '=', 'GRP2_USER.USER_ID')
     ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
     ->where('GRP2_USER.USER_ID', '=', $user_id)
     ->get();    
@@ -105,7 +105,6 @@ class StudentController extends Controller
                 if ($session->SESS_DATE > now()) {
                     
                     $tableHtml .= '<select class="scroll" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
-                    
                     
                     if ($evaluationTrouvee) {
                         $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL . '</option>';

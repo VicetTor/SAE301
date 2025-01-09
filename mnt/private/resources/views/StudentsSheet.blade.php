@@ -34,7 +34,7 @@ use App\Models\User;
 
 
     $sessions = Attendee::select('*', 'GRP2_USER.*')
-    ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID', '=', 'GRP2_USER.USER_ID')
+    ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_ATTENDEE', '=', 'GRP2_USER.USER_ID')
     ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
     ->where('GRP2_USER.USER_ID', '=', $user_id)
     ->get();    
@@ -54,14 +54,10 @@ use App\Models\User;
     $statustype = StatusType::select('*')->get();
 
     $eleves = User::select('*')
-    ->where('TYPE_ID', '=', 4)
+    ->where('TYPE_ID', '=', 1)
     ->get();
 
     ?>
-
-
-
-
 
         <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
         <p> Vous etes niveau {{ session('level_id') }}
