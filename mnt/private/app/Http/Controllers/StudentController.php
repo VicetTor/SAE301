@@ -42,55 +42,69 @@ class StudentController extends Controller
     ->get();    
 
     $evaluationsChaqueSeance = [];
-    foreach ($sessions as $session) {
+    $i = 0;
+    foreach($sessions as $session){
         $evaluations = Evaluation::select('*')
             ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
             ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
             ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
-            ->orderBy('GRP2_SESSION.SESS_DATE', 'asc')
             ->get();
-        $evaluationsChaqueSeance[] = $evaluations;
+        $evaluationsChaqueSeance[$i] = $evaluations;
+        $i++;
+    }
+
+    $taille = 0;
+    foreach($skills as $skill){
+        $taille += Ability::select('*')
+        ->where('SKILL_ID', '=', $skill->SKILL_ID)
+        ->count();
     }
 
     $statustype = StatusType::all();
 
-    $tableHtml .= '<table id="tabletable">';
-    $tableHtml .= '<thead><tr><th></th>';
-
-    foreach ($skills as $skill) {
-        $nombre = Ability::where('SKILL_ID', '=', $skill->SKILL_ID)->count();
-        $tableHtml .= '<th colspan="' . $nombre . '">' . $skill->SKILL_LABEL . '</th>';
-    }
-
-    $tableHtml .= '</tr></thead><tbody>';
-
-    $tableHtml .= '<tr><th></th>';
-    foreach ($skillsWithAbilities as $abilities) {
-        foreach ($abilities as $ability) {
-            $tableHtml .= '<td>' . $ability->ABI_LABEL . '</td>';
-        }
-    }
-    $tableHtml .= '</tr>';
-
+    $tableHtml ='<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Compétence</th>
+            <th>Aptitude</th>
+            <th>Évolution</th>
+        </tr> 
+    </thead>  
+    <tbody>';
     $i = 0;
-    foreach ($sessions as $session) {
-        $tableHtml .= '<tr><td>' . $session->SESS_DATE . '</td>';
 
-        foreach ($skillsWithAbilities as $abilities) {
-            foreach ($abilities as $ability) {
-
+    foreach($sessions as $session){
+        $tableHtml.='<td rowspan="'.$taille.'" class="session-date">'.
+        $session->SESS_DATE.
+        '</td>'
+        ;
+        foreach($skills as $skill){
+            $nombre = Ability::select('*')
+                            ->where('SKILL_ID', '=', $skill->SKILL_ID)
+                                ->count();
+            $tableHtml.='
+            <td rowspan="'.$nombre.'" class="skill">'.
+            $skill->SKILL_LABEL.'</td>';
+            $aptitude = Ability::select('*')
+                                ->where('SKILL_ID', '=', $skill->SKILL_ID)->get();
+            $compteur = 0;
+            foreach($aptitude as $apt){
                 $evaluationTrouvee = null;
-                foreach ($evaluationsChaqueSeance[$i] as $eval) {
-                    if ($eval->ABI_ID == $ability->ABI_ID && $eval->USER_ID == $user_id) {
+                foreach($evaluationsChaqueSeance[$i] as $eval) {
+                    if($eval->ABI_ID == $apt->ABI_ID){ 
                         $evaluationTrouvee = $eval;
                         break;
                     }
                 }
-
-                $tableHtml .= '<td>';
+                if($compteur != 0){
+                    $tableHtml.= '<tr>';
+                }
+                $tableHtml.='<td>'.$apt->ABI_LABEL.'</td>';
+                $tableHtml.='<td class="decoration">';
                 if ($session->SESS_DATE > now()) {
                     
-                    $tableHtml .= '<select class="scroll" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id . '" data-abi-id="' . $ability->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
+                    $tableHtml .= '<select class="scroll" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
                     
                     
                     if ($evaluationTrouvee) {
@@ -108,17 +122,23 @@ class StudentController extends Controller
 
                     if ($evaluationTrouvee) {
                         $tableHtml .= $evaluationTrouvee->STATUSTYPE_LABEL;
+                    } else{
+                        $tableHtml.='Non évalué';
                     }
                 }
-                $tableHtml .= '</td>';
+                $tableHtml.='</td> </tr>';
+                if($compteur != 0){
+                    $tableHtml.= '</tr>';
+                }
+                $compteur++;
             }
+            $tableHtml.='</td>';
         }
-
-        $tableHtml .= '</tr>';
+        $tableHtml.='</tr>';
         $i++;
     }
-
-    $tableHtml .= '</tbody></table>';
+    $tableHtml.='</tbody>
+    </table>';
 
     return response()->json(['html' => $tableHtml]);
 }

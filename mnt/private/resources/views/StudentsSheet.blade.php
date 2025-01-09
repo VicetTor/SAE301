@@ -70,7 +70,7 @@ use App\Models\User;
             <option value="" disabled selected>Sélectionner un élève</option>
             @foreach($eleves as $eleve)
                 <option value="{{ $eleve->USER_ID }}">
-                    {{$eleve->USER_FIRSTNAME}} {{$eleve->USER_LASTNAME}}
+                    {{$eleve->USER_FIRSTNAME}} {{$eleve->USER_LASTNAME}} {{$eleve->USER_ID}}
                 </option>
             @endforeach
         </select>
@@ -86,57 +86,27 @@ use App\Models\User;
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-       $(document).ready(function() {
-        $(document).on('change', '#selectEleve', function() {
-        var userId = $(this).val();
-        var selectedEleve = $(this).find("option:selected").text(); // Récupère le texte de l'option sélectionnée
+$(document).on('change', '#selectEleve', function() {
+    var userId = $(this).val();
+    var selectedEleve = $(this).find("option:selected").text(); // Récupère le texte de l'option sélectionnée
 
-        // Met à jour le texte du <h1> avec l'information de l'élève
-        $('#result').text("Tableau évolutif de : " + selectedEleve);
+    // Met à jour le texte du <h1> avec l'information de l'élève
+    $('#result').text("Tableau évolutif de : " + selectedEleve);
 
-        $.ajax({
-            url: '/choixEleve',
-            type: 'GET',
-            data: { user_id: userId },
-            success: function(response) {
-                $('#tabletable').replaceWith(response.html);
-            },
-            error: function() {
-                alert('Une erreur est survenue.');
-            }
-        });
-    });
-
-    $(document).on('change', '.scroll', function() {
-        var evalId = $(this).data('eval-id');
-        var selectedStatus = $(this).val();
-        var user_id = $(this).data('user-id');
-        var abi_id = $(this).data('abi-id');
-        var sess_id = $(this).data('sess-id');
-
-        if (evalId) console.log(evalId);
-
-        if (selectedStatus) {
-            $.ajax({
-                url: '/updateEvaluation',
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    eval_id: evalId,
-                    statut_id: selectedStatus,
-                    user_id: user_id,
-                    abi_id: abi_id,
-                    sess_id: sess_id
-                },
-                success: function(response) {
-                },
-                error: function() {
-                    alert('Une erreur est survenue lors de la mise à jour.');
-                }
-            });
+    $.ajax({
+        url: '/choixEleve',
+        type: 'GET',
+        data: { user_id: userId },
+        success: function(response) {
+            // Remplace seulement le contenu du tableau sans le remplacer complètement
+            $('#tabletable').html(response.html);
+        },
+        error: function() {
+            alert('Une erreur est survenue.');
         }
     });
 });
+
 
 
 
