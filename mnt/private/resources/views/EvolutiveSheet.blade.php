@@ -6,30 +6,20 @@
 
 <?php
 
-<<<<<<< HEAD
-use App\Models\Ability;
-use App\Models\Attend;
-use App\Models\Attendee;
-use App\Models\Evaluation;
-use App\Models\Skill;
-=======
     use App\Models\Ability;
     use App\Models\Attendee;
     use App\Models\Evaluation;
     use App\Models\Skill;
     use Illuminate\Support\Facades\DB;
 
->>>>>>> tableauEtudiant
-
     $user_id = session('user_id');
     $level = session('level_id_resume');
    
     $sessions = Attendee::select('*', 'GRP2_USER.*')
-    ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_attendee', '=', 'GRP2_USER.USER_ID')
-    ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
-    ->where('GRP2_USER.USER_ID', '=', $user_id)
-    ->get();
-
+        ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_attendee', '=', 'GRP2_USER.USER_ID')
+            ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
+                ->where('GRP2_USER.USER_ID', '=', $user_id)
+                    ->get();
 
 
     $evaluationsChaqueSeance = [];
@@ -37,25 +27,20 @@ use App\Models\Skill;
     foreach($sessions as $session){
         $evaluations = Evaluation::select('*')
             ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
-            ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
-            ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
-            ->where('GRP2_EVALUATION.USER_ID', '=', $user_id)
-            ->get();
+                ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
+                    ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
+                        ->where('GRP2_EVALUATION.USER_ID', '=', $user_id)
+                            ->get();
         $evaluationsChaqueSeance[$i] = $evaluations;
         $i++;
     }
-
-
-    
-
 ?>
 
-
-
+<!-- Mise en page-->
+    
     @if(session()->missing('user_mail'))
         <p> Vous êtes actuellement NON CONNECTÉ </p>
     @endif
-
     <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
     <p> Votre progression vers le Niveau {{ session('level_id_resume') }}</p>
 
@@ -71,75 +56,60 @@ use App\Models\Skill;
         <tbody>
             @php 
                 $i = 0; 
-                $j = 0; 
             @endphp
             
-            @foreach ($sessions as $session)
-            
-            <?php
-            
-            $skills = DB::select(DB::raw('
-            select distinct GRP2_SKILL.SKILL_ID, GRP2_SKILL.SKILL_LABEL from GRP2_SKILL
-            inner join GRP2_ABILITY using (SKILL_ID)
-            inner join GRP2_EVALUATION using (ABI_ID)
-            where GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
-            and GRP2_SKILL.LEVEL_ID ='.$level.'
-            and GRP2_EVALUATION.USER_ID ='.$user_id
-            ));
-            
-
-
-            $nbSkills = count($skills);
-            $taille = 0;
-            foreach($skills as $skill){
-
-                $result = DB::select(DB::raw('
-                select * from GRP2_ABILITY
-                inner join GRP2_EVALUATION using (ABI_ID)
-                where GRP2_ABILITY.SKILL_ID ='.$skill->SKILL_ID.'
-                and GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
-                and GRP2_EVALUATION.USER_ID ='.$user_id
-                ));
-
-                $taille+=count($result);
-            }
-            ?>
+            @foreach ($sessions as $session)    
+                <?php
+                    $skills = DB::select(DB::raw('
+                        select distinct GRP2_SKILL.SKILL_ID, GRP2_SKILL.SKILL_LABEL from GRP2_SKILL
+                        inner join GRP2_ABILITY using (SKILL_ID)
+                        inner join GRP2_EVALUATION using (ABI_ID)
+                        where GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
+                        and GRP2_SKILL.LEVEL_ID ='.$level.'
+                        and GRP2_EVALUATION.USER_ID ='.$user_id
+                    ));
+                    $nbSkills = count($skills);
+                    $taille = 0;
+                    foreach($skills as $skill){
+                        $result = DB::select(DB::raw('
+                            select * from GRP2_ABILITY
+                            inner join GRP2_EVALUATION using (ABI_ID)
+                            where GRP2_ABILITY.SKILL_ID ='.$skill->SKILL_ID.'
+                            and GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
+                            and GRP2_EVALUATION.USER_ID ='.$user_id
+                        ));
+                        $taille+=count($result);
+                    }
+                ?>
                 <!-- insére les dates -->
                 <td rowspan="{{ $taille }}" class="session-date">
                     {{ $session->SESS_DATE }}
                 </td>
-                @php $debug = 0; @endphp
                 @foreach ($skills as $skill)
-                    
-                <?php
+                    <?php
                         $result = DB::select(DB::raw('
-                        select * from GRP2_ABILITY
-                        inner join GRP2_EVALUATION using (ABI_ID)
-                        where GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
-                        and GRP2_EVALUATION.USER_ID ='.$user_id.'
-                        and GRP2_ABILITY.SKILL_ID ='.$skill->SKILL_ID
+                            select * from GRP2_ABILITY
+                            inner join GRP2_EVALUATION using (ABI_ID)
+                            where GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
+                            and GRP2_EVALUATION.USER_ID ='.$user_id.'
+                            and GRP2_ABILITY.SKILL_ID ='.$skill->SKILL_ID
                         ));
                         $nombre = count($result);
                     ?>
-
                     <!-- insére les compétences -->
                     <td rowspan="{{$nombre}}" class="skill">
                         {{ $skill->SKILL_LABEL }} {{$nbSkills}}
                     </td>
-
                     <?php
-                    $aptitude = DB::select(DB::raw('
-                    select * from GRP2_ABILITY
-                    inner join GRP2_EVALUATION using (ABI_ID)
-                    where SKILL_ID = '.$skill->SKILL_ID.'
-                    and GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
-                    and GRP2_EVALUATION.USER_ID ='.$user_id
-
-                    ));
-                    $compteur = 0;
+                        $aptitude = DB::select(DB::raw('
+                            select * from GRP2_ABILITY
+                            inner join GRP2_EVALUATION using (ABI_ID)
+                            where SKILL_ID = '.$skill->SKILL_ID.'
+                            and GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
+                            and GRP2_EVALUATION.USER_ID ='.$user_id
+                        ));
+                        $compteur = 0;
                     ?>
-
-                    
                     @foreach($aptitude as $apt)
                         @php
                             $evaluationTrouvee = null;
@@ -174,19 +144,16 @@ use App\Models\Skill;
                         @endphp
                     @endforeach
                     </td>
-                    @php $debug++; @endphp
-
                 @endforeach
                 </td>
                 @php
                     $i++;  
-                    $j++; 
                 @endphp 
             @endforeach
         </tbody>
     </table>
 
-
+<!-- script JS -->
 <script>
     const table = document.querySelector("table");
     const cells = table.getElementsByClassName("eval");
