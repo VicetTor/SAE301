@@ -18,23 +18,28 @@ use App\Http\Controllers\EvaluationController;
 */
 
 Route::get('/', function () {
-    return view('Base');
+    return view('Home');
 });
 
 Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create']);
 Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConnect']);
 
-Route::get('/inscription',function(){
-    return view('SignInForm');
-})->name('inscription');
+Route::get('/inscription',[\App\Http\Controllers\SignInController::class,'show'])->name('inscription');
+Route::post('/inscription',[\App\Http\Controllers\SignInController::class,'signIn'])->name('inscriptionValidate');
 
 Route::get('/profile',function(){
     return view('MyProfile');
 })->name('profile');
 
-Route::get('/session',function(){
-    return view('SessionsPage');
-})->name('session');
+Route::get('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'show'])->name('firstconnexion');
+Route::post('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'fill'])->name('firstconnexion');
+
+
+Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
+
+Route::post('/user', function(){
+    return view('MyProfile');
+});
 
 Route::get('/session/create',function(){
     return view('SessionCreate');
@@ -47,17 +52,30 @@ Route::get('/session/create/form',function(){
 Route::get('/site/edit', [App\Http\Controllers\SiteController::class, 'showEditForm'])->name('modifSite');
 Route::post('/site/update', [App\Http\Controllers\SiteController::class, 'updateSite'])->name('site.update');
 
+
+Route::get('/modifying', function(){
+    return view('SiteModifying');
+});
+
 Route::get('/students', function(){
     return view('StudentsSheet');
 })->name('students');;
 
+
+/* USER MODIFYING */
 Route::get('/user', function(){
-    return view('UserModifing');
+    return view('UserModifying');
 });
+
+Route::post('/infoUserUpdate',[App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate');
+Route::get('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
+Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate');
+Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 
 Route::get('/validate', function(){
     return view('ValidateLevel');
 });
+
 
 Route::get('/sheet', function(){
     return view('EvolutiveSheet');

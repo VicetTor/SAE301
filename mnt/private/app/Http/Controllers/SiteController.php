@@ -11,7 +11,7 @@ class SiteController extends Controller
         // Charger les paramètres existants (par exemple, depuis une base de données ou un fichier)
         $siteName = config('app.name', 'Secoule'); // Exemple : utilisation de config/app.php
         $siteColor = config('APP_COLOR', '#005C8F'); // Exemple : utilisation de config/app.php
-        return view('SiteModifing', compact('siteName', 'siteColor'));
+        return view('SiteModifying', compact('siteName', 'siteColor'));
     }
 
     public function updateSite(Request $request)
