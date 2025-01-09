@@ -98,4 +98,9 @@ Route::put('/modification/users/{id}/update', [ModificationUserController::class
 Route::get('/evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
 
 Route::get('/evaluations/historique/{userId}/{clubId}', [EvaluationController::class, 'historiqueEvaluations'])->name('evaluations.historique');
+
+Route::get('/select-year', [App\Http\Controllers\TrainingController::class, 'showYearSelectionForm'])->name('selectYearForm');
+Route::post('/select-year', [App\Http\Controllers\TrainingController::class, 'handleYearSelection'])->name('handleYearSelection');
+Route::get('/export-training-data', [App\Http\Controllers\TrainingController::class, 'exportTrainingData'])->name('exportTrainingData');
+Route::get('/training-graph', [App\Http\Controllers\TrainingController::class, 'showTrainingGraph'])->name('trainingGraph');
     

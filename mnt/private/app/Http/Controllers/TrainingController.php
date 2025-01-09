@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Training;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\DB;
 
 class TrainingController extends Controller
 {
@@ -192,6 +194,98 @@ class TrainingController extends Controller
         $training->delete();
 
         return response()->json(['message' => 'Training deleted successfully']);
+    }
+
+    // Affiche le formulaire de sélection d'année
+    public function showYearSelectionForm() {
+        // Récupérer les années disponibles depuis la base de données
+        $years = DB::table('grp2_year')->pluck('ANNU_YEAR');
+
+        return view('selectYear', ['years' => $years]);
+    }
+
+    // Gère la soumission du formulaire de sélection d'année
+    public function handleYearSelection(Request $request) {
+        $year = $request->input('year');
+
+        // Rediriger vers la route d'exportation des données avec l'année sélectionnée
+        return redirect()->route('exportTrainingData', ['year' => $year]);
+    }
+
+    // Exporte les données de formation en CSV pour une année spécifique
+    public function exportTrainingData(Request $request)
+    {
+        $year = $request->query('year');
+
+        $callback = function() use ($year) {
+            $handle = fopen('php://output', 'w');
+            // Utiliser des noms de colonnes plus clairs
+            fputcsv($handle, ['Numéro de formation', 'Nombre inscrits dans le club', 'Nombre de diplômés', 'Année']);
+
+            $results = DB::select("
+                SELECT DISTINCT
+                    tra.TRAIN_ID, 
+                    tod.CLUB_INSCRIPTIONNB, 
+                    tod.CLUB_NBDEGREEOBTAINED, 
+                    yea.ANNU_YEAR
+                FROM 
+                    grp2_user use1
+                JOIN 
+                    grp2_training tra ON tra.TRAIN_ID = use1.TRAIN_ID
+                JOIN 
+                    report rep ON rep.USER_ID = use1.USER_ID
+                JOIN 
+                    grp2_year yea ON yea.ANNU_YEAR = rep.ANNU_YEAR
+                JOIN 
+                    to_date tod ON tod.CLUB_ID = rep.CLUB_ID AND tod.ANNU_YEAR = yea.ANNU_YEAR
+                JOIN 
+                    grp2_club clu ON clu.CLUB_ID = rep.CLUB_ID
+                WHERE 
+                    yea.ANNU_YEAR = ?;
+            ", [$year]);
+
+            foreach ($results as $row) {
+                fputcsv($handle, (array)$row);
+            }
+
+            fclose($handle);
+        };
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="training_data_'.$year.'.csv"',
+        ];
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    // Affiche le graphique avec les données pour toutes les années
+    public function showTrainingGraph() {
+        $data = DB::select("
+            SELECT 
+                yea.ANNU_YEAR,
+                tra.TRAIN_ID, 
+                SUM(tod.CLUB_INSCRIPTIONNB) AS total_inscriptions, 
+                SUM(tod.CLUB_NBDEGREEOBTAINED) AS total_graduates
+            FROM 
+                grp2_user use1
+            JOIN 
+                grp2_training tra ON tra.TRAIN_ID = use1.TRAIN_ID
+            JOIN 
+                report rep ON rep.USER_ID = use1.USER_ID
+            JOIN 
+                grp2_year yea ON yea.ANNU_YEAR = rep.ANNU_YEAR
+            JOIN 
+                to_date tod ON tod.CLUB_ID = rep.CLUB_ID AND tod.ANNU_YEAR = yea.ANNU_YEAR
+            JOIN 
+                grp2_club clu ON clu.CLUB_ID = rep.CLUB_ID
+            GROUP BY 
+                yea.ANNU_YEAR, tra.TRAIN_ID
+            ORDER BY 
+                yea.ANNU_YEAR, tra.TRAIN_ID
+        ");
+
+        return view('trainingGraph', ['data' => $data]);
     }
 }
 ?>
