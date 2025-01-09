@@ -10,26 +10,30 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <style> 
         :root {
-            --site-color: {{ $siteColor ?? '#005c8f' }}; /* Valeur par défaut */
+            --site-color: {{ $siteColor ?? '#005c8f' }}; /* Default value */
         }
     </style>
 </head>
 
 <body class="gray-bg body-base">
+    <!-- Header with navigation bar -->
     <header>
         <nav class="navbar navbar-expand-lg fixed-top darkblue-bg">
             <div class="container-fluid d-flex ">
+                <!-- Site logo -->
                 <a class="navbar-brand" href="#">
-                @if(isset($siteLogo))
-                    <img src="{{ $siteLogo }}" alt="Logo du site" width="56" height="56">
-                @else
-                    <img src="{{ asset('images/site_logo/site_logo.png') }}" alt="Logo du site" width="56" height="56">
-                @endif
+                    @if(isset($siteLogo))
+                        <img src="{{ $siteLogo }}" alt="Logo du site" width="56" height="56">
+                    @else
+                        <img src="{{ asset('images/site_logo/site_logo.png') }}" alt="Logo du site" width="56" height="56">
+                    @endif
                 </a>
+                <!-- Navbar toggle button for mobile -->
                 <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                <!-- Navbar menu -->
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/"> Accueil </a> </li>
@@ -64,6 +68,7 @@
                         @yield('navBarTitle')
                     </span>
                 </div>
+                <!-- Profile icon for large screens -->
                 <a class="navbar-brand d-none d-lg-block" href="/profile">
                     <img src="/images/profile_icon.png" alt="Image de profil" width="56" height="56">
                 </a>
@@ -71,10 +76,12 @@
         </nav>
     </header>
 
+    <!-- Main content area -->
     <div class="content margin-contain container shadow-sm p-3 mb-5 bg-body-tertiary rounded">
         @yield('content')
     </div>
 
+    <!-- Footer section with legal mentions and social links -->
     <footer>
         <nav class="margin-footer navbar darkblue-bg sticky-bottom ">
             <div class="container-fluid d-block">
@@ -109,6 +116,8 @@
     </footer>
 
 </body>
+
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>

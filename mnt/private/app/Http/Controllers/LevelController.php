@@ -29,7 +29,10 @@ class LevelController extends Controller
      */
     public function index()
     {
+        // Fetch all records from the Level model
         $levels = Level::all();
+
+        // Return the levels as a JSON response
         return response()->json($levels);
     }
 
@@ -62,12 +65,15 @@ class LevelController extends Controller
      */
     public function show($id)
     {
+        // Find a specific level by its ID
         $level = Level::find($id);
 
+        // If the level is not found, return a 404 error
         if (!$level) {
             return response()->json(['error' => 'Level not found'], 404);
         }
 
+        // Return the level as a JSON response
         return response()->json($level);
     }
 
@@ -100,19 +106,22 @@ class LevelController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the input data, requiring 'LEVEL_LABEL' to be a string with a max length of 255
         $validated = $request->validate([
             'LEVEL_LABEL' => 'required|string|max:255',
         ]);
 
+        // Create a new Level record using the validated data
         $level = Level::create($validated);
 
-        return response()->json($level, 201); // 201 signifie "créé"
+        // Return the newly created level as a JSON response with a 201 status code
+        return response()->json($level, 201); // 201 signifies "Created"
     }
 
     /**
      * @OA\Put(
      *     path="/api/levels/{id}",
-     *     summary="Update existant level",
+     *     summary="Update existing level",
      *     tags={"Levels"},
      *     @OA\Parameter(
      *         name="id",
@@ -145,18 +154,23 @@ class LevelController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Find the level by ID
         $level = Level::find($id);
 
+        // If the level is not found, return a 404 error
         if (!$level) {
             return response()->json(['error' => 'Level not found'], 404);
         }
 
+        // Validate the input data
         $validated = $request->validate([
             'LEVEL_LABEL' => 'required|string|max:255',
         ]);
 
+        // Update the level record with the validated data
         $level->update($validated);
 
+        // Return the updated level as a JSON response
         return response()->json($level);
     }
 
@@ -191,15 +205,18 @@ class LevelController extends Controller
      */
     public function destroy($id)
     {
+        // Find the level by ID
         $level = Level::find($id);
 
+        // If the level is not found, return a 404 error
         if (!$level) {
             return response()->json(['error' => 'Level not found'], 404);
         }
 
+        // Delete the level record
         $level->delete();
 
+        // Return a success message as a JSON response
         return response()->json(['message' => 'Level deleted successfully']);
     }
 }
-?>

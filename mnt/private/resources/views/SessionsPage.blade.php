@@ -4,43 +4,55 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 @section('content')
 
+    <!-- Start a session with a verification flag set to 0 -->
     {{session(['verify' => '0'])}}
+    
     <div class="seances">
         <h3> <strong> Mes Séances : </strong> </h3>
-
         <br>
-        <div id="sessionsCarousel" class="carousel carousel-dark slide " data-bs-ride="carousel">
-            <!-- Indicateurs (points de navigation en bas) -->
+
+        <!-- Carousel displaying sessions -->
+        <div id="sessionsCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <!-- Carousel Indicators (navigation dots at the bottom) -->
             <div class="carousel-indicators">
                 @foreach($sessions->chunk(4) as $index => $chunk)
+                    <!-- Create an indicator for each chunk of sessions -->
                     <button type="button" data-bs-target="#sessionsCarousel" data-bs-slide-to="{{$index}}" class="@if($index == 0) active @endif" aria-current="true" aria-label="Slide {{$index + 1}}"></button>
                 @endforeach
             </div>
 
-            <!-- Contenu du carrousel -->
+            <!-- Carousel content -->
             <div class="carousel-inner">
                 @foreach($sessions->chunk(4) as $index => $chunk)
                     <div class="carousel-item @if($index == 0) active @endif">
                         <div class="d-flex justify-content-center">
                             @foreach($chunk as $session)
+                                <!-- Check if the session ID is different from the stored session ID in 'verify' -->
                                 @if($session->SESS_ID != session('verify'))
                                     
+                                    <!-- Card for each session -->
                                     <div class="card m-5" style="width: 18rem;">
+                                        <!-- Store the current session ID in the session for verification -->
                                         {{ session(['verify' => $session->SESS_ID]) }}
                                         <div class="card-body">
                                             <h5 class="card-title">Prochaine Séance</h5>
                                             <div class="card-text">
                                                 
+                                                <!-- Display session date -->
                                                 <h4 class="fw-bold p-2 fs-4"> {{$session->SESS_DATE}}</h4>
                                                 
                                                 <div class="shadow-sm p-2 bg-body-tertiary rounded">
+                                                    <!-- Display session level -->
                                                     <h4 class="fw-bold p-2 fs-6">Niveau :&nbsp;{{$session->LEVEL_ID}}</h4>
                                                     <div class="shadow-sm bg-body-secondary rounded">
+                                                        <!-- Display skill information -->
                                                         <h4 class="fw-bold p-2 fs-6">Compétence C{{$session->SKILL_ID}} : </h4><p class="p-2 fs-6"> {{$session->SKILL_LABEL}}</p>
                                                         <div class="shadow-sm p-2 bg-dark-subtle rounded">
+                                                            <!-- Display abilities related to this session -->
                                                             @foreach($abilities as $ability)
                                                                 @if($ability->SESS_DATE == $session->SESS_DATE)
                                                                     <div>
+                                                                        <!-- Display individual ability -->
                                                                         <h4 class="fw-bold d-inline p-2 fs-6"> A{{$ability->ABI_ID}} :</h4> <p class="d-inline p-2 fs-6"> {{$ability->ABI_LABEL}}<p>
                                                                     </div>
                                                                 @endif
@@ -57,11 +69,11 @@
                         </div>
                     </div>
                 @endforeach
-
             </div>
-            <!-- Boutons de navigation -->
+
+            <!-- Carousel navigation buttons -->
             <button class="carousel-control-prev" type="button" data-bs-target="#sessionsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon " aria-hidden="true"></span>
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Précédent</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#sessionsCarousel" data-bs-slide="next">
@@ -72,6 +84,7 @@
     </div>
 
     <script>
+        // Initialize Bootstrap carousel with automatic wrapping to the first slide after the last
         document.addEventListener('DOMContentLoaded', function() {
             var carousel = new bootstrap.Carousel('#sessionsCarousel', {
                 wrap:true // Revenir au premier slide après le dernier
@@ -79,9 +92,9 @@
         });
     </script>
 
+    <!-- Button to view progression -->
     <div class="d-flex justify-content-center">
         <button data-mdb-button-init data-mdb-ripple-init class="col-lg-2 btn btn-primary" type="button" data-dismiss="modal">Voir la progression</button>
     </div>
-
 
 @endsection
