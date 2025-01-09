@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Nette\Utils\Random;
+use Illuminate\Support\Facades\Session;
 
 class FormsTrainingController extends Controller
 {
@@ -29,8 +30,13 @@ class FormsTrainingController extends Controller
         $levelIds = DB::table('grp2_level')
         ->get();
 
+        $canEdit = session('type_id') == 4;
 
-        return view('FormsTraining',['trainings'=>$trainings, 'studies'=>$studies, 'trainDatas'=>$trainDatas, 'levelIds'=>$levelIds]);
+        if($canEdit) {
+            return view('FormsTraining',['trainings'=>$trainings, 'studies'=>$studies, 'trainDatas'=>$trainDatas, 'levelIds'=>$levelIds]);
+        } else {
+            return view('Home');
+        }
     }
 
     public function validateForms(Request $request) {

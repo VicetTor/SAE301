@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ModificationUserController extends Controller {
 
     // Drapeau pour activer/désactiver la simulation
-    private $simulate = true;
+    private $simulate = false;
 
     // Simule un utilisateur authentifié pour les tests
     private function simulateAuthenticatedUser() {
@@ -36,9 +37,13 @@ class ModificationUserController extends Controller {
                       ->where('TYPE_ID', '!=', 1)
                       ->get();
         
-        $canEdit = Auth::check() && Auth::user()->TYPE_ID == 4; 
+        $canEdit = session('type_id') == 4; 
 
-        return view('ModificationUser', ['users' => $users, 'canEdit' => $canEdit]);
+        if($canEdit) {
+            return view('ModificationUser', ['users' => $users, 'canEdit' => $canEdit]);
+        } else  {
+            return view('Home');
+        }
     }
 
     // Recherche les utilisateurs par nom ou numéro de licence
