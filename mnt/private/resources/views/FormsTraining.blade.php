@@ -1,6 +1,6 @@
 @extends('Base')
 
-@section('title','Formulaire | Formations')
+@section('title', 'Formulaire | Formations')
 
 @section('content')
 <style>
@@ -55,9 +55,15 @@
         margin-right: 8px;
         transform: scale(1.5); /* Agrandir la taille des checkboxes */
     }
+
+    .error-message {
+        color: red;
+        display: none;
+    }
 </style>
 
-<form action="{{ route('validate.forms1') }}" method="POST">
+<!-- Formulaire pour choisir les responsables, initiateurs et élèves -->
+<form action="{{ route('validate.forms1') }}" method="POST" onsubmit="return validateForm()">
     @csrf
 
     <!-- Responsable -->
@@ -69,12 +75,12 @@
                 <option value="{{$training->USER_ID}}">{{$training->USER_FIRSTNAME . ' ' .$training->USER_LASTNAME}}</option>
             @endforeach
         </select>
-        @error('TRAIN_ID')
+        @error('TRAIN_RESPONSABLE_ID')
         <div class="text-danger">{{ $message }}</div>
         @enderror
     </div>
 
-    <!-- Responsable -->
+    <!-- Niveau -->
     <div class="mb-3">
         <label for="TRAIN_ID" class="form-label">Choix du niveau</label>
         <select name="TRAIN_ID" id="TRAIN_ID" class="form-select">
@@ -88,7 +94,6 @@
         @enderror
     </div>
 
-
     <!-- Initiateurs -->
     <div class="dropdown mb-3">
         <button class="btn btn-secondary w-100" type="button" id="initiatorDropdown" aria-expanded="false">
@@ -97,11 +102,14 @@
         <div class="dropdown-content" aria-labelledby="initiatorDropdown">
             @foreach($trainings as $training)
             <div class="checkbox-container">
-                <input type="checkbox" id="initiator{{$training->USER_ID}}" name="initiators[]" value="{{$training->USER_ID}}">
+                <input type="checkbox" id="initiator{{$training->USER_ID}}" name="initiators[]" value="{{$training->USER_ID}}" onclick="checkMaxStudents()">
                 <label for="initiator{{$training->USER_ID}}">{{$training->USER_FIRSTNAME . ' ' .$training->USER_LASTNAME}}</label>
             </div>
             @endforeach
         </div>
+        @error('initiators')
+        <div class="text-danger">{{ $message }}</div>
+        @enderror
     </div>
 
     <!-- Élèves -->
@@ -112,19 +120,28 @@
         <div class="dropdown-content" aria-labelledby="studentDropdown">
             @foreach($studies as $studie)
             <div class="checkbox-container">
-                <input type="checkbox" id="student{{$studie->USER_ID}}" name="students[]" value="{{$studie->USER_ID}}">
+                <input type="checkbox" id="student{{$studie->USER_ID}}" name="students[]" value="{{$studie->USER_ID}}" onclick="checkMaxStudents()">
                 <label for="student{{$studie->USER_ID}}">{{$studie->USER_FIRSTNAME . ' ' .$studie->USER_LASTNAME}}</label>
             </div>
             @endforeach
         </div>
+        @error('students')
+        <div class="text-danger">{{ $message }}</div>
+        @enderror
     </div>
 
-    <!-- Bouton d'inscription -->
+    <!-- Message d'erreur -->
+    <div class="error-message" id="error-message">
+        Le nombre d'étudiants sélectionnés dépasse le maximum autorisé en fonction du nombre d'initiateurs.
+    </div>
+
+    <!-- Bouton de validation -->
     <div>
-        <button type="submit">Valider</button>
+        <button type="submit" class="btn btn-primary">Valider</button>
     </div>
 </form>
 
+<!-- Formulaire pour ajouter une formation -->
 <form action="{{ route('validate.forms2') }}" method="POST">
     @csrf
 
@@ -137,7 +154,10 @@
             <!-- Titre de la formation -->
             <div class="mb-3">
                 <label for="SKILL_LABEL" class="form-label">Titre de la formation</label>
-                <input type="text" id="SKILL_LABEL" name="SKILL_LABEL" class="form-control" value="" required>
+                <input type="text" id="SKILL_LABEL" name="SKILL_LABEL" class="form-control" value="{{ old('SKILL_LABEL') }}" required>
+                @error('SKILL_LABEL')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- Niveau de la formation -->
@@ -146,19 +166,21 @@
                 <select name="LEVEL_ID" id="LEVEL_ID" class="form-select" required>
                     <option value="">Sélectionner un niveau</option>
                     @foreach($levelIds as $levelId)
-                        <option value="{{$levelId->LEVEL_ID}}">{{$levelId->LEVEL_LABEL}}</option>
+                        <option value="{{$levelId->LEVEL_ID}}" {{ old('LEVEL_ID') == $levelId->LEVEL_ID ? 'selected' : '' }}>{{$levelId->LEVEL_LABEL}}</option>
                     @endforeach
                 </select>
+                @error('LEVEL_ID')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
         </div>
 
-        <!-- Bouton d'inscription -->
+        <!-- Bouton de validation -->
         <div>
-            <button type="submit">Valider</button>
+            <button type="submit" class="btn btn-primary">Valider</button>
         </div>
     </div>
 </form>
-
 @endsection
 
 @push('scripts')
@@ -170,5 +192,30 @@
             dropdown.classList.toggle('show'); // Bascule la classe 'show' pour afficher/masquer la liste
         });
     });
+
+    function checkMaxStudents() {
+        const initiators = document.querySelectorAll('input[name="initiators[]"]:checked').length;
+        const students = document.querySelectorAll('input[name="students[]"]:checked').length;
+        const maxStudents = initiators * 2;
+
+        const errorMessage = document.getElementById('error-message');
+        if (students > maxStudents) {
+            errorMessage.style.display = 'block';
+        } else {
+            errorMessage.style.display = 'none';
+        }
+    }
+
+    function validateForm() {
+        const initiators = document.querySelectorAll('input[name="initiators[]"]:checked').length;
+        const students = document.querySelectorAll('input[name="students[]"]:checked').length;
+        const maxStudents = initiators * 2;
+
+        if (students > maxStudents) {
+            alert('Le nombre d\'étudiants sélectionnés dépasse le maximum autorisé en fonction du nombre d\'initiateurs.');
+            return false;
+        }
+        return true;
+    }
 </script>
 @endpush

@@ -8,7 +8,9 @@ class ModificationUserController extends Controller {
 
     // Affiche la page avec tous les utilisateurs
     public function show() {
-        $users = User::where('USER_ISACTIVE', 1)->get();
+        $users = User::where('USER_ISACTIVE', 1)
+        ->where('TYPE_ID', '!=', 1)
+        ->get();
         return view('ModificationUser', ['users' => $users]);
     }
 
