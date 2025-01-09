@@ -88,9 +88,13 @@ Route::get('/sheet', function () {
     return view('EvolutiveSheet');
 });
 
-Route::get('/forms-training', [FormsTrainingController::class, 'show']);
+Route::get('/forms-training', [FormsTrainingController::class, 'show'])->name('forms.views.dt.creation');
 Route::post('/forms-training/validate1', [FormsTrainingController::class, 'validateForms'])->name('validate.forms1');
-Route::post('/forms-training/validate2', [FormsTrainingController::class, 'validateForms2'])->name('validate.forms2');
+Route::get('/formation-accueil', [FormsTrainingController::class, 'showTrainingHome']);
+Route::get('/forms-modification-add', [FormsTrainingController::class, 'showUpdateTrainingAdd'])->name('forms.views.edit.responsable.add');
+Route::post('/forms-modification-add', [FormsTrainingController::class, 'UpdateTraining']);
+Route::get('/forms-modification-remove', [FormsTrainingController::class, 'showUpdateTrainingRemove'])->name('forms.views.edit.responsable.remove');
+Route::post('/forms-modification-remove', [FormsTrainingController::class, 'RemoveTraining']);
 
 Route::get('/modification/users', [ModificationUserController::class, 'show'])->name('modification.users');
 Route::get('/modification/users/search', [ModificationUserController::class, 'search'])->name('modification.users.search');
