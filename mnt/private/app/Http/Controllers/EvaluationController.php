@@ -6,6 +6,7 @@ use App\Models\Evaluation;
 use App\Models\Club;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class EvaluationController extends Controller
 {
@@ -17,6 +18,12 @@ class EvaluationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function historiqueEvaluations($userId, $clubId) {
+        if (session('type_id') != 4) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Retrieve the user and the club by their IDs
         $user = User::find($userId);
         $club = Club::find($clubId);
@@ -58,10 +65,22 @@ class EvaluationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request) {
+
+        if (session('type_id') != 4) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
+        
         // Retrieve the search term and optional user/club filters from the request
         $searchTerm = $request->input('search');
         $userId = $request->input('userId');
-        $clubId = $request->input('clubId');       
+        
+        $club =DB::table('report')
+        ->where('report.user_id' , '=', Session('user_id'))
+        ->first();  
+        $clubId = $club->CLUB_ID;    
     
         // Build the query to filter evaluations
         $evaluationsQuery = Evaluation::query()
@@ -94,6 +113,8 @@ class EvaluationController extends Controller
     
         // Apply club ID filter if provided
         if ($clubId) {
+
+
             $evaluationsQuery->whereHas('user.reports', function ($query) use ($clubId) {
                 $query->where('CLUB_ID', $clubId);
             });
