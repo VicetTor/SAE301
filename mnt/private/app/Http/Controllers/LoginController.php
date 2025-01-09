@@ -62,6 +62,7 @@ class LoginController extends Controller
             Session::put('level_id', $user->LEVEL_ID);
             Session::put('level_id_resume', $user->LEVEL_ID_RESUME);
             Session::put('type_id', $user->TYPE_ID);
+            Session::put('train_id', $user->TRAIN_ID);
             if($user->USER_ISFIRSTLOGIN == 1) {
                return redirect()->route('firstconnexion', ['user' => $user]);
             }
