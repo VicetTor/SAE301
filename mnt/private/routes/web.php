@@ -84,9 +84,6 @@ Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'up'])->n
 Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate'); // Update user password
 Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate'); // Update user profile
 
-Route::get('/modification/users', [App\Http\Controllers\ProfileController::class, 'up'])->name('modificationUsers'); // Get user info for profile page
-Route::post('/modification/users',[App\Http\Controllers\ProfileController::class, 'up'])->name('modificationUsers'); // Update user profile
-
 // Route for logging out
 Route::get('/logOut', [App\Http\Controllers\ProfileController::class, 'logOut'])->name('logOut');
 
@@ -120,6 +117,8 @@ Route::get('/modification/users/search', [ModificationUserController::class, 'se
 Route::get('/modification/users/edit/{id}', [ModificationUserController::class, 'edit'])->name('modification.users.edit'); // Edit user details
 Route::post('/modification/users/update/{id}', [ModificationUserController::class, 'update'])->name('modification.users.update'); // Update user details
 Route::post('/modification/users/delete/{id}', [ModificationUserController::class, 'delete'])->name('modification.users.delete'); // Delete a user
+Route::get('/modification/users/temporaryPassword', [App\Http\Controllers\TemporaryPasswordController::class, 'show'])->name('modification.users.temporary.password'); // TemporaryPassword
+
 
 // Routes for evaluation search and historical evaluation data
 Route::get('/evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search'); // Search evaluations

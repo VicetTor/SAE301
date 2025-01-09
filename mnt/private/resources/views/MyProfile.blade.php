@@ -7,7 +7,7 @@
 @section('content')
 <div class="text-center">
     <!-- Welcome message with the user's first name -->
-    <h1> Bienvenue, <?php echo Session('user_firstname'); ?> <h1>
+    <h1> Bienvenue, {{ Session('user_firstname'); }} <h1>
     
     <!-- Container for displaying personal information -->
     <div id="displayPersonnalInformation" class="rounded shadow-sm p-3 mb-5 bg-body-tertiary text-start rrounded">
@@ -108,4 +108,6 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
