@@ -27,7 +27,7 @@ class SessionController extends Controller
         // Récupérer les utilisateurs liés à une formation
         $users = User::select('USER_FIRSTNAME', 'USER_LASTNAME','USER_ID')
             ->where('LEVEL_ID_RESUME', '=', session('level_id_resume'))
-            ->where('TYPE_ID', '=', 4)
+            ->where('TYPE_ID', '=', 1)
             ->where('GRP2_USER.USER_ID', '!=', session('user_id'))
             ->distinct()
             ->get();
@@ -45,11 +45,10 @@ class SessionController extends Controller
 
         // Liste des initiateurs
         $initiators = User::select('USER_FIRSTNAME', 'USER_LASTNAME','USER_ID')
-        ->where('LEVEL_ID_RESUME', '=', session('level_id_resume'))
-        ->where('TYPE_ID', '=', 3)
-        ->where('GRP2_USER.USER_ID', '!=', session('user_id'))
-        ->distinct()
-        ->get();
+            ->where('TYPE_ID', '=', 2)
+            ->where('GRP2_USER.USER_ID', '!=', session('user_id'))
+            ->distinct()
+            ->get();
         /*$initiators = [
             1 => 'Catherine Laroche',
             2 => 'Pierre Cailloux',
@@ -65,6 +64,7 @@ class SessionController extends Controller
      */
     public function store(SessionRequest $request)
     {
+
 
         //$dateTime = $validated['date'] . ' ' . $validated['time'];
         $sumSESSION = DB::table('GRP2_SESSION')->max('SESS_ID');
@@ -92,7 +92,7 @@ class SessionController extends Controller
                 'USER_ID_ATTENDEE' => $request->initiator_id[$i],
             ]);
 
-            if($request->aptitude_id1[$i] != "Choix des aptitudes"){
+            if($request->aptitude_id1[$i] != -1){
 
                 $sumEVALUATION = DB::table('GRP2_EVALUATION')->max('EVAL_ID');
 
@@ -106,7 +106,7 @@ class SessionController extends Controller
                 ]);
             }
 
-            if($request->aptitude_id2[$i] != "Choix des aptitudes"){
+            if($request->aptitude_id2[$i] != -1){
 
                 $sumEVALUATION = DB::table('GRP2_EVALUATION')->max('EVAL_ID');
 
@@ -120,7 +120,7 @@ class SessionController extends Controller
                 ]);
             }
 
-            if($request->aptitude_id3[$i] != "Choix des aptitudes"){
+            if($request->aptitude_id3[$i] != -1){
 
                 $sumEVALUATION = DB::table('GRP2_EVALUATION')->max('EVAL_ID');
 

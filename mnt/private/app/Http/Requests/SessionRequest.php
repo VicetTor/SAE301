@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\VerifSession;
+use App\Rules\VerifSessionSkill;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SessionRequest extends FormRequest
@@ -24,12 +26,14 @@ class SessionRequest extends FormRequest
     public function rules()
     {
         return [
-            'DATE' => 'required|after_or_equal:today',
+            /*'DATE' => 'required|after_or_equal:today',
             'time' => 'required',
             'lieu' => 'required|in:Milieu Naturel,Piscine',
             'user_id.*' => 'required|exists:grp2_user,USER_ID',
             'aptitude_id1.0' => 'required|exists:grp2_ability,ABI_ID',
             'initiator_id.*' => 'required|exists:grp2_user,USER_ID',
+            'user_id' => [ new VerifSession($this)],*/
+            'aptitude_id3' => [new VerifSessionSkill($this)],
         ];
     }
 }

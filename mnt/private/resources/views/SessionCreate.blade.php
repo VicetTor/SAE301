@@ -7,6 +7,9 @@
 <!-- ligne 1 -->
 <form action="" method="POST">
     @csrf
+    @if($errors->isNotEmpty())
+        <p>{{$errors}}</p>
+    @endif
     <div class="range">
             <div>
                 <p>Date</p>

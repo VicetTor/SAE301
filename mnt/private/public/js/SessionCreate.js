@@ -8,7 +8,7 @@ Buttom.addEventListener("click", function (event) {
         ButtonMax--;
     }
     else{
-        alert("Attention vous puvait ajoutée au maximun 10 éléves")
+        alert("Attention vous pouvez ajouter au maximun 10 élèves")
     }
 })
 
