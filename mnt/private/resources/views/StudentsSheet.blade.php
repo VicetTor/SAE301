@@ -55,12 +55,6 @@ $eleves = User::select('*')
 ?>
 
 
-
-
-
-
-
-
 @if(session('type_id') != 3)
     <h1>Vous n'avez les droits nécéssaires</h1>
     <script>
