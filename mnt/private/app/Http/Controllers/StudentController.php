@@ -103,8 +103,17 @@ class StudentController extends Controller
                 $tableHtml.='<td>'.$apt->ABI_LABEL.'</td>';
                 $tableHtml.='<td class="decoration">';
                 if ($session->SESS_DATE > now()) {
-                    
-                    $tableHtml .= '<select class="scroll" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
+                    $tableHtml .= '<form class="evalForm" method="POST" action="/submitEvaluation" onsubmit="submitEvalForm('.$eval->EVAL_ID.') 
+                    data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id 
+                    . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID.'">
+
+                                    <input type="hidden" name="eval_id" value="'.$eval->EVAL_ID.'">
+                                    <button type="button" class="eval-btn">Obs'.  $apt->ABI_ID  .'</button>
+                                </form>';
+
+
+                    $tableHtml .= '<select class="scroll" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id 
+                    . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
                     
                     if ($evaluationTrouvee) {
                         $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL . '</option>';

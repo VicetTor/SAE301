@@ -62,3 +62,4 @@ Route::get('/sheet', function(){
 
 Route::get('/choixEleve', [App\Http\Controllers\StudentController::class, 'getEleves']);
 Route::post('/updateEvaluation', [App\Http\Controllers\EvaluationController::class, 'updateEvaluation']);
+Route::post('/commentaireEval', [App\Http\Controllers\CommentaireController::class, 'commentaireEval']);

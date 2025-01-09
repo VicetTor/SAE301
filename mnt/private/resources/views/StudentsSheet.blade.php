@@ -76,6 +76,14 @@ use App\Models\User;
         <table id=tabletable>
 
         </table>
+
+        <div id="popup" class="popup">
+        <div class="popup-content">
+            <div id="popup-body">
+                  
+            </div>
+        </div>
+    </div>'
         
             
         
@@ -84,9 +92,8 @@ use App\Models\User;
     <script>
 $(document).on('change', '#selectEleve', function() {
     var userId = $(this).val();
-    var selectedEleve = $(this).find("option:selected").text(); // Récupère le texte de l'option sélectionnée
+    var selectedEleve = $(this).find("option:selected").text();
 
-    // Met à jour le texte du <h1> avec l'information de l'élève
     $('#result').text("Tableau évolutif de : " + selectedEleve);
 
     $.ajax({
@@ -94,7 +101,6 @@ $(document).on('change', '#selectEleve', function() {
         type: 'GET',
         data: { user_id: userId },
         success: function(response) {
-            // Remplace seulement le contenu du tableau sans le remplacer complètement
             $('#tabletable').html(response.html);
         },
         error: function() {
@@ -103,40 +109,73 @@ $(document).on('change', '#selectEleve', function() {
     });
 
     $(document).on('change', '.scroll', function() {
-    var evalId = $(this).data('eval-id');
-    var statutId = $(this).val(); // Récupère la valeur du statut sélectionné
-    var userId = $(this).data('user-id');
-    var abiId = $(this).data('abi-id');
-    var sessId = $(this).data('sess-id');
+        var evalId = $(this).data('eval-id');
+        var statutId = $(this).val();
+        var userId = $(this).data('user-id');
+        var abiId = $(this).data('abi-id');
+        var sessId = $(this).data('sess-id');
 
-    // Envoie la mise à jour de l'évaluation via AJAX
-    $.ajax({
-        url: '/updateEvaluation', // Assurez-vous que cette route est correcte
-        type: 'POST',
-        data: {
-            eval_id: evalId,
-            statut_id: statutId,
-            user_id: userId,
-            abi_id: abiId,
-            sess_id: sessId,
-            _token: '{{ csrf_token() }}' // Assurez-vous d'inclure le token CSRF
-        },
-        success: function(response) {
-        },
-        error: function() {
-        }
+        $.ajax({
+            url: '/updateEvaluation',
+            type: 'POST',
+            data: {
+                eval_id: evalId,
+                statut_id: statutId,
+                user_id: userId,
+                abi_id: abiId,
+                sess_id: sessId,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+            },
+            error: function() {
+            }
+        });
     });
+
+
+    $(document).on('click   ', '.evalForm', function() {
+        var evalId = $(this).data('eval-id');
+        var statutId = $(this).val();
+        var userId = $(this).data('user-id');
+        var abiId = $(this).data('abi-id');
+        var sessId = $(this).data('sess-id');
+        console.log('Chalut');
+        $.ajax({
+            url: '/commentaireEval',
+            type: 'POST',
+            data: {
+                eval_id: evalId,
+                statut_id: statutId,
+                user_id: userId,
+                abi_id: abiId,
+                sess_id: sessId,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                openPopup(response.html);
+            },
+            error: function() {
+                alert('Une erreur est survenue.');
+            }
+        });
+    });
+
+
 });
 
 
-    
+
+function openPopup(content) {
+    document.getElementById('popup-body').innerHTML = content;
+    document.getElementById('popup').style.display = 'flex';
+}
 
 
-});
-
-
-
-
+    // Ferme la pop-up
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
     </script>
 
 
@@ -146,7 +185,6 @@ $(document).on('change', '#selectEleve', function() {
 
     <!-- Vous pouvez supprimer ce css cetait juste pour etre lisible en attendant !-->
     <style>
-        /* Global table style */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -161,7 +199,6 @@ th, td {
     font-size: 14px;
 }
 
-/* Style for the headers */
 th {
     background-color: #f2f2f2;
     text-align: center;
@@ -171,31 +208,26 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* Ensuring proper alignment of the session date (on the left) */
 td.date-cell {
     text-align: left;
     width: 15%;
 }
 
-/* Ensuring that skills are neatly organized in their columns */
 td.skill-cell {
     text-align: center;
     width: 20%;
 }
 
-/* Ability cells should be centered */
 td.ability-cell {
     text-align: center;
     width: 15%;
 }
 
-/* Select dropdown for the evaluations should have a smaller size */
 td.select-cell select {
     width: 100%;
     padding: 5px;
 }
 
-/* Mobile responsiveness */
 @media (max-width: 768px) {
     table {
         width: 100%;
@@ -205,6 +237,22 @@ td.select-cell select {
     td, th {
         padding: 8px;
     }
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+.popup-content{
+    background-color: white;
 }
 
     </style>

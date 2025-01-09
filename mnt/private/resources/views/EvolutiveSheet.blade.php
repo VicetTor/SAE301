@@ -6,18 +6,11 @@
 
 <?php
 
-<<<<<<< HEAD
 use App\Models\Ability;
 use App\Models\Attend;
 use App\Models\Attendee;
 use App\Models\Evaluation;
 use App\Models\Skill;
-=======
-    use App\Models\Ability;
-    use App\Models\Attend;
-    use App\Models\Evaluation;
-    use App\Models\Skill;
->>>>>>> bc06bd16a6f2bc794e77fcc204b8fbb02d407654
 
     $user_id = session('user_id');
 
