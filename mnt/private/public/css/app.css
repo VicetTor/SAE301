@@ -159,6 +159,10 @@ tr:nth-child(even) {
     width: 20%;
 }
 
+#result{
+    margin-left: 5%;
+}
+
 @media (max-width: 768px) {
     table, thead, tbody, tr, td {
         display: block;

@@ -17,41 +17,40 @@
         ->where('LEVEL_ID','=',$level)->get();
 
     $sessions = Attendee::select('*', 'GRP2_USER.*')
-    ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_attendee', '=', 'GRP2_USER.USER_ID')
-    ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
-    ->where('GRP2_USER.USER_ID', '=', $user_id)
-    ->get();
+        ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_attendee', '=', 'GRP2_USER.USER_ID')
+            ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
+                ->where('GRP2_USER.USER_ID', '=', $user_id)
+                    ->get();
 
     $evaluationsChaqueSeance = [];
     $i = 0;
     foreach($sessions as $session){
         $evaluations = Evaluation::select('*')
             ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
-            ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
-            ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
-            ->get();
+                ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
+                    ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
+                        ->get();
         $evaluationsChaqueSeance[$i] = $evaluations;
         $i++;
     }
 
-
     $taille = 0;
     foreach($skills as $skill){
         $taille += Ability::select('*')
-        ->where('SKILL_ID', '=', $skill->SKILL_ID)
-        ->count();
+            ->where('SKILL_ID', '=', $skill->SKILL_ID)
+                ->count();
     }
 
 ?>
 
-
+<!-- Mise en page-->
 
     @if(session()->missing('user_mail'))
-        <p> Vous êtes actuellement NON CONNECTÉ </p>
+        <p class="fw-medium fs-1"> Vous êtes actuellement NON CONNECTÉ </p>
     @endif
 
-    <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
-    <p> Votre progression vers le Niveau {{ session('level_id') }}</p>
+    <p class="fw-medium fs-3"> Vous êtes connecté(e) en tant que : {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
+    <p class="fst-italic fs-5"> Votre progression vers le Niveau {{ session('level_id_resume') }}</p>
 
     <table>
         <thead>
@@ -129,6 +128,10 @@
         </tbody>
     </table>
 
+
+
+
+<!-- script JS -->
 
 <script>
     const table = document.querySelector("table");

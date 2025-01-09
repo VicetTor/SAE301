@@ -37,12 +37,14 @@
 ?>
 
 <!-- Mise en page-->
+
+<table>
     
     @if(session()->missing('user_mail'))
         <p> Vous êtes actuellement NON CONNECTÉ </p>
     @endif
-    <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
-    <p> Votre progression vers le Niveau {{ session('level_id_resume') }}</p>
+    <p class="fw-medium fs-3"> Vous êtes connecté(e) en tant que : {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
+    <p class="fst-italic fs-5"> Votre progression vers le Niveau {{ session('level_id_resume') }}</p>
 
     <table>
         <thead>
@@ -153,30 +155,36 @@
         </tbody>
     </table>
 
+
+    
 <!-- script JS -->
 <script>
-    const table = document.querySelector("table");
-    const cells = table.getElementsByClassName("eval");
-    for (let i = 0; i < cells.length; i++) {
-        const cell = cells[i];
+document.addEventListener('DOMContentLoaded', function() {
+    const cells = document.querySelectorAll("td.eval");
+    
+    cells.forEach(cell => {
         const text = cell.textContent.trim();
-        if (text == "Acquise") {
-            cell.style.color = "white";
-            cell.style.backgroundColor = "green";
-        } 
-        else if (text == "En Cours d'Acquisition") {
-            cell.style.color = "white";
-            cell.style.backgroundColor = "orange";
+        switch(text) {
+            case "Acquise":
+                cell.style.color = "white";
+                cell.style.backgroundColor = "green";
+                break;
+            case "En Cours d'Acquisition":
+                cell.style.color = "white";
+                cell.style.backgroundColor = "orange";
+                break;
+            case "Absent":
+                cell.style.color = "white";
+                cell.style.backgroundColor = "red";
+                break;
+            case "Non évaluée":
+                cell.style.color = "red";
+                cell.style.backgroundColor = "#e6e4e4";
+                break;
         }
-        else if (text == "Absent") {
-            cell.style.color = "white";
-            cell.style.backgroundColor = "red";
-        }
-        else if (text == "Non évaluée") {
-            cell.style.color = "red";
-            cell.style.backgroundColor = "#e6e4e4e5";
-        }
-    }
+    });
+});
+
 </script>
 
 
