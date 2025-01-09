@@ -42,7 +42,7 @@ Route::post('/user', function(){
     return view('MyProfile');
 });
 
-Route::get('/session/create',function(){
+Route::get('/session/create', function () {
     return view('SessionCreate');
 })->name('session.create');
 
@@ -54,7 +54,7 @@ Route::get('/site/edit', [App\Http\Controllers\SiteController::class, 'showEditF
 Route::post('/site/update', [App\Http\Controllers\SiteController::class, 'updateSite'])->name('site.update');
 
 
-Route::get('/modifying', function(){
+Route::get('/modifying', function () {
     return view('SiteModifying');
 });
 
@@ -64,24 +64,27 @@ Route::get('/students', function(){
 
 
 /* USER MODIFYING */
-Route::get('/user', function(){
+Route::get('/user', function () {
     return view('UserModifying');
 });
 
-Route::post('/infoUserUpdate',[App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate');
-Route::get('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
+Route::post('/infoUserUpdate', [App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate');
+Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate');
 Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 
 Route::get('/logOut', [App\Http\Controllers\ProfileController::class, 'logOut'])->name('logOut');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'dataClub'])->name('');
+Route::post('/', [App\Http\Controllers\HomeController::class, 'dataClub'])->name('');
 
 
-Route::get('/validate', function(){
+
+Route::get('/validate', function () {
     return view('ValidateLevel');
 });
 
 
-Route::get('/sheet', function(){
+Route::get('/sheet', function () {
     return view('EvolutiveSheet');
 });
 

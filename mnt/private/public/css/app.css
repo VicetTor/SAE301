@@ -52,6 +52,23 @@ html,
     margin-right:25px;
 }
 
+.divCarousel {
+    height: 100%;
+    padding: 0px;
+
+    .carousel-inner {
+        height: 100%;
+
+        .carousel-item {
+            height: 100%;
+        }
+    }
+
+    .carousel-item img {
+        height: 100%;
+    }
+}
+
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
     background-color: rgba(0, 0, 0, 0.5); /* Arrière-plan semi-transparent */
