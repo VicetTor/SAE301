@@ -10,6 +10,8 @@ use App\Models\Skill;
 use App\Models\StatusType;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\Session;
+
 
 class StudentController extends Controller
 {
@@ -17,7 +19,7 @@ class StudentController extends Controller
 {
     $statustype = StatusType::all();
     $user_id = $request->input('user_id'); 
-
+    $type_utilisateur = Session('type_id');
     $tableHtml = '';
 
     $eleve = User::find($user_id);
@@ -128,21 +130,17 @@ class StudentController extends Controller
                 }
                 $tableHtml.='<td>'.$apt->ABI_LABEL.'</td>';
                 $tableHtml.='<td class="decoration">';
-                if ($session->SESS_DATE > now()) {
-                    $tableHtml .= '<form class="evalForm" method="POST" action="/submitEvaluation" onsubmit="submitEvalForm('.$eval->EVAL_ID.') 
-                    data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id 
-                    . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID.'">
-
-                                    <input type="hidden" name="eval_id" value="'.$eval->EVAL_ID.'">
-                                    <button type="button" class="eval-btn">Obs'.  $apt->ABI_ID  .'</button>
-                                </form>';
-
+                $tableHtml .= '
+                    <button type="button" class="eval-btn" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id 
+                    . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID.'">Obs'.  $apt->ABI_ID  .'</button>
+                                ';
+                if ($session->SESS_DATE > now() && $type_utilisateur == 2) {
 
                     $tableHtml .= '<select class="scroll" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id 
                     . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
                     
                     if ($evaluationTrouvee) {
-                        $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL .$evaluationTrouvee->EVAL_ID.'</option>';
+                        $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL.$evaluationTrouvee->EVAL_ID . '</option>';
                     } else {
                         $tableHtml .= '<option></option>';
                     }

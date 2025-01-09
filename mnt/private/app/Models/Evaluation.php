@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Evaluation extends Model
 {
     use HasFactory;
-
+    public $timestamps = false;
     protected $table = 'grp2_evaluation';
     protected $primaryKey = 'EVAL_ID';
 

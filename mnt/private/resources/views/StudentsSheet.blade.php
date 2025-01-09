@@ -13,6 +13,8 @@ use App\Models\Evaluation;
 use App\Models\Skill;
 use App\Models\StatusType;
 use App\Models\User;
+use App\Models\Session;
+
 
 $user_id = session('user_id');
 
@@ -55,12 +57,13 @@ $eleves = User::select('*')
 ?>
 
 
-@if(session('type_id') != 3)
-    <h1>Vous n'avez les droits nécéssaires</h1>
+@if(!(Session('type_id') == 3) && !(Session('type_id') == 2))
+    <h1>Vous n'avez les droits nécessaires</h1>
     <script>
         window.stop();
     </script>
 @endif
+
 
 <p class="fw-medium fs-3"> Vous êtes connecté(e) en tant que : {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
 
@@ -151,7 +154,7 @@ $(document).on('click', '.eval-btn', function() {
 
     $.ajax({
         url: '/commentaireEval',
-        type: 'GET',
+        type: 'POST',
         data: {
             eval_id: evalId,
             statut_id: statutId,
@@ -161,21 +164,47 @@ $(document).on('click', '.eval-btn', function() {
             _token: '{{ csrf_token() }}'
         },
         success: function(response) {
-            // Afficher la popup et son contenu
             $('#popup').html(response.html);
-            $('#popup').fadeIn(); // Afficher la popup
+            $('#popup').fadeIn();
 
-            // Ajouter l'événement pour fermer la popup quand on clique sur la croix
             $('.popup-close').on('click', function() {
-                $('#popup').fadeOut(); // Fermer la popup
+                $('#popup').fadeOut();
             });
 
-            // Fermer la popup si on clique en dehors
             $(window).on('click', function(event) {
                 if ($(event.target).hasClass('popup-overlay')) {
-                    $('#popup').fadeOut(); // Fermer la popup
+                    $('#popup').fadeOut();
+                }
+                if ($(event.target).hasClass('popup-submit')) {
+                    var evalId = $(event.target).data('eval-id');
+                    var contenu = $('.popup-comment').val();
+                    console.log("Eval id : " + evalId);
+                    console.log("Contenu : " + contenu);
+                    
+                    $.ajax({
+                        url: '/updateCommentaire',
+                        type: 'POST',
+                        data: {
+                            eval_id: evalId,
+                            contenu: contenu,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            console.log("OUIII");
+
+                        },
+                        error: function() {
+                            console.log("ERRUER");
+                        }
+                    });
+
+
+
+
                 }
             });
+
+
         },
         error: function() {
             console.log("Erreur lors de l'appel AJAX.");
@@ -183,15 +212,16 @@ $(document).on('click', '.eval-btn', function() {
     });
 });
 
-    
-$('.popup-close').on('click', function() {
-        $('#popup').fadeOut(); // Ferme la popup
-    });
 
-    // Ferme la popup si l'utilisateur clique à l'extérieur de la popup
+
+    
+    $('.popup-close').on('click', function() {
+            $('#popup').fadeOut(); 
+        });
+
     $(window).on('click', function(event) {
         if ($(event.target).hasClass('popup-overlay')) {
-            $('#popup').fadeOut(); // Ferme la popup
+            $('#popup').fadeOut(); 
         }
     });
 
