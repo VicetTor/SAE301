@@ -54,7 +54,7 @@ Route::get('/TableBilan',function(){
 
 Route::get('/session/create',function(){
     return view('SessionCreate');
-})->name('session.create');*/
+})->name('session.create');
 
 // Route to display the form for creating a session
 Route::get('/session/create/form',function(){

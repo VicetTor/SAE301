@@ -18,7 +18,6 @@ use OpenApi\Annotations as OA;
 class Level extends Model
 {
     use HasFactory;
-    public $timestamps = false;
 
     // Specify the table name
     protected $table = 'grp2_level'; // The table associated with this model is 'grp2_level'

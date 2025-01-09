@@ -99,10 +99,5 @@ class User extends Model
     public function getAuthIdentifier() {
         return $this->USER_ID; // Return the user's ID as the unique identifier
     }
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'user_id';
 }
 ?>

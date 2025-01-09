@@ -26,6 +26,6 @@ class SessionViewController extends Controller
         
 
         // Retourner la vue avec les données
-        return view('SessionsPage', compact('sessions'));
+        return view('SessionsView', compact('sessions'));
     }
 }
