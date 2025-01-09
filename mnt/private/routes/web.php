@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 
 
-Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create']);
+Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create'])->name('connexion');
 Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConnect']);
 
 
@@ -67,6 +67,9 @@ Route::post('/infoUserUpdate',[App\Http\Controllers\ProfileController::class, 'i
 Route::get('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate');
 Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
+
+Route::get('/logOut', [App\Http\Controllers\ProfileController::class, 'logOut'])->name('logOut');
+
 
 Route::get('/validate', function(){
     return view('ValidateLevel');

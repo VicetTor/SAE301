@@ -24,7 +24,6 @@ class LoginController extends Controller
             ->where('USER_PASSWORD','=',$password)->first();
 
         if($utilisateur != null){
-            echo $utilisateur;
             Session::put('user_mail', $utilisateur->USER_MAIL);
             Session::put('user_firstname', $utilisateur->USER_FIRSTNAME);
             Session::put('user_lastname', $utilisateur->USER_LASTNAME);
