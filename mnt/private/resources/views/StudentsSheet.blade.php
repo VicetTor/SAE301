@@ -10,5 +10,5 @@
         <p>Aucun utilisateur connecté.</p>
     @endif
 
-    
+
 @endsection

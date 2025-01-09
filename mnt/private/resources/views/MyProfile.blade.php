@@ -51,9 +51,11 @@
                     } ?>
                 </div>
             </div>
+            <div>
             <a href="/user"><button id="buttonUserModifying" type="button" class="btn btn-primary">Modifier mes informations</button></a>
             <button id="buttonUserDeleting" type="button" class="btn btn-danger" data-toggle="modal" data-target="#popupDeletion">Supprimer mon compte</button>
-
+            </div>
+            <a href="/logOut"><button id="buttonlogOut" type="button" class="btn btn-primary">Se déconnecter</button></a>
             <!-- Contacter le service pour supprimer votre compte -->
             <div id="popupDeletion" class="modal">
                 <div class="modal-dialog" role="document">

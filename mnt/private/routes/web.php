@@ -4,6 +4,7 @@ use App\Http\Controllers\FormsTrainingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\ModificationUserController;
+use App\Http\Controllers\EvaluationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,25 +22,29 @@ Route::get('/', function () {
 });
 
 
-
-Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create']);
+Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create'])->name('connexion');
 Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConnect']);
 
+Route::get('/inscription',[\App\Http\Controllers\SignInController::class,'show'])->name('inscription');
+Route::post('/inscription',[\App\Http\Controllers\SignInController::class,'signIn'])->name('inscriptionValidate');
 
-Route::get('/inscription',function(){
-    return view('SignInForm');
-})->name('inscription');
+Route::get('/profile',function(){
+    return view('MyProfile');
+})->name('profile');
+
+Route::get('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'show'])->name('firstconnexion');
+Route::post('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'fill'])->name('firstconnexion');
 
 
-Route::get('/session',function(){
-    return view('SessionsPage');
-})->name('session');
+Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
 
+Route::post('/user', function(){
+    return view('MyProfile');
+});
 
 Route::get('/session/create',function(){
     return view('SessionCreate');
 })->name('session.create');
-
 
 Route::get('/session/create/form',function(){
     return view('SessionCreateForm');
@@ -53,10 +58,10 @@ Route::get('/modifying', function(){
     return view('SiteModifying');
 });
 
-
 Route::get('/students', function(){
     return view('StudentsSheet');
 })->name('students');;
+
 
 /* USER MODIFYING */
 Route::get('/user', function(){
@@ -67,6 +72,9 @@ Route::post('/infoUserUpdate',[App\Http\Controllers\ProfileController::class, 'i
 Route::get('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate');
 Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
+
+Route::get('/logOut', [App\Http\Controllers\ProfileController::class, 'logOut'])->name('logOut');
+
 
 Route::get('/validate', function(){
     return view('ValidateLevel');
@@ -86,3 +94,8 @@ Route::get('/utilisateur/recherche', [ModificationUserController::class, 'search
 Route::get('/modification/users/{id}/edit', [ModificationUserController::class, 'edit'])->name('modification.users.edit');
 Route::post('/modification/users/{id}/delete', [ModificationUserController::class, 'delete'])->name('modification.users.delete');
 Route::put('/modification/users/{id}/update', [ModificationUserController::class, 'update'])->name('modification.users.update');
+
+Route::get('/evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
+
+Route::get('/evaluations/historique/{userId}/{clubId}', [EvaluationController::class, 'historiqueEvaluations'])->name('evaluations.historique');
+    

@@ -33,7 +33,7 @@ html,
     margin-top: 50px !important;
 }
 
-.custom-toggler .navbar-toggler-icon { 
+.custom-toggler .navbar-toggler-icon {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); }
 
 .turtle-background {
@@ -50,4 +50,47 @@ html,
 
 .margin-right{
     margin-right:25px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Arrière-plan semi-transparent */
+    width: 30px; /* Largeur de l'icône */
+    height: 30px; /* Hauteur de l'icône */
+    border-radius: 50%; /* Forme circulaire */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    z-index: 10; /* Assurez-vous que les boutons sont devant les autres éléments */
+}
+
+.range{
+    display: flex !important;
+    flex-direction: row  !important;
+    justify-content: space-evenly !important;
+    margin-bottom: 30px;
+}
+
+
+.rowRegistration{
+    margin-left: 12% !important;
+}
+
+.secondColumn{
+   margin-left: 12% !important;
+}
+
+.thirdColumn{
+    margin-left: 12% !important;
+}
+
+.test{
+     display: flex !important;
+    flex-direction: row  !important;
+    margin-bottom: 3%;
+}
+
+#TYPE_ID{
+    width: 190px !important;
 }

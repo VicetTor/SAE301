@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
@@ -49,5 +50,11 @@ class AppServiceProvider extends ServiceProvider
         View::share('siteLogo', $siteLogo);
         View::share('siteColor', $siteColor);
         View::share('siteName', $siteName);
+        //
+        /*DB::listen(function ($query) {
+            Log::debug($query->sql);
+            Log::debug($query->bindings);
+            Log::debug($query->time);
+        });*/
     }
 }

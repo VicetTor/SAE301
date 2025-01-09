@@ -59,9 +59,14 @@ class ProfileController extends Controller
         return view('MyProfile', ['popUps'=>$popUps]);
     }
 
+    function logOut(){
+        auth()->logout();
+        Session::flush();
+        return redirect()->route('connexion');
+    }
+
     function pswdUpdate(Request $request)
     {
-        
         $inputPswd = $request->input('inputActualPassword'); 
         $inputNewPswd = $request->input('inputNewPassword'); 
         $inputPswdVerif = $request->input('inputPasswordVerif'); 
