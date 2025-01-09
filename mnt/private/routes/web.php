@@ -108,7 +108,8 @@ Route::delete('/sessions/supprimer/{id}', [App\http\Controllers\SessionDelete::c
 
 
 // Route pour modifier une session
-Route::get('/sessions/modifier/{id}', [SessionModifier::class, 'edit'])->name('sessionsModifing');
+Route::get('/sessions/modifier/{id}', [App\Http\Controllers\SessionModifier::class, 'edit'])->name('sessionsModifing');
+Route::post('sessions/modifier/{id}', [App\Http\Controllers\SessionModifier::class, 'store']);
 
 Route::get('/session/view', [App\Http\Controllers\SessionViewController::class, 'create'])->name('session.view');
 

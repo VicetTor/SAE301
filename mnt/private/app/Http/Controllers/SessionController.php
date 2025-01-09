@@ -26,8 +26,8 @@ class SessionController extends Controller
         echo $club;
         // Récupérer les utilisateurs liés à une formation
         $users = User::select('USER_FIRSTNAME', 'USER_LASTNAME','USER_ID')
-            ->where('LEVEL_ID_RESUME', '=', session('level_id_resume'))
-            ->where('TYPE_ID', '=', 4)
+            ->where('LEVEL_ID_RESUME', '=', session('train_id'))
+            ->where('TYPE_ID', '=', 1)
             ->where('GRP2_USER.USER_ID', '!=', session('user_id'))
             ->distinct()
             ->get();
@@ -35,7 +35,7 @@ class SessionController extends Controller
         // Liste des aptitudes
         $aptitudes = Ability::select('Abi_label','ABI_ID')
         ->join('grp2_skill', 'grp2_skill.skill_id', '=', 'GRP2_ABILITY.skill_id')
-        ->where('grp2_skill.level_id', '=', session('level_id_resume'))
+        ->where('grp2_skill.level_id', '=', session('train_id'))
         ->get();
         /*$aptitudes = [
             1 => 'A1 : s\'équilibrer',
@@ -45,8 +45,8 @@ class SessionController extends Controller
 
         // Liste des initiateurs
         $initiators = User::select('USER_FIRSTNAME', 'USER_LASTNAME','USER_ID')
-        ->where('LEVEL_ID_RESUME', '=', session('level_id_resume'))
-        ->where('TYPE_ID', '=', 3)
+        ->where('TRAIN_ID', '=', session('train_id'))
+        ->where('TYPE_ID', '=', 2)
         ->where('GRP2_USER.USER_ID', '!=', session('user_id'))
         ->distinct()
         ->get();
@@ -67,15 +67,15 @@ class SessionController extends Controller
     {
 
         //$dateTime = $validated['date'] . ' ' . $validated['time'];
-        $sumSESSION = DB::table('GRP2_SESSION')->max('SESS_ID');
+        $sumSESSION = DB::table('grp2_session')->max('SESS_ID');
 
         $time = $request->DATE . ' ' . $request->time;
 
         // Enregistrer la nouvelle séance dans la table GRP2_SESSION
-        DB::table('GRP2_SESSION')->insert([
+        DB::table('grp2_session')->insert([
             'SESS_DATE' => $time,
             'SESSTYPE_ID' => 1,
-            'TRAIN_ID' => session('level_id_resume'),
+            'TRAIN_ID' => session('train_id'),
             'SESS_ID' => $sumSESSION + 1
         ]);
 
@@ -83,9 +83,9 @@ class SessionController extends Controller
 
         for($i=0 ; $i < sizeof($request->user_id);$i++){
 
-            $sumATTENDEE = DB::table('GRP2_ATTENDEE')->max('ATTE_ID');
+            $sumATTENDEE = DB::table('grp2_attendee')->max('ATTE_ID');
 
-            DB::table('GRP2_ATTENDEE')->insert([
+            DB::table('grp2_attendee')->insert([
                 'ATTE_ID' => $sumATTENDEE + 1,
                 'SESS_ID' => $sumSESSION + 1,
                 'USER_ID' => $request->user_id[$i],
@@ -94,9 +94,9 @@ class SessionController extends Controller
 
             if($request->aptitude_id1[$i] != "Choix des aptitudes"){
 
-                $sumEVALUATION = DB::table('GRP2_EVALUATION')->max('EVAL_ID');
+                $sumEVALUATION = DB::table('grp2_evaluation')->max('EVAL_ID');
 
-                DB::table('GRP2_EVALUATION')->insert([
+                DB::table('grp2_evaluation')->insert([
                     'EVAL_ID' => $sumEVALUATION + 1,
                     'STATUSTYPE_ID' => 1,
                     'USER_ID' => $request->user_id[$i],
@@ -108,9 +108,9 @@ class SessionController extends Controller
 
             if($request->aptitude_id2[$i] != "Choix des aptitudes"){
 
-                $sumEVALUATION = DB::table('GRP2_EVALUATION')->max('EVAL_ID');
+                $sumEVALUATION = DB::table('grp2_evaluation')->max('EVAL_ID');
 
-                DB::table('GRP2_EVALUATION')->insert([
+                DB::table('grp2_evaluation')->insert([
                     'EVAL_ID' => $sumEVALUATION + 1,
                     'STATUSTYPE_ID' => 1,
                     'USER_ID' => $request->user_id[$i],
@@ -122,9 +122,9 @@ class SessionController extends Controller
 
             if($request->aptitude_id3[$i] != "Choix des aptitudes"){
 
-                $sumEVALUATION = DB::table('GRP2_EVALUATION')->max('EVAL_ID');
+                $sumEVALUATION = DB::table('grp2_evaluation')->max('EVAL_ID');
 
-                DB::table('GRP2_EVALUATION')->insert([
+                DB::table('grp2_evaluation')->insert([
                     'EVAL_ID' => $sumEVALUATION + 1,
                     'STATUSTYPE_ID' => 1,
                     'USER_ID' => $request->user_id[$i],
