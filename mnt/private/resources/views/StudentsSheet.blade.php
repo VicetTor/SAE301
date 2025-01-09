@@ -14,6 +14,9 @@ use App\Models\Skill;
 use App\Models\StatusType;
 use App\Models\User;
 
+
+
+
     $user_id = session('user_id');
 
     $level = session('level_id');
@@ -58,9 +61,14 @@ use App\Models\User;
     ->get();
 
     ?>
+        @if(session('type_id') != 3)
+            <h1>Vous n'avez les droits nécéssaires</h1>
+            <script>
+                window.stop();
+            </script>
+        @endif
 
-        <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
-        <p> Vous etes niveau {{ session('level_id') }}
+        <h1> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </h1>
 
         <select id="selectEleve">
             <option value="" disabled selected>Sélectionner un élève</option>
@@ -71,7 +79,7 @@ use App\Models\User;
             @endforeach
         </select>
 
-        <h1 id="result">Tableau évolutif des étudiants</h1>
+        <h1 id="result">Choisissez un étudiant</h1>
 
         <table id=tabletable>
 
