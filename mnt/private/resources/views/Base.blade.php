@@ -8,9 +8,16 @@
     <link href="/css/app.css" rel="stylesheet">
     <title>{{ $siteName }} : @yield('title')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <style> 
+    <style>
         :root {
-            --site-color: {{ $siteColor ?? '#005c8f' }}; /* Valeur par défaut */
+            --site-color: {
+                    {
+                    $siteColor ?? '#005c8f'
+                }
+            }
+
+            ;
+            /* Valeur par défaut */
         }
     </style>
 </head>
@@ -20,11 +27,11 @@
         <nav class="navbar navbar-expand-lg fixed-top darkblue-bg">
             <div class="container-fluid d-flex ">
                 <a class="navbar-brand" href="#">
-                @if(isset($siteLogo))
+                    @if(isset($siteLogo))
                     <img src="{{ $siteLogo }}" alt="Logo du site" width="56" height="56">
-                @else
+                    @else
                     <img src="{{ asset('images/site_logo/site_logo.png') }}" alt="Logo du site" width="56" height="56">
-                @endif
+                    @endif
                 </a>
                 <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

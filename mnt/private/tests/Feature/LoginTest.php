@@ -4,14 +4,6 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\User;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use OpenApi\Annotations as OA;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
 class LoginTest extends TestCase
 {
