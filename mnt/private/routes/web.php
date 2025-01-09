@@ -132,3 +132,4 @@ Route::get('/training-graph', [App\Http\Controllers\TrainingController::class, '
 Route::get('/choixEleve', [App\Http\Controllers\StudentController::class, 'getEleves']);
 Route::post('/updateEvaluation', [App\Http\Controllers\EvaluationController::class, 'updateEvaluation']);
 Route::get('/commentaireEval', [App\Http\Controllers\CommentaireController::class, 'commentaireEval']);
+Route::post('/updateCommentaire', [App\Http\Controllers\CommentaireController::class, 'updateCommentaire']);

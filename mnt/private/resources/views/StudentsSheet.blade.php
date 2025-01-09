@@ -81,127 +81,130 @@
         </select>
     </div>
 
-<p class="fst-italic fs-5" id="result">Merci de bien vouloir choisir un(e) élève </p>
-
-    <!-- affichage du tableau via le controller -->
-    <table id=tabletable>
+    <p class="fst-italic fs-5" id="result">Merci de bien vouloir choisir un(e) élève </p>
 
         </table>
 
-<div id="popup" class="popup-overlay" style="display: none;">
-    <div class="popup-content">
-        <span class="popup-close">&times;</span>
-        <h3>Contenu de la session</h3>
+    <div id="popup" class="popup-overlay" style="display: none;">
+        <div class="popup-content">
+            <span class="popup-close">&times;</span>
+            <h3>Contenu de la session</h3>
         <div id="popup-body">
             
         </div>
     </div>
 
-                
-            
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <script>
-    $(document).on('change', '#selectEleve', function() {
-        var userId = $(this).val();
-        var selectedEleve = $(this).find("option:selected").text();
+    <script>
+        $(document).on('change', '#selectEleve', function() {
+            var userId = $(this).val();
+            var selectedEleve = $(this).find("option:selected").text();
 
-        $('#result').text("Tableau évolutif de : " + selectedEleve);
+            $('#result').text("Tableau évolutif de : " + selectedEleve);
 
-        $.ajax({
-            url: '/choixEleve',
-            type: 'GET',
-            data: { user_id: userId },
-            success: function(response) {
-                $('#tabletable').html(response.html);
-            },
-            error: function() {
-                alert('Une erreur est survenue.');
-            }
-        });
+            $.ajax({
+                url: '/choixEleve',
+                type: 'GET',
+                data: { user_id: userId },
+                success: function(response) {
+                    $('#tabletable').html(response.html);
+                },
+                error: function() {
+                    alert('Une erreur est survenue.');
+                }
+            });
 
-        $(document).on('change', '.scroll', function() {
-            var evalId = $(this).data('eval-id');
-            var statutId = $(this).val();
-            var userId = $(this).data('user-id');
-            var abiId = $(this).data('abi-id');
-            var sessId = $(this).data('sess-id');
+            $(document).on('change', '.scroll', function() {
+                var evalId = $(this).data('eval-id');
+                var statutId = $(this).val();
+                var userId = $(this).data('user-id');
+                var abiId = $(this).data('abi-id');
+                var sessId = $(this).data('sess-id');
 
-        $.ajax({
-            url: '/updateEvaluation',
-            type: 'POST',
-            data: {
-                eval_id: evalId,
-                statut_id: statutId,
-                user_id: userId,
-                abi_id: abiId,
-                sess_id: sessId,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
+                $.ajax({
+                    url: '/updateEvaluation',
+                    type: 'POST',
+                    data: {
+                        eval_id: evalId,
+                        statut_id: statutId,
+                        user_id: userId,
+                        abi_id: abiId,
+                        sess_id: sessId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                    },
+                    error: function() {
+                    }
+                });
+            });
+
+            $(document).on('click', '.eval-btn', function() {
+                var evalId = $(this).data('eval-id');
+                var statutId = $(this).val();
+                var userId = $(this).data('user-id');
+                var abiId = $(this).data('abi-id');
+                var sessId = $(this).data('sess-id');
+
+                $.ajax({
+                    url: '/commentaireEval',
+                    type: 'GET',
+                    data: {
+                        eval_id: evalId,
+                        statut_id: statutId,
+                        user_id: userId,
+                        abi_id: abiId,
+                        sess_id: sessId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        $('#popup').html(response.html);
+                        $('#popup').fadeIn();
+                        
+                        $('.popup-close').on('click', function(){
+                            $('popup').fadeOut();
+                        });
+
+                        $(window).on('click', function(event) {
+                            if ($(event.target).hasClass('popup-overlay')) {
+                                $('#popup').fadeOut();
+                            }
+                            if ($(event.target).hasClass('popup-submit')) {
+                                var evalId = $(event.target).data('eval-id');
+                                var contenu = $('.popup-comment').val();
+
+
+                        $.ajax({
+                            url: '/updateCommentaire',
+                            type: 'POST',
+                            data: {
+                                eval_id: evalId,
+                                contenu: contenu,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                            },
+                            error: function() {
+                            }
+                        });
+                    }
+                });
             },
             error: function() {
             }
         });
     });
-
-    $(document).on('click', '.eval-btn', function() {
-        var evalId = $(this).data('eval-id');
-        var statutId = $(this).val();
-        var userId = $(this).data('user-id');
-        var abiId = $(this).data('abi-id');
-        var sessId = $(this).data('sess-id');
-
-        $.ajax({
-            url: '/commentaireEval',
-            type: 'GET',
-            data: {
-                eval_id: evalId,
-                statut_id: statutId,
-                user_id: userId,
-                abi_id: abiId,
-                sess_id: sessId,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                // Afficher la popup et son contenu
-                $('#popup').html(response.html);
-                $('#popup').fadeIn(); // Afficher la popup
-
-});
-
-                // Ajouter l'événement pour fermer la popup quand on clique sur la croix
-                $('.popup-close').on('click', function() {
-                    $('#popup').fadeOut(); // Fermer la popup
-                });
-
-                // Fermer la popup si on clique en dehors
-                $(window).on('click', function(event) {
-                    if ($(event.target).hasClass('popup-overlay')) {
-                        $('#popup').fadeOut(); // Fermer la popup
-                    }
-                });
-            },
-            error: function() {
-                console.log("Erreur lors de l'appel AJAX.");
-            }
-        });
-
-
-        
     $('.popup-close').on('click', function() {
-            $('#popup').fadeOut(); // Ferme la popup
-        });
+        $('#popup').fadeOut();
+    });
 
-        // Ferme la popup si l'utilisateur clique à l'extérieur de la popup
-        $(window).on('click', function(event) {
-            if ($(event.target).hasClass('popup-overlay')) {
-                $('#popup').fadeOut(); // Ferme la popup
-            }
-        });
-
-  
-
+    $(window).on('click', function(event) {
+        if ($(event.target).hasClass('popup-overlay')) {
+            $('#popup').fadeOut();
+        }
+    });
+});
 
 
 

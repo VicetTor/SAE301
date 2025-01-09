@@ -37,22 +37,17 @@
         $i++;
     }
 ?>
+    
 
     <!-- If the user is not logged in (session 'user_mail' is missing), show a "not connected" message -->
     @if(session()->missing('user_mail'))
-        <p> PAS CONNECTE </p> <!-- "Not connected" -->
-    @endif
-
-    <!-- Greet the user with their first and last name from the session -->
-    <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p> <!-- Greeting the user -->
-    
-    <!-- Display the user's level -->
-    <p> Vous etes niveau {{ session('level_id') }} </p> <!-- Display user's level -->
-
-    @if(session()->missing('user_mail'))
         <p> Vous êtes actuellement NON CONNECTÉ </p>
     @endif
+    <!-- Greet the user with their first and last name from the session -->
     <p class="fw-medium fs-3"> Vous êtes connecté(e) en tant que : {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
+    <!-- Display the user's level -->
+    <p class="fst-italic fs-6"> Vous etes niveau {{ session('level_id') }} </p>
+
     <p class="fst-italic fs-5"> Votre progression vers le Niveau {{ session('level_id_resume') }}</p>
 
     <table>
