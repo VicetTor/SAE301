@@ -119,14 +119,6 @@ class FormsTrainingController extends Controller {
         // Récupérer les initiateurs et étudiants
         $formationId = $request->input('formation_id');
     
-        // Calculer le nombre maximum d'élèves autorisés
-        $maxStudents = count($initiators) * 2;
-    
-        // Vérifier que le nombre d'étudiants ne dépasse pas le maximum autorisé
-        if (count($students) > $maxStudents) {
-            return redirect()->back()->withErrors(['students' => 'Le nombre d\'étudiants sélectionnés dépasse le maximum autorisé en fonction du nombre d\'initiateurs.']);
-        }
-    
         // Boucle pour les initiateurs
         foreach ($initiators as $initiatorId) {
             DB::table('grp2_user')
