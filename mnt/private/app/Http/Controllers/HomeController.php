@@ -13,14 +13,19 @@ class HomeController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     function dataClub(){
-        $clubName=DB::table('REPORT')
-        ->select('CLUB_NAME')
-        ->join('grp2_club','grp2_club.club_id','=','report.club_id')
-        ->where('user_id', '=', Session('user_id'))
-        ->first();
+        if(Session('user_id') !=null){
 
-        return view('Home', ['clubName'=>$clubName]);
+            $clubName=DB::table('REPORT')
+            ->select('CLUB_NAME')
+            ->join('grp2_club','grp2_club.club_id','=','report.club_id')
+            ->where('user_id', '=', Session('user_id'))
+            ->first();
 
-
+            return view('Home', ['clubName'=>$clubName]);
+        }else{
+            return redirect()->route('connexion');
+        }
     }
+
+
 }
