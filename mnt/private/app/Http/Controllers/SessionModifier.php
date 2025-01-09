@@ -148,6 +148,6 @@ class SessionModifier extends Controller
 
 
         // Rediriger avec un message de succès
-        return redirect()->route('sessions.create')->with('success', 'Séance créée avec succès !');
+        return redirect()->route('session.view')->with('success', 'Séance créée avec succès !');
     }
 }
