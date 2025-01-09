@@ -130,10 +130,11 @@ class StudentController extends Controller
                 $tableHtml.='<td class="decoration">';
                 if ($session->SESS_DATE > now()) {
                     
-                    $tableHtml .= '<select class="scroll" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
+                    $tableHtml .= '<select class="scroll" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" 
+                    data-user-id="' . $user_id . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
                     
                     if ($evaluationTrouvee) {
-                        $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL . '</option>';
+                        $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL .$evaluationTrouvee->EVAL_ID.'</option>';
                     } else {
                         $tableHtml .= '<option></option>';
                     }

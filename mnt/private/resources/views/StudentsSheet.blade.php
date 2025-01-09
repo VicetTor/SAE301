@@ -123,8 +123,11 @@ $(document).on('change', '#selectEleve', function() {
             _token: '{{ csrf_token() }}' 
         },
         success: function(response) {
+            console.log("ERRUER");
+
         },
         error: function() {
+            console.log("ERRUER");
         }
     });
 });
