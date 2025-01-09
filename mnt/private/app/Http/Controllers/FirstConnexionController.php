@@ -41,6 +41,9 @@ class FirstConnexionController extends Controller
      */
     public function show(Request $request)
     {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         $utilisateurId = $request->query('user');
         $utilisateur = DB::table('grp2_user')
             ->where('grp2_user.user_id', '=', $utilisateurId)
@@ -82,9 +85,12 @@ class FirstConnexionController extends Controller
      * )
      */
     public function fill(Request $request) {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Get the new, and confirmation password from the request
-        $inputNewPswd = $request->input('inputNewPassword'); 
-        $inputPswdVerif = $request->input('inputPasswordVerif'); 
+        $inputNewPswd = $request->input('inputNewPassword');
+        $inputPswdVerif = $request->input('inputPasswordVerif');
 
         // Fetch the user's current password from the database
         $userPswd = DB::table('grp2_user')

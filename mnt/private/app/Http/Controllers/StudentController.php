@@ -41,8 +41,14 @@ class StudentController extends Controller {
      * )
      */
     public function getEleves(Request $request) {
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         $statustype = StatusType::all();
-        $user_id = $request->input('user_id'); 
+        $user_id = $request->input('user_id');
 
         $tableHtml = '';
 
@@ -53,7 +59,7 @@ class StudentController extends Controller {
         }
 
         $level = $eleve->LEVEL_ID_RESUME;
-        
+
         $sessions = Attendee::select('*', 'GRP2_USER.*')
             ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_attendee', '=', 'GRP2_USER.USER_ID')
             ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
@@ -80,8 +86,8 @@ class StudentController extends Controller {
                 <th>Compétence</th>
                 <th>Aptitude</th>
                 <th>Évolution</th>
-            </tr> 
-        </thead>  
+            </tr>
+        </thead>
         <tbody>';
         $i = 0;
 
@@ -142,7 +148,7 @@ class StudentController extends Controller {
                 foreach($aptitude as $apt){
                     $evaluationTrouvee = null;
                     foreach($evaluationsChaqueSeance[$i] as $eval) {
-                        if($eval->ABI_ID == $apt->ABI_ID){ 
+                        if($eval->ABI_ID == $apt->ABI_ID){
                             $evaluationTrouvee = $eval;
                             break;
                         }
@@ -153,10 +159,10 @@ class StudentController extends Controller {
                     $tableHtml.='<td>'.$apt->ABI_LABEL.'</td>';
                     $tableHtml.='<td class="decoration">';
                     if ($session->SESS_DATE > now()) {
-                        
-                        $tableHtml .= '<select class="scroll" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" 
+
+                        $tableHtml .= '<select class="scroll" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '"
                         data-user-id="' . $user_id . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
-                        
+
                         if ($evaluationTrouvee) {
                             $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL .$evaluationTrouvee->EVAL_ID.'</option>';
                         } else {

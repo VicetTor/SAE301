@@ -46,6 +46,12 @@ class TrainingController extends Controller
      */
     public function index()
     {
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         $trainings = Training::all(); // Retrieves all training records from the database.
         return response()->json($trainings); // Returns a JSON response containing the list of trainings.
     }
@@ -75,6 +81,12 @@ class TrainingController extends Controller
      */
     public function show($id)
     {
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         $training = Training::find($id); // Finds a specific training by its ID.
 
         if (!$training) {
@@ -111,8 +123,14 @@ class TrainingController extends Controller
      *     )
      * )
      */
-    public function store(Request $request) 
+    public function store(Request $request)
     {
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Validating input data.
         $validated = $request->validate([
             'TRAIN_ID' => 'required|integer', // Ensures the TRAIN_ID is an integer.
@@ -168,6 +186,12 @@ class TrainingController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         $training = Training::find($id); // Finds a training record by ID.
 
         if (!$training) {
@@ -211,6 +235,12 @@ class TrainingController extends Controller
      */
     public function destroy($id)
     {
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         $training = Training::find($id); // Finds the training to be deleted.
 
         if (!$training) {
@@ -224,6 +254,12 @@ class TrainingController extends Controller
 
     // Display the form to select the year for data export
     public function showYearSelectionForm() {
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Retrieves the available years from the database.
         $years = DB::table('grp2_year')->pluck('ANNU_YEAR');
 
@@ -232,6 +268,12 @@ class TrainingController extends Controller
 
     // Handles the year selection form submission
     public function handleYearSelection(Request $request) {
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         $year = $request->input('year'); // Gets the selected year from the form.
 
         // Redirects to the data export route with the selected year.
@@ -241,34 +283,40 @@ class TrainingController extends Controller
     // Exports training data to a CSV file for a specific year
     public function exportTrainingData(Request $request)
     {
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         $year = $request->query('year'); // Gets the year parameter from the query string.
 
         $callback = function() use ($year) {
             $handle = fopen('php://output', 'w'); // Opens the output stream for writing CSV data.
-            
+
             // Writes the column headers for the CSV.
             fputcsv($handle, ['Training ID', 'Number of registrations in the club', 'Number of graduates', 'Year']);
 
             // Executes the SQL query to retrieve the training data for the selected year.
             $results = DB::select("
                 SELECT DISTINCT
-                    tra.TRAIN_ID, 
-                    tod.CLUB_INSCRIPTIONNB, 
-                    tod.CLUB_NBDEGREEOBTAINED, 
+                    tra.TRAIN_ID,
+                    tod.CLUB_INSCRIPTIONNB,
+                    tod.CLUB_NBDEGREEOBTAINED,
                     yea.ANNU_YEAR
-                FROM 
+                FROM
                     grp2_user use1
-                JOIN 
+                JOIN
                     grp2_training tra ON tra.TRAIN_ID = use1.TRAIN_ID
-                JOIN 
+                JOIN
                     report rep ON rep.USER_ID = use1.USER_ID
-                JOIN 
+                JOIN
                     grp2_year yea ON yea.ANNU_YEAR = rep.ANNU_YEAR
-                JOIN 
+                JOIN
                     to_date tod ON tod.CLUB_ID = rep.CLUB_ID AND tod.ANNU_YEAR = yea.ANNU_YEAR
-                JOIN 
+                JOIN
                     grp2_club clu ON clu.CLUB_ID = rep.CLUB_ID
-                WHERE 
+                WHERE
                     yea.ANNU_YEAR = ?;
             ", [$year]);
 
@@ -291,28 +339,34 @@ class TrainingController extends Controller
 
     // Displays a graph showing training data for all years
     public function showTrainingGraph() {
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Executes the SQL query to retrieve aggregated training data for all years.
         $data = DB::select("
-            SELECT 
+            SELECT
                 yea.ANNU_YEAR,
-                tra.TRAIN_ID, 
-                SUM(tod.CLUB_INSCRIPTIONNB) AS total_inscriptions, 
+                tra.TRAIN_ID,
+                SUM(tod.CLUB_INSCRIPTIONNB) AS total_inscriptions,
                 SUM(tod.CLUB_NBDEGREEOBTAINED) AS total_graduates
-            FROM 
+            FROM
                 grp2_user use1
-            JOIN 
+            JOIN
                 grp2_training tra ON tra.TRAIN_ID = use1.TRAIN_ID
-            JOIN 
+            JOIN
                 report rep ON rep.USER_ID = use1.USER_ID
-            JOIN 
+            JOIN
                 grp2_year yea ON yea.ANNU_YEAR = rep.ANNU_YEAR
-            JOIN 
+            JOIN
                 to_date tod ON tod.CLUB_ID = rep.CLUB_ID AND tod.ANNU_YEAR = yea.ANNU_YEAR
-            JOIN 
+            JOIN
                 grp2_club clu ON clu.CLUB_ID = rep.CLUB_ID
-            GROUP BY 
+            GROUP BY
                 yea.ANNU_YEAR, tra.TRAIN_ID
-            ORDER BY 
+            ORDER BY
                 yea.ANNU_YEAR, tra.TRAIN_ID
         ");
 

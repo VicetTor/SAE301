@@ -19,8 +19,14 @@ class SignInController extends Controller
      * @return \Illuminate\View\View
      */
 
-    
+
     public function show(){
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
         // Return the 'SignInForm' view with data for user types, levels, and users
         return view('SignInForm', [
             'user' => User::all(), // Retrieve all users
@@ -73,6 +79,12 @@ class SignInController extends Controller
      * )
      */
     public function signIn(CreatePostRequest $request){
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
         // Create a new User instance
         $utilisateur = new User();
 

@@ -38,6 +38,9 @@ class HomeController extends BaseController
      * )
      */
     function dataClub(){
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         if(Session('user_id') !=null){
 
             $clubName = DB::table('REPORT')

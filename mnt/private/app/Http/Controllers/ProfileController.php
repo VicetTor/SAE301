@@ -50,27 +50,30 @@ class ProfileController extends Controller
      */
     function infoUpdate(Request $request)
     {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Validate the incoming request data
-        $validatedData = $request->validate([ 
+        $validatedData = $request->validate([
             'inputEmail' => 'required|email|max:255', // Email must be valid
             'inputPhoneNumber' => 'required|string|max:15', // Phone number must be a string, max length 15
             'inputAddress' => 'required|string|max:255', // Address must be a string, max length 255
             'inputPostalCode' => 'required|string|size:5', // Postal code must be exactly 5 characters long
         ], [
              // Custom error messages for validation failures
-             'inputEmail.required' => 'Email address is required.', 
-             'inputEmail.email' => 'Please provide a valid email address.', 
-             'inputPhoneNumber.required' => 'Phone number is required.', 
-             'inputAddress.required' => 'Address is required.', 
-             'inputPostalCode.required' => 'Postal code is required.', 
+             'inputEmail.required' => 'Email address is required.',
+             'inputEmail.email' => 'Please provide a valid email address.',
+             'inputPhoneNumber.required' => 'Phone number is required.',
+             'inputAddress.required' => 'Address is required.',
+             'inputPostalCode.required' => 'Postal code is required.',
              'inputPostalCode.size' => 'Postal code must be exactly 5 characters long.'
         ]);
-        
+
         // Retrieve the validated data from the request
-        $inputMail = $request->input('inputEmail'); 
-        $inputPhoneNumber = $request->input('inputPhoneNumber'); 
-        $inputAddress = $request->input('inputAddress'); 
-        $inputPostalCode = $request->input('inputPostalCode'); 
+        $inputMail = $request->input('inputEmail');
+        $inputPhoneNumber = $request->input('inputPhoneNumber');
+        $inputAddress = $request->input('inputAddress');
+        $inputPostalCode = $request->input('inputPostalCode');
 
         // Update the user information in the database
         $testUpdate = DB::table('grp2_user')
@@ -99,6 +102,9 @@ class ProfileController extends Controller
      */
     function up()
     {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Fetch any report pop-ups for the user from the database
         $popUps = DB::table('report')
             ->join('grp2_user','grp2_user.user_id','=','report.user_id') // Join with the user table
@@ -129,9 +135,12 @@ class ProfileController extends Controller
      */
     function logOut()
     {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Log the user out using Laravel's authentication system
         auth()->logout();
-        
+
         // Clear all session data
         Session::flush();
 
@@ -176,10 +185,13 @@ class ProfileController extends Controller
      */
     function pswdUpdate(Request $request)
     {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Get the current, new, and confirmation password from the request
-        $inputPswd = $request->input('inputActualPassword'); 
-        $inputNewPswd = $request->input('inputNewPassword'); 
-        $inputPswdVerif = $request->input('inputPasswordVerif'); 
+        $inputPswd = $request->input('inputActualPassword');
+        $inputNewPswd = $request->input('inputNewPassword');
+        $inputPswdVerif = $request->input('inputPasswordVerif');
 
         // Fetch the user's current password from the database
         $userPswd = DB::table('grp2_user')

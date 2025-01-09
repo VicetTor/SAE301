@@ -10,10 +10,10 @@ class SiteController extends Controller
 {
     /**
      * Show the edit form for modifying the site's settings.
-     * 
+     *
      * Retrieves the club's ID from the REPORT table, fetches the current site data,
      * and passes the values (site name, color, logo) to the view for editing.
-     * 
+     *
      * @return \Illuminate\View\View
      */
 
@@ -40,6 +40,12 @@ class SiteController extends Controller
      */
     public function showEditForm()
     {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
         // Retrieve the CLUB_ID based on the current user's ID (from the session)
         $clubID = DB::table('REPORT')
             ->select('grp2_club.CLUB_ID')
@@ -74,10 +80,10 @@ class SiteController extends Controller
 
     /**
      * Handle the form submission to update the site's settings.
-     * 
+     *
      * Validates the input, updates or inserts new site data into the database,
      * updates the CSS file, clears and caches the config, and redirects with a success message.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -113,6 +119,12 @@ class SiteController extends Controller
      */
     public function updateSite(Request $request)
     {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
+        if (session('user_id') == 1) {
+            return redirect()->route('home');
+        }
         // Validate the form data
         $request->validate([
             'site_name' => 'required|string|max:255', // Site name must be a string, max 255 characters
@@ -179,9 +191,9 @@ class SiteController extends Controller
 
     /**
      * Update the CSS file to reflect the new site color.
-     * 
+     *
      * This method searches for the site color definition in the CSS file and updates it with the new color.
-     * 
+     *
      * @param  string  $color  The new site color to be applied.
      * @return void
      */

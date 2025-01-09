@@ -36,6 +36,9 @@ class SessionController extends Controller
      */
     public function show()
     {
+        if (session('user_id') == null) {
+            return redirect()->route('connexion');
+        }
         // Fetches the club name associated with the user by joining the user, report, and club tables.
         $club = DB::table('grp2_user')
             ->join('report', 'report.user_id', '=', 'grp2_user.user_id') // Join the 'report' table to get club information
@@ -71,7 +74,7 @@ class SessionController extends Controller
 
         return view('SessionsPage',['club'=>$club, 'sessions'=>$sessions, 'abilities'=>$abilities,'initiator'=>$initiator]);
 
-        // The comment suggests that the retrieved data (models) should be stored in variables 
+        // The comment suggests that the retrieved data (models) should be stored in variables
         // and passed to the view in an array, following Blade template conventions.
     }
 }
