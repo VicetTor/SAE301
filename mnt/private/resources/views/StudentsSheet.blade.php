@@ -55,12 +55,6 @@ $eleves = User::select('*')
 ?>
 
 
-
-
-
-
-
-
 @if(session('type_id') != 3)
     <h1>Vous n'avez les droits nécéssaires</h1>
     <script>
@@ -112,7 +106,7 @@ $(document).on('change', '#selectEleve', function() {
 
     $(document).on('change', '.scroll', function() {
     var evalId = $(this).data('eval-id');
-    var statutId = $(this).val();
+    var statutId = $(this).val(); // Récupère la valeur du statut sélectionné
     var userId = $(this).data('user-id');
     var abiId = $(this).data('abi-id');
     var sessId = $(this).data('sess-id');
@@ -129,8 +123,11 @@ $(document).on('change', '#selectEleve', function() {
             _token: '{{ csrf_token() }}' 
         },
         success: function(response) {
+            console.log("ERRUER");
+
         },
         error: function() {
+            console.log("ERRUER");
         }
     });
 });
@@ -153,7 +150,7 @@ $(document).on('change', '#selectEleve', function() {
     </table>
 
     <style>
-        
+        /* Global table style */
 table {
     width: 100%;
     border-collapse: collapse;

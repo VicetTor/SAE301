@@ -170,7 +170,7 @@
         <!-- Level Prepared -->
         <div class = "thirdColumn">
             <div>
-                <p>Niveau préparé</p> <!-- French: Level Prepared -->
+                <p id="LEVEL_ID_LABEL">Niveau préparé</p> <!-- French: Level Prepared -->
                 <select name="LEVEL_ID_RESUME" id="LEVEL_ID_RESUME">
                     @foreach($levels as $level)
                         <option value="{{$level->LEVEL_ID}}">{{$level->LEVEL_LABEL}}</option> <!-- Display available levels -->
