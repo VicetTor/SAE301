@@ -10,6 +10,8 @@
     use App\Models\Attendee;
     use App\Models\Evaluation;
     use App\Models\Skill;
+    use Illuminate\Support\Facades\DB;
+
 
     $user_id = session('user_id');
     $level = session('level_id_resume');
