@@ -11,7 +11,7 @@ class FirstConnexionController extends Controller
 {
     public function show(Request $request){
 
-        $utilisateurId = $request->query('utilisateur');
+        $utilisateurId = $request->query('user');
         $utilisateur = DB::table('grp2_user')
             ->where('grp2_user.user_id', '=', $utilisateurId)
             ->first();
