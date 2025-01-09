@@ -55,6 +55,11 @@
         @endif
         @endforeach
     </tbody>
+    
+    <a href="/modification/users/temporaryPassword"><button id="buttonTempPswd" type="button" class="btn btn-primary">Voir Mots de Passe Temporaires</button></a>
+</form>
+    <br>
+
 </table>
 
 @endsection

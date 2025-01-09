@@ -262,6 +262,7 @@ class ModificationUserController extends Controller {
         // Redirect back to the modification page with a success message.
         return redirect()->route('modification.users')->with('success', 'User successfully deactivated.');
     }
+    
 }
 
 ?>

@@ -185,6 +185,8 @@ Route::get('/modification/users/search', [ModificationUserController::class, 'se
 Route::get('/modification/users/edit/{id}', [ModificationUserController::class, 'edit'])->name('modification.users.edit'); // Edit user details
 Route::post('/modification/users/update/{id}', [ModificationUserController::class, 'update'])->name('modification.users.update'); // Update user details
 Route::post('/modification/users/delete/{id}', [ModificationUserController::class, 'delete'])->name('modification.users.delete'); // Delete a user
+Route::get('/modification/users/temporaryPassword', [App\Http\Controllers\TemporaryPasswordController::class, 'show'])->name('modification.users.temporary.password'); // TemporaryPassword
+
 
 // Routes for evaluation search and historical evaluation data
 Route::get('/evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search'); // Search evaluations
