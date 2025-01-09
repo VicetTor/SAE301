@@ -8,12 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     use HasFactory;
-    public $timestamps = false;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'Report';
+    protected $table = 'report';
+    protected $primaryKey = 'REPORT_ID';
+
+    // Relations
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'USER_ID');
+    }
+
+    public function club()
+    {
+        return $this->belongsTo(Club::class, 'CLUB_ID');
+    }
 }
+?>

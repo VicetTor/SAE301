@@ -39,9 +39,8 @@ class Validation extends Model
      */
 
     
-    public function skill()
-    {
-        return $this->belongsTo(Skill::class, 'SKILL_ID', 'SKILL_ID');
+    public function skill() {
+        return $this->belongsTo(Skill::class, 'SKILL_ID');
     }
 
     
@@ -51,14 +50,12 @@ class Validation extends Model
     }
 
     
-    public function level()
-    {
-        return $this->belongsTo(Level::class, 'LEVEL_ID', 'LEVEL_ID');
+    public function level() {
+        return $this->belongsTo(Level::class, 'LEVEL_ID');
     }
 
     
-    public function evaluation()
-    {
-        return $this->belongsTo(Evaluation::class, 'EVAL_ID', 'EVAL_ID');
+    public function evaluation() {
+        return $this->belongsTo(Evaluation::class, 'EVAL_ID');
     }
 }

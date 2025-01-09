@@ -4,6 +4,7 @@ use App\Http\Controllers\FormsTrainingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\ModificationUserController;
+use App\Http\Controllers\EvaluationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,3 +94,8 @@ Route::get('/utilisateur/recherche', [ModificationUserController::class, 'search
 Route::get('/modification/users/{id}/edit', [ModificationUserController::class, 'edit'])->name('modification.users.edit');
 Route::post('/modification/users/{id}/delete', [ModificationUserController::class, 'delete'])->name('modification.users.delete');
 Route::put('/modification/users/{id}/update', [ModificationUserController::class, 'update'])->name('modification.users.update');
+
+Route::get('/evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
+
+Route::get('/evaluations/historique/{userId}/{clubId}', [EvaluationController::class, 'historiqueEvaluations'])->name('evaluations.historique');
+    
