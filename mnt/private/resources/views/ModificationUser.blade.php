@@ -29,15 +29,17 @@
             <td>{{ $user->USER_LASTNAME }}</td>
             <td>{{ $user->USER_LICENSENUMBER }}</td>
             <td class="d-flex">
-                <!-- Bouton Modifier -->
-                <a href="{{ route('modification.users.edit', $user->USER_ID) }}" class="btn btn-warning me-2">Modifier</a>
+                @if ($canEdit)
+                    <!-- Bouton Modifier -->
+                    <a href="{{ route('modification.users.edit', $user->USER_ID) }}" class="btn btn-warning me-2">Modifier</a>
 
-                <!-- Formulaire pour supprimer -->
-                <form action="{{ route('modification.users.delete', $user->USER_ID) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('POST') <!-- Assurez-vous que DELETE fonctionne en POST-->
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
+                    <!-- Formulaire pour supprimer -->
+                    <form action="{{ route('modification.users.delete', $user->USER_ID) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('POST') <!-- Assurez-vous que DELETE fonctionne en POST-->
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+                @endif
             </td>
         </tr>
         @endforeach

@@ -3,15 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
-use OpenApi\Annotations as OA;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable
 {
-    use HasFactory;
-    use HasApiTokens;
+    use HasFactory, HasApiTokens, Notifiable;
 
     protected $table = 'grp2_user'; // Spécifie le nom de la table
     protected $primaryKey = 'USER_ID'; // Spécifie la clé primaire si elle n'est pas `id`
@@ -42,7 +40,6 @@ class User extends Model
      * )
      */
 
-    
     public function formationsResponsable() {
         return $this->hasMany(Training::class, 'type_id');
     }
@@ -67,4 +64,4 @@ class User extends Model
         return $this->hasMany(Report::class, 'user_id');
     }
 }
-
+?>
