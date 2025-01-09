@@ -24,6 +24,7 @@
     </thead>
     <tbody>
         @foreach ($users as $user)
+        @if($user->USER_ID != Session('user_id'))
         <tr>
             <td>{{ $user->USER_FIRSTNAME }}</td>
             <td>{{ $user->USER_LASTNAME }}</td>
@@ -42,6 +43,7 @@
                 @endif
             </td>
         </tr>
+        @endif
         @endforeach
     </tbody>
 </table>

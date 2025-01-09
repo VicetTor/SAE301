@@ -39,7 +39,7 @@
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan des formations </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/validate">Valider niveau</a></li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/students"> Liste des adhérents </a> </li>';
-                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Modération </a> </li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/modification/users"> Modération </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/modifying">Personnaliser le site</a></li>';
                         }
                         if (Session('type_id') == 3) {
