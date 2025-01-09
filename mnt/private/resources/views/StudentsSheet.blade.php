@@ -80,13 +80,13 @@ $eleves = User::select('*')
         <table id=tabletable>
 
         </table>
-        <!-- Popup Overlay -->
+
 <div id="popup" class="popup-overlay" style="display: none;">
     <div class="popup-content">
         <span class="popup-close">&times;</span>
         <h3>Contenu de la session</h3>
         <div id="popup-body">
-            <!-- Le contenu de la session sera inséré ici via AJAX -->
+            
         </div>
     </div>
 </div>
@@ -263,54 +263,39 @@ td.select-cell select {
     }
 }
 
-
-/* Popup - Fond de la popup */
 .popup-overlay {
     display: none;
-    position: absolute;
-    margin: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fond sombre */
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 9999;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Contenu de la popup */
 .popup-content {
     background-color: white;
     padding: 20px;
-    border-radius: 8px;
-    max-width: 500px;
+    border-radius: 12px;
+    max-width: 400px;
     width: 90%;
     text-align: center;
-    position: relative;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Bouton de fermeture (croix) */
+
 .popup-close {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 24px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
     cursor: pointer;
-}
-
-/* Animation d'apparition */
-.popup-overlay {
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-/* Animation d'apparition de la popup */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
 
 
