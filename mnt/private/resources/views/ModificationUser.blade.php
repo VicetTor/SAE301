@@ -55,6 +55,30 @@
         @endif
         @endforeach
     </tbody>
+    <button id="buttonUserDeleting" type="button" class="btn btn-danger" data-toggle="modal" data-target="#popupPassword">Voir mots de passe temporaires</button>
+    <br>
+
 </table>
+
+ <div id="popupPassword" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-danger">
+                <!-- Warning message about account deletion -->
+                <h5> Afin de supprimer votre compte, vous devez contacter votre directeur technique </h5>
+            </div>
+            <div class="modal-body">
+                <!-- Contact information of the technical director -->
+                <h6> Adresse Mail: {{$popUps->USER_MAIL}} </h6>
+                <h6> Numéro de téléphone: {{$popUps->USER_PHONENUMBER}} </h6>
+                <br>
+                <!-- Button to close the modal -->
+                <div class="d-flex justify-content-center"> 
+                    <button data-mdb-button-init data-mdb-ripple-init class="col-lg-2 btn btn-light btn-outline-dark" type="button" data-dismiss="modal"><i class="bi bi-check-lg"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
 
 @endsection

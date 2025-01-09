@@ -158,6 +158,20 @@ class ModificationUserController extends Controller {
         // Redirect back to the modification page with a success message.
         return redirect()->route('modification.users')->with('success', 'User successfully deactivated.');
     }
+
+    function up()
+    {
+        // Fetch any report pop-ups for the user from the database
+        $popUps = DB::table('report')
+            ->join('grp2_user','grp2_user.user_id','=','report.user_id') // Join with the user table
+            ->join('grp2_club','grp2_club.club_id','=','report.club_id') // Join with the club table
+            ->where('type_id','=','3') // Filter for reports of type 3
+            ->first(); // Fetch the first record (if exists)
+
+        // Return the profile view with any pop-up notifications
+        return redirect()->route('modification/users');
+    }
+    
 }
 
 ?>
