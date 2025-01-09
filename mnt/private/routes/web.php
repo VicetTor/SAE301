@@ -53,6 +53,12 @@ Route::get('/TableBilan',function(){
     if (session('user_id') == null) {
         return redirect()->route('connexion');
     }
+    if (session('type_id') == 4) {
+        return redirect()->route('home');
+    }
+    if (session('type_id') == 3) {
+        return redirect()->route('home');
+    }
     return view('TableBilan');
 })->name('TableBilan');
 
@@ -60,7 +66,7 @@ Route::get('/session/create',function(){
     if (session('user_id') == null) {
         return redirect()->route('connexion');
     }
-    if (session('user_id') == 1) {
+    if (session('type_id') == 1) {
         return redirect()->route('home');
     }
     return view('SessionCreate');
@@ -71,7 +77,7 @@ Route::get('/session/create/form',function(){
     if (session('user_id') == null) {
         return redirect()->route('connexion');
     }
-    if (session('user_id') == 1) {
+    if (session('type_id') == 1) {
         return redirect()->route('home');
     }
     return view('SessionCreateForm');
@@ -86,7 +92,7 @@ Route::get('/modifying', function(){
     if (session('user_id') == null) {
         return redirect()->route('connexion');
     }
-    if (session('user_id') == 1) {
+    if (session('type_id') == 1) {
         return redirect()->route('home');
     }
     return view('SiteModifying');
@@ -97,7 +103,7 @@ Route::get('/students', function(){
     if (session('user_id') == null) {
         return redirect()->route('connexion');
     }
-    if (session('user_id') == 1) {
+    if (session('type_id') == 1) {
         return redirect()->route('home');
     }
     return view('StudentsSheet');
@@ -129,7 +135,7 @@ Route::get('/validate', function () {
     if (session('user_id') == null) {
         return redirect()->route('connexion');
     }
-    if (session('user_id') == 1) {
+    if (session('type_id') == 1) {
         return redirect()->route('home');
     }
     return view('ValidateLevel');

@@ -43,7 +43,10 @@ class SiteController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('type_id') == 3) {
             return redirect()->route('home');
         }
         // Retrieve the CLUB_ID based on the current user's ID (from the session)
@@ -122,7 +125,10 @@ class SiteController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('type_id') == 3) {
             return redirect()->route('home');
         }
         // Validate the form data

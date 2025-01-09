@@ -8,7 +8,7 @@
     <link href="/css/app.css" rel="stylesheet">
     <title>{{ $siteName }} : @yield('title')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <style> 
+    <style>
         :root {
             --site-color: {{ $siteColor ?? '#005c8f' }}; /* Default value */
         }
@@ -39,12 +39,12 @@
                         <li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/"> Accueil </a> </li>
                         <?php
                         if (Session('type_id') == 4) {
-                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session/create"> Créer une formation </a> </li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/formation-accueil">Formations </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan des formations </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/validate">Valider niveau</a></li>';
-                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/students"> Liste des adhérents </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/modification/users"> Modération </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/modifying">Personnaliser le site</a></li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/select-year"> CSV </a> </li>';
                         }
                         if (Session('type_id') == 3) {
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session/create"> Créer Séance </a> </li>';

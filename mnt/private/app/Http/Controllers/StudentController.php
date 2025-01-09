@@ -41,7 +41,7 @@ class StudentController extends Controller {
      * )
      */
     public function getEleves(Request $request) {
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {

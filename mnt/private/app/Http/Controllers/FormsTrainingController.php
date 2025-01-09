@@ -17,10 +17,9 @@ class FormsTrainingController extends Controller {
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
             return redirect()->route('home');
         }
-
         $trainings = DB::table('grp2_user')
         ->where('type_id','=','2')
         ->where('train_id', '=', '0')
@@ -41,7 +40,7 @@ class FormsTrainingController extends Controller {
     }
 
     public function validateForms(Request $request) {
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {
@@ -55,7 +54,7 @@ class FormsTrainingController extends Controller {
     }
 
     public function showTrainingHome() {
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {
@@ -65,7 +64,7 @@ class FormsTrainingController extends Controller {
     }
 
     public function showUpdateTrainingAdd() {
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {
@@ -86,7 +85,7 @@ class FormsTrainingController extends Controller {
     }
 
     public function showUpdateTrainingRemove() {
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {
@@ -107,7 +106,7 @@ class FormsTrainingController extends Controller {
 
 
     public function UpdateTraining(Request $request){
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {
@@ -146,7 +145,7 @@ class FormsTrainingController extends Controller {
     }
 
     public function RemoveTraining(Request $request){
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {
@@ -177,7 +176,7 @@ class FormsTrainingController extends Controller {
     }
 
     public function showModificationTechnical() {
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {

@@ -39,6 +39,12 @@ class SessionController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
+        if (session('type_id') == 3) {
+            return redirect()->route('home');
+        }
+        if (session('type_id') == 4) {
+            return redirect()->route('home');
+        }
         // Fetches the club name associated with the user by joining the user, report, and club tables.
         $club = DB::table('grp2_user')
             ->join('report', 'report.user_id', '=', 'grp2_user.user_id') // Join the 'report' table to get club information

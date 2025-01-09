@@ -254,6 +254,9 @@ class TrainingController extends Controller
 
     // Display the form to select the year for data export
     public function showYearSelectionForm() {
+        if (session('type_id') == 3) {
+            return redirect()->route('home');
+        }
         if (session('user_id') == 1) {
             return redirect()->route('home');
         }
@@ -268,6 +271,9 @@ class TrainingController extends Controller
 
     // Handles the year selection form submission
     public function handleYearSelection(Request $request) {
+        if (session('type_id') == 3) {
+            return redirect()->route('home');
+        }
         if (session('user_id') == 1) {
             return redirect()->route('home');
         }
@@ -283,6 +289,9 @@ class TrainingController extends Controller
     // Exports training data to a CSV file for a specific year
     public function exportTrainingData(Request $request)
     {
+        if (session('type_id') == 3) {
+            return redirect()->route('home');
+        }
         if (session('user_id') == 1) {
             return redirect()->route('home');
         }
@@ -339,7 +348,10 @@ class TrainingController extends Controller
 
     // Displays a graph showing training data for all years
     public function showTrainingGraph() {
-        if (session('user_id') == 1) {
+        if (session('type_id') == 1) {
+            return redirect()->route('home');
+        }
+        if (session('type_id') == 3) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {
