@@ -3,15 +3,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 class SiteController extends Controller
 {
     public function showEditForm()
     {
-        // Charger les paramètres existants (par exemple, depuis une base de données ou un fichier)
-        $siteName = config('app.name', 'Secoule'); // Exemple : utilisation de config/app.php
-        $siteColor = config('APP_COLOR', '#005C8F'); // Exemple : utilisation de config/app.php
-        return view('SiteModifying', compact('siteName', 'siteColor'));
+        $clubID = DB::table('REPORT')
+            ->select('grp2_club.CLUB_ID')
+            ->join('grp2_club', 'grp2_club.club_id', '=', 'report.club_id')
+            ->where('user_id', '=', Session('user_id'))
+            ->first();
+
+        if ($clubID) {
+            $clubID = $clubID->CLUB_ID; // Extraire la valeur réelle de CLUB_ID
+        } else {
+            // Gérer le cas où aucun enregistrement n'est trouvé
+            return redirect()->back()->withErrors('Club ID non trouvé.');
+        }
+
+        // Charger les paramètres existants depuis la table GRP2_SITE
+        $site = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first();
+
+        // Si aucune donnée n'est trouvée, définir des valeurs par défaut
+        $siteName = $site->SITE_NAME ?? 'Secoule';
+        $siteColor = $site->SITE_COLOR ?? '#005C8F'; // Définir une couleur par défaut si non trouvée
+        $siteLogo = $site->SITE_LOGO ? 'data:image/png;base64,' . base64_encode($site->SITE_LOGO) : null;
+
+        session(['site_name' => $siteName]);
+        session(['site_color' => $siteColor]);
+        session(['site_logo' => $siteLogo]);
+
+        // Passer les variables à la vue
+        return view('SiteModifying', compact('siteName', 'siteColor', 'siteLogo'));
     }
 
     public function updateSite(Request $request)
@@ -19,94 +43,81 @@ class SiteController extends Controller
         // Valider les données
         $request->validate([
             'site_name' => 'required|string|max:255',
-            'site_color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/', // Hex code validation
-            'site_logo' => 'nullable|image|mimes:png|max:2048', // Validation du fichier logo
+            'site_color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/', // Validation d'un code hexadécimal
+            'site_logo' => 'nullable|image|mimes:png|max:2048', // Validation du logo
         ]);
 
-        // Obtenir le nouveau nom
+        // Obtenir les données
         $siteName = $request->input('site_name');
         $siteColor = $request->input('site_color');
-        $this->updateEnvFile('APP_COLOR', $siteColor);
+        $logoData = null;
 
-        $this->updateCssFile($siteColor);
+        $clubID=DB::table('REPORT')
+        ->select('grp2_club.CLUB_ID')
+        ->join('grp2_club','grp2_club.club_id','=','report.club_id')
+        ->where('user_id', '=', Session('user_id'))
+        ->first();
 
-        // Si un logo est téléchargé, gérer le remplacement
+        if ($clubID) {
+            $clubID = $clubID->CLUB_ID; // Extract the actual CLUB_ID value
+        } else {
+            // Handle the case where no record is found
+            return redirect()->back()->withErrors('Club ID not found.');
+        }
+
+        // Si un logo est téléchargé, convertir le fichier en données binaires
         if ($request->hasFile('site_logo')) {
             $logo = $request->file('site_logo');
-
-            // Définir le nom du fichier
-            $logoName = 'site_logo.' . $logo->getClientOriginalExtension();
-            $oldLogoPath = public_path('images/site_logo/' . $logoName);
-
-            // Supprimer l'ancien logo s'il existe
-            if (file_exists($oldLogoPath)) {
-                unlink($oldLogoPath); // Supprime l'ancien logo
-            }
-    
-            // Déplacer le nouveau logo dans le dossier images/site_logo
-            $logo->move(public_path('images/site_logo'), $logoName);
+            $logoData = file_get_contents($logo->getPathname());
         }
 
-        // Mettre à jour le fichier .env
-        $envPath = base_path('.env');
-        if (file_exists($envPath)) {
-            $envContent = file_get_contents($envPath);
-    
-            // Remplacer APP_NAME
-            $envContent = preg_replace(
-                '/^APP_NAME=.*$/m',
-                "APP_NAME=\"{$siteName}\"",
-                $envContent
-            );
-    
-            file_put_contents($envPath, $envContent);
+        // Vérifier si une entrée existe déjà pour le club (CLUB_ID = 1)
+        $existingSite = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first();
+
+        if ($existingSite) {
+            // Mettre à jour les données existantes
+            DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->update([
+                'SITE_NAME' => $siteName,
+                'SITE_COLOR' => $siteColor,
+                'SITE_LOGO' => $logoData ?? $existingSite->SITE_LOGO,
+            ]);
+        } else {
+            // Créer une nouvelle entrée
+            DB::table('GRP2_SITE')->insert([
+                'CLUB_ID' => 1,
+                'SITE_NAME' => $siteName,
+                'SITE_COLOR' => $siteColor,
+                'SITE_LOGO' => $logoData,
+            ]);
         }
 
-        
+        // Mettre à jour le fichier CSS avec la nouvelle couleur
+        $this->updateCssFile($siteColor);
 
-        // Recharger la configuration
+        // Recharger la configuration si nécessaire
         Artisan::call('config:clear');
         Artisan::call('config:cache');
 
         // Rediriger avec un message de succès
-        return redirect()->back()->with('success', 'Le nom du site a été modifié.');
+        return redirect()->back()->with('success', 'Les informations du site ont été mises à jour avec succès.');
     }
 
-    protected function updateEnvFile($key, $value)
-    {
-        $path = base_path('.env');
-        $content = file_get_contents($path);
-
-        // Recherche et mise à jour de la clé dans le fichier .env
-        $pattern = "/^{$key}=(.*)$/m";
-        $replacement = "{$key}={$value}";
-
-        // Remplacement de la valeur
-        if (preg_match($pattern, $content)) {
-            $content = preg_replace($pattern, $replacement, $content);
-        } else {
-            // Ajouter la clé et la valeur si elle n'existe pas
-            $content .= "\n{$key}={$value}";
-        }
-
-        // Écriture dans le fichier .env
-        file_put_contents($path, $content);
-    }
-
+    // Méthode pour mettre à jour le fichier CSS
     protected function updateCssFile($color)
     {
-        $cssFilePath = public_path('css/app.css');  // Chemin vers votre fichier CSS
+        $cssFilePath = public_path('css/app.css'); // Chemin vers le fichier CSS
         $cssContent = file_get_contents($cssFilePath);
 
         // Rechercher et remplacer la couleur dans le fichier CSS
-        $pattern = '/--site-color: #[a-fA-F0-9]{6}/'; // Assurez-vous que la couleur est au format hexadécimal
-        $replacement = '--site-color: ' . $color;
+        $pattern = '/--site-color: #[a-fA-F0-9]{6};/'; // Correspond au format : --site-color: #XXXXXX;
+        $replacement = '--site-color: ' . $color . ';';
 
-        // Remplacer la couleur dans le CSS
-        $cssContent = preg_replace($pattern, $replacement, $cssContent);
+        // Modifier le contenu CSS
+        $updatedCssContent = preg_replace($pattern, $replacement, $cssContent);
 
         // Sauvegarder les modifications dans le fichier CSS
-        file_put_contents($cssFilePath, $cssContent);
+        file_put_contents($cssFilePath, $updatedCssContent);
     }
+
 }
 ?>

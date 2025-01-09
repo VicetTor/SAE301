@@ -27,10 +27,6 @@
                                 <label for="formFile" class="form-label">Logo du site</label>
                                 <input class="form-control" type="file" id="formFile" name="site_logo">
                             </div>
-                            <div class="mb-3">
-                                <label for="inputWebsiteDescription" class="form-label">Description du site</label>
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
-                            </div>
                             <button type="submit" class="btn darkblue-bg">Confirmer</button>
                                 
                             </form>
