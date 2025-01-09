@@ -10,38 +10,48 @@
 </head>
 
 <body class="turtle-background">
+    <!-- Main section for login page -->
     <section class="h-100">
         <div class="container h-100">
+            <!-- Centering content vertically and horizontally -->
             <div class="row justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <!-- Login card -->
                     <div class="card connexion-card text-black">
                         <div class="card-body p-5 text-center">
-                                <h1 class="fw-bold mb-5">CONNEXION</h1>
-                                <form method="POST" action="">
+                            <!-- Title of the page -->
+                            <h1 class="fw-bold mb-5">CONNEXION</h1>
+                            <form method="POST" action="">
                                 @csrf
-                                    <p class="alert alert-info" style="font-size: 0.9em;">
-                                        <strong>Information :</strong> Si c'est votre première connexion, votre mot de passe se trouve dans l'URL après le paramètre <code>password=</code>.
-                                    </p>
-                                    <div data-mdb-input-init class="mb-4">
-                                        <label for="mail" class="form-label">Adresse mail</label>
-                                        <input class="form-control form-control-lg" for="mail" name="email" type="email" id="email" value="" placeholder="exemple@mail.fr" required />
-                                        @error('email')
-                                            <div class="text-danger mt-2">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                                <!-- Information alert for first-time login users -->
+                                <p class="alert alert-info" style="font-size: 0.9em;">
+                                    <strong>Information :</strong> Si c'est votre première connexion, votre mot de passe se trouve dans l'URL après le paramètre <code>password=</code>.
+                                </p>
+                                <!-- Email input field -->
+                                <div data-mdb-input-init class="mb-4">
+                                    <label for="mail" class="form-label">Adresse mail</label>
+                                    <input class="form-control form-control-lg" for="mail" name="email" type="email" id="email" value="" placeholder="exemple@mail.fr" required />
+                                    <!-- Error message for invalid email input -->
+                                    @error('email')
+                                        <div class="text-danger mt-2">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                                    <div data-mdb-input-init class="mb-4">
-                                        <label class="form-label" for="mdp">Mot de passe</label>
-                                        <input class="form-control form-control-lg" type="password" id="password" name="password" placeholder="*****" autocomplete="new-password" required />
-                                        @error('password')
-                                            <div class="text-danger mt-2">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <br>
-                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-outline-dark btn-lg px-5" type="submit" name="connexion">Connexion</button>
-                                </form>
+                                <!-- Password input field -->
+                                <div data-mdb-input-init class="mb-4">
+                                    <label class="form-label" for="mdp">Mot de passe</label>
+                                    <input class="form-control form-control-lg" type="password" id="password" name="password" placeholder="*****" autocomplete="new-password" required />
+                                    <!-- Error message for invalid password input -->
+                                    @error('password')
+                                        <div class="text-danger mt-2">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <br>
+                                <!-- Submit button for the login form -->
+                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-outline-dark btn-lg px-5" type="submit" name="connexion">Connexion</button>
+                            </form>
 
-
+                            <!-- Error message for incorrect credentials -->
                             @if(session('fail') == 1)
                                 <p class="text-danger mt-3">Erreur : Identifiants incorrects.</p>
                             @endif

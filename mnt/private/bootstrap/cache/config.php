@@ -1,7 +1,7 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'Secool',
+    'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
@@ -10,7 +10,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:lio8XnF/V5TQcabqvAGHtpCUmr68mQaz8TjhaZdorOQ=',
+    'key' => 'base64:RpKLzvN8YDoddq25osqiNEhHwvuK1r2kelPPcXU0L5w=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -228,7 +228,7 @@
         'driver' => 'octane',
       ),
     ),
-    'prefix' => 'secool_cache',
+    'prefix' => 'laravel_cache',
   ),
   'cors' => 
   array (
@@ -327,7 +327,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'secool_database_',
+        'prefix' => 'laravel_database_',
       ),
       'default' => 
       array (
@@ -649,7 +649,7 @@
     'from' => 
     array (
       'address' => NULL,
-      'name' => 'Secool',
+      'name' => 'Laravel',
     ),
     'markdown' => 
     array (
@@ -770,7 +770,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'secool_session',
+    'cookie' => 'laravel_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SessionType;
-use Illuminate\Http\Request;
-use OpenApi\Annotations as OA;
+use App\Models\SessionType; // Import the SessionType model
+use Illuminate\Http\Request; // Import the Request class to handle incoming HTTP requests
+use OpenApi\Annotations as OA; // Import OpenAPI annotations for documentation
 
 class SessionTypeController extends Controller
 {
@@ -18,7 +18,7 @@ class SessionTypeController extends Controller
      *         description="List of all session types",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/SessionType")
+     *             @OA\Items(ref="#/components/schemas/SessionType") // Reference to the SessionType schema for documentation
      *         )
      *     ),
      *     @OA\Response(
@@ -29,6 +29,7 @@ class SessionTypeController extends Controller
      */
     public function index()
     {
+        // Retrieve all session types from the SessionType model and return them as JSON
         $sessionTypes = SessionType::all();
         return response()->json($sessionTypes);
     }
@@ -48,7 +49,7 @@ class SessionTypeController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Session type found",
-     *         @OA\JsonContent(ref="#/components/schemas/SessionType")
+     *         @OA\JsonContent(ref="#/components/schemas/SessionType") // Reference to the SessionType schema for documentation
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -62,12 +63,15 @@ class SessionTypeController extends Controller
      */
     public function show($id)
     {
+        // Find the session type by ID
         $sessionType = SessionType::find($id);
 
+        // If the session type is not found, return a 404 error
         if (!$sessionType) {
             return response()->json(['error' => 'Session type not found'], 404);
         }
 
+        // Return the session type as JSON if found
         return response()->json($sessionType);
     }
 
@@ -80,13 +84,13 @@ class SessionTypeController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"SESSTYPE_LABEL"},
-     *             @OA\Property(property="SESSTYPE_LABEL", type="string", example="Theoretical training")
+     *             @OA\Property(property="SESSTYPE_LABEL", type="string", example="Theoretical training") // Example input
      *         )
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Session Type Created",
-     *         @OA\JsonContent(ref="#/components/schemas/SessionType")
+     *         @OA\JsonContent(ref="#/components/schemas/SessionType") // Return the created session type in response
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -100,13 +104,16 @@ class SessionTypeController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the incoming request data
         $validated = $request->validate([
-            'SESSTYPE_LABEL' => 'required|string|max:255',
+            'SESSTYPE_LABEL' => 'required|string|max:255', // SESSTYPE_LABEL is required and must be a string with a max length of 255 characters
         ]);
 
+        // Create a new session type record using the validated data
         $sessionType = SessionType::create($validated);
 
-        return response()->json($sessionType, 201); // 201 signifie "créé"
+        // Return the newly created session type with a 201 status code (created)
+        return response()->json($sessionType, 201);
     }
 
     /**
@@ -125,13 +132,13 @@ class SessionTypeController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"SESSTYPE_LABEL"},
-     *             @OA\Property(property="SESSTYPE_LABEL", type="string", example="Practical training")
+     *             @OA\Property(property="SESSTYPE_LABEL", type="string", example="Practical training") // Example input for the session type label
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Session type updated",
-     *         @OA\JsonContent(ref="#/components/schemas/SessionType")
+     *         @OA\JsonContent(ref="#/components/schemas/SessionType") // Return the updated session type in response
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -145,18 +152,23 @@ class SessionTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Find the session type by ID
         $sessionType = SessionType::find($id);
 
+        // If the session type is not found, return a 404 error
         if (!$sessionType) {
             return response()->json(['error' => 'Session type not found'], 404);
         }
 
+        // Validate the incoming request data
         $validated = $request->validate([
-            'SESSTYPE_LABEL' => 'required|string|max:255',
+            'SESSTYPE_LABEL' => 'required|string|max:255', // SESSTYPE_LABEL is required and must be a string with a max length of 255 characters
         ]);
 
+        // Update the session type record with the validated data
         $sessionType->update($validated);
 
+        // Return the updated session type as JSON
         return response()->json($sessionType);
     }
 
@@ -176,7 +188,7 @@ class SessionTypeController extends Controller
      *         response=200,
      *         description="Session type deleted",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Session type deleted successfully")
+     *             @OA\Property(property="message", type="string", example="Session type deleted successfully") // Success message after deletion
      *         )
      *     ),
      *     @OA\Response(
@@ -191,15 +203,18 @@ class SessionTypeController extends Controller
      */
     public function destroy($id)
     {
+        // Find the session type by ID
         $sessionType = SessionType::find($id);
 
+        // If the session type is not found, return a 404 error
         if (!$sessionType) {
             return response()->json(['error' => 'Session type not found'], 404);
         }
 
+        // Delete the session type record
         $sessionType->delete();
 
+        // Return a success message upon successful deletion
         return response()->json(['message' => 'Session type deleted successfully']);
     }
 }
-?>

@@ -142,7 +142,7 @@ class StudentController extends Controller
                     . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
                     
                     if ($evaluationTrouvee) {
-                        $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL . '</option>';
+                        $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL .$evaluationTrouvee->EVAL_ID.'</option>';
                     } else {
                         $tableHtml .= '<option></option>';
                     }

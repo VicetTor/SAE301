@@ -18,6 +18,6 @@ use OpenApi\Annotations as OA;
  */
 class SwaggerConfig
 {
-    // Ce fichier peut être vide sinon, car il s'agit uniquement d'annotations.
+    
 }
 ?>
