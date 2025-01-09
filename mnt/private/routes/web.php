@@ -42,7 +42,7 @@ Route::post('/user', function(){
     return view('MyProfile');
 });
 
-Route::get('/session/create', function () {
+Route::get('/session/create',function(){
     return view('SessionCreate');
 })->name('session.create');
 
@@ -54,7 +54,7 @@ Route::get('/site/edit', [App\Http\Controllers\SiteController::class, 'showEditF
 Route::post('/site/update', [App\Http\Controllers\SiteController::class, 'updateSite'])->name('site.update');
 
 
-Route::get('/modifying', function () {
+Route::get('/modifying', function(){
     return view('SiteModifying');
 });
 
@@ -64,7 +64,7 @@ Route::get('/students', function(){
 
 
 /* USER MODIFYING */
-Route::get('/user', function () {
+Route::get('/user', function(){
     return view('UserModifying');
 });
 
@@ -101,4 +101,4 @@ Route::put('/modification/users/{id}/update', [ModificationUserController::class
 Route::get('/evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
 
 Route::get('/evaluations/historique/{userId}/{clubId}', [EvaluationController::class, 'historiqueEvaluations'])->name('evaluations.historique');
-    
+
