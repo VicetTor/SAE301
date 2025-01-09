@@ -15,7 +15,7 @@ class SignInController extends Controller
 {
     /**
      * Display the sign-in form with available user types, levels, and all users.
-     * 
+     *
      * @return \Illuminate\View\View
      */
     public function show(){
@@ -29,7 +29,7 @@ class SignInController extends Controller
 
     /**
      * Handle the sign-in process by validating and creating a new user.
-     * 
+     *
      * @param  \App\Http\Requests\CreatePostRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -38,7 +38,7 @@ class SignInController extends Controller
         $utilisateur = new User();
 
         // Assign a unique USER_ID based on the current count of users in the database
-        $utilisateur->USER_ID = DB::table('grp2_user')->count() + 1;
+        $utilisateur->USER_ID = DB::table('grp2_user')->max('USER_ID') + 1;
 
         // Set the LEVEL_ID based on user input from the sign-in form
         $utilisateur->LEVEL_ID = $request->input('LEVEL_ID');
