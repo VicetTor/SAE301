@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
 
@@ -99,5 +99,10 @@ class User extends Authenticatable
     public function getAuthIdentifier() {
         return $this->USER_ID; // Return the user's ID as the unique identifier
     }
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'user_id';
 }
 ?>

@@ -4,171 +4,211 @@
 @section('content')
 
 
-<!-- Line 1: Date and Time Selection -->
-<div class="range">
-    <div>    
-        <p>Date</p>
-        <!-- Dropdown to select the date -->
-        <select class="form-select" style="width:200px">
-            <option selected>Sélectionner la date</option>
-            <option value="1">8/01/2025</option>
-            <option value="2">9/01/2025</option>
-            <option value="3">10/01/2025</option>
-        </select>
-    </div>
-    <div>
-        <p>Heure</p>
-        <!-- Dropdown to select the time -->
-        <select class="form-select" style="width:200px">
-            <option selected>Sélectionner l'heure</option>
-            <option value="1">6 h 00</option>
-            <option value="2">10 h 00</option>
-            <option value="3">15 h 00</option>
-            <option value="4">20 h 00</option>
-            <option value="5">22 h 00</option>
-        </select>
-    </div>
-</div>
-    
-<!-- Line 2: Student and Skills Selection -->
-<div class="range">
-    <div> 
-        <p>Elève</p>
-        <!-- Dropdown to select the student -->
-        <select class="form-select" style="width:200px">
-            <option selected>choix de l'élève</option>
-            <option value="1">Fabienne Jort</option>
-            <option value="2">Catherine Poulain</option>
-            <option value="3">Antoine Lanage</option>
-            <option value="4">Didier Latortu</option>
-            <option value="5">Stéphane Sefou</option>
-        </select>
-    </div>
-    <div> 
+<!-- ligne 1 -->
+<form action="" method="POST">
+    @csrf
+    <div class="range">
+            <div>
+                <p>Date</p>
+                <input type="date" id="DATE" class="form-control" name="DATE" style="width:200px" >
+                @error('DATE')
+                <span style="color: red;">{{ $message }}</span>
+                @enderror
+            </div>
+            <div>
+                <p>Heure</p>
+                <input type="time" class="form-control" name="time" style="width:200px" >
+                @error('time')
+                <span style="color: red;">{{ $message }}</span>
+                @enderror
+            </div>
+            <div>
+                <p>Lieu</p>
+                <select class="form-select" name="lieu" style="width:200px">
+                    <option value="" disabled selected>Choix du lieu</option> <!-- Ne doit pas être choisi -->
+                    <option value="Milieu Naturel" {{ old('lieu') == 'Milieu Naturel' ? 'selected' : '' }}>Milieu Naturel</option>
+                    <option value="Piscine" {{ old('lieu') == 'Piscine' ? 'selected' : '' }}>Piscine</option>
+                </select>
+                    @error('lieu')
+                    <span style="color: red;">{{ $message }}</span>
+                    @enderror
+            </div>
+        </div>
+
+    <!-- ligne 2 -->
+
+    <div class="range">
+        <div>
+            <p>Elève</p>
+            <select class="form-select" style="width:200px" name="user_id[]" >
+                    <option value="-1">Choix de l'élève</option>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->USER_ID }}">
+                            {{ $user->USER_FIRSTNAME }} {{ $user->USER_LASTNAME }}
+                        </option>
+                    @endforeach
+            </select>
+            @error('user_id.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
+        </div>
+        <div>
         <p>Aptitude 1</p>
-        <!-- Dropdown to select skill 1 -->
-        <select class="form-select" style="width:200px">
-            <option selected>Choix des aptitude</option>
-            <option value="1">A1 : s'équilibrer</option>
-            <option value="2">A2 : Respecter le millieu</option>
-            <option value="3">A3 : S'immerger</option>
-        </select>
-    </div>
-    <div> 
+        <select class="form-select" style="width:200px" name="aptitude_id1[]" >
+                    <option value="-1">Choix des aptitudes</option>
+                    @foreach ($aptitudes as $label)
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                    @endforeach
+                </select>
+            @error('aptitude_id1.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
+        </div>
+        <div>
         <p>Aptitude 2</p>
-        <!-- Dropdown to select skill 2 -->
-        <select class="form-select" style="width:200px">
-            <option selected>Choix des aptitude</option>
-            <option value="1">A1 : s'équilibrer</option>
-            <option value="2">A2 : Respecter le millieu</option>
-            <option value="3">A3 : S'immerger</option>
-        </select>
-    </div>
-    <div> 
-        <p>Aptitude 3</p>
-        <!-- Dropdown to select skill 3 -->
-        <select class="form-select" style="width:200px">
-            <option selected>Choix des aptitude</option>
-            <option value="1">A1 : s'équilibrer</option>
-            <option value="2">A2 : Respecter le millieu</option>
-            <option value="3">A3 : S'immerger</option>
-        </select>
-    </div>
-    <div> 
-        <p>Initiateur</p>
-        <!-- Dropdown to select the initiator -->
-        <select class="form-select" style="width:200px">
-            <option selected>Choix de l'Initiateur</option>
-            <option value="1">Catherine Laroche</option>
-            <option value="2">Pierre Cailloux</option>
-            <option value="3">Jo Laucéan</option>
-        </select>
-    </div>
-</div> 
+        <select class="form-select" style="width:200px" name="aptitude_id2[]" >
+                    <option value="-1">Choix des aptitudes</option>
+                    @foreach ($aptitudes as $label)
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                    @endforeach
 
-   
-<!-- Line 3: Additional Student Selection -->
-<div class="range">
-    <div> 
-        <p>Elève</p>
-        <!-- Dropdown to select another student -->
-        <select class="form-select" style="width:200px">
-            <option selected>choix de l'élève</option>
-            <option value="1">Fabienne Jort</option>
-            <option value="2">Catherine Poulain</option>
-            <option value="3">Antoine Lanage</option>
-            <option value="4">Didier Latortu</option>
-            <option value="5">Stéphane Sefou</option>
-        </select>
+                </select>
+            @error('aptitude_id2.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
+        </div>
+        <div>
+        <p>Aptitude 3</p>
+        <select class="form-select" style="width:200px" name="aptitude_id3[]" >
+                    <option value="-1">Choix des aptitudes</option>
+                    @foreach ($aptitudes as $label)
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                    @endforeach
+
+                </select>
+            @error('aptitude_id3.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
+        </div>
+        <div>
+        <p>Initiateur</p>
+        <select class="form-select" style="width:200px" name="initiator_id[]" >
+                    <option selected>Choix de l'initiateur</option>
+                    @foreach ($initiators as $initiator)
+                        <option value="{{$initiator->USER_ID }}">{{ $initiator->USER_FIRSTNAME}} {{ $initiator->USER_LASTNAME }}</option>
+                    @endforeach
+                </select>
+            @error('initiator_id.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
+        </div>
     </div>
-    <div> 
+
+
+    <!-- ligne 3  -->
+
+    <div class="range">
+        <div>
+            <p>Elève</p>
+            <select class="form-select" style="width:200px" name="user_id[]" >
+                    <option value="-1">Choix de l'élève</option>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->USER_ID }}">
+                            {{ $user->USER_FIRSTNAME }} {{ $user->USER_LASTNAME }}
+                        </option>
+                    @endforeach
+                </select>
+            @error('user_id.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
+        </div>
+        <div>
         <p>Aptitude 1</p>
-        <!-- Dropdown to select skill 1 -->
-        <select class="form-select" style="width:200px">
-            <option selected>Choix des aptitude</option>
-            <option value="1">A1 : s'équilibrer</option>
-            <option value="2">A2 : Respecter le millieu</option>
-            <option value="3">A3 : S'immerger</option>
-        </select>
-    </div>
-    <div> 
+        <select class="form-select" style="width:200px" name="aptitude_id1[]" >
+                    <option value="-1">Choix des aptitudes</option>
+                    @foreach ($aptitudes as $label)
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                    @endforeach
+                </select>
+            @error('aptitude_id1.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
+        </div>
+        <div>
         <p>Aptitude 2</p>
-        <!-- Dropdown to select skill 2 -->
-        <select class="form-select" style="width:200px">
-            <option selected>Choix des aptitude</option>
-            <option value="1">A1 : s'équilibrer</option>
-            <option value="2">A2 : Respecter le millieu</option>
-            <option value="3">A3 : S'immerger</option>
-        </select>
-    </div>
-    <div> 
+        <select class="form-select" style="width:200px" name="aptitude_id2[]" >
+                    <option value="-1">Choix des aptitudes</option>
+                    @foreach ($aptitudes as $label)
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                    @endforeach
+
+                </select>
+            @error('aptitude_id2.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
+        </div>
+        <div>
         <p>Aptitude 3</p>
-        <!-- Dropdown to select skill 3 -->
-        <select class="form-select" style="width:200px">
-            <option selected>Choix des aptitude</option>
-            <option value="1">A1 : s'équilibrer</option>
-            <option value="2">A2 : Respecter le millieu</option>
-            <option value="3">A3 : S'immerger</option>
-        </select>
-    </div>
-    <div> 
+        <select class="form-select" style="width:200px" name="aptitude_id3[]" >
+                    <option value="-1">Choix des aptitudes</option>
+                    @foreach ($aptitudes as $label)
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                    @endforeach
+
+                </select>
+            @error('aptitude_id3.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
+        </div>
+        <div>
         <p>Initiateur</p>
-        <!-- Dropdown to select the initiator -->
-        <select class="form-select" style="width:200px">
-            <option selected>Choix de l'Initiateur</option>
-            <option value="1">Catherine Laroche</option>
-            <option value="2">Pierre Cailloux</option>
-            <option value="3">Jo Laucéan</option>
-        </select>
+        <select class="form-select" style="width:200px" name="initiator_id[]" >
+                    <option selected>Choix de l'initiateur</option>
+                    @foreach ($initiators as $initiator)
+                        <option value="{{$initiator->USER_ID }}">{{ $initiator->USER_FIRSTNAME}} {{ $initiator->USER_LASTNAME }}</option>
+                    @endforeach
+                </select>
+            @error('initiator_id.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
+        </div>
     </div>
-</div> 
 
-<!-- New student entries will appear here -->
-<div id="addStudent">
-</div>
+    <div id="addStudent">
+            <!-- Les nouvelles lignes pour les élèves pour les séances apparaîtront ici -->
+    </div>
 
-<!-- Button to add new students to the session -->
-<div class="range">
-    <div>
-        <button class="btn btn-outline-warning range" onclick="addDiv()">Ajouter un élève</button>  
-    </div>
-</div>
 
-<!-- Line for additional information -->
-<div class="range">    
-    <div>
-        <input type="text" placeholder="Information(s) complémentaire(s)" size=80px style="height: 70px; border-radius:20px; border-color:#005C8F;">
+    <div class="range">
+        <div>
+            <button type="button" class="btn btn-outline-warning range" id="button">Ajouter un élève</button>
+        </div>
     </div>
-</div>
-  
-<!-- Line for action buttons -->
-<div class="range">
-    <div> 
-        <button type="button" class="btn btn-outline-danger">Retour</button>
+
+    <div class="range">
+        <div>
+            <input type="text" placeholder="Information(s) complémentaire(s)" size=80px style="height: 70px; border-radius:20px; border-color:#005C8F;">
+        </div>
     </div>
-    <div> 
-        <button type="button" class="btn btn-outline-primary">Valider</button>
+
+    <div class="range">
+        <div>
+            <button type="submit" class="btn btn-outline-danger">Retour</button>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-outline-primary">Valider</button>
+        </div>
     </div>
-</div>
+    <script>
+        // Récupérer les utilisateurs depuis Laravel et les transformer en JSON pour JavaScript
+        var users = @json($users);
+        console.log(users);  // Afficher la structure des données dans la console du navigateur
+        var aptitudes = @json($aptitudes);
+        var initiators = @json($initiators);
+    </script>
+
+    <script src="{{ asset('js/SessionCreate.js') }}"></script>
+</form>
+
 
 @endsection
