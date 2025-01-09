@@ -57,7 +57,7 @@
     }
 </style>
 
-<form action="" method="POST">
+<form action="{{ route('validate.forms1') }}" method="POST">
     @csrf
 
     <!-- Responsable -->
@@ -122,6 +122,40 @@
     <!-- Bouton d'inscription -->
     <div>
         <button type="submit">Valider</button>
+    </div>
+</form>
+
+<form action="{{ route('validate.forms2') }}" method="POST">
+    @csrf
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4>Ajouter une formation</h4>
+        </div>
+
+        <div class="card-body">
+            <!-- Titre de la formation -->
+            <div class="mb-3">
+                <label for="SKILL_LABEL" class="form-label">Titre de la formation</label>
+                <input type="text" id="SKILL_LABEL" name="SKILL_LABEL" class="form-control" value="" required>
+            </div>
+
+            <!-- Niveau de la formation -->
+            <div class="mb-3">
+                <label for="LEVEL_ID" class="form-label">Niveau</label>
+                <select name="LEVEL_ID" id="LEVEL_ID" class="form-select" required>
+                    <option value="">Sélectionner un niveau</option>
+                    @foreach($levelIds as $levelId)
+                        <option value="{{$levelId->LEVEL_ID}}">{{$levelId->LEVEL_LABEL}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <!-- Bouton d'inscription -->
+        <div>
+            <button type="submit">Valider</button>
+        </div>
     </div>
 </form>
 
