@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use function GuzzleHttp\json_decode;
 
 
 class SessionController extends Controller
@@ -25,7 +22,7 @@ class SessionController extends Controller
 
 
         $sessions = DB::table('grp2_user')
-            ->join('grp2_attendee', 'grp2_user.user_id', '=', 'grp2_attendee.user_id')
+            ->join('grp2_attendee', 'grp2_user.user_id', '=', 'grp2_attendee.user_id_attendee')
             ->join('grp2_session', 'grp2_attendee.sess_id', '=', 'grp2_session.sess_id')
             ->join('grp2_evaluation', 'grp2_session.sess_id', '=' ,'grp2_evaluation.sess_id')
             ->join('grp2_ability','grp2_ability.abi_id','=','grp2_evaluation.abi_id')
@@ -36,15 +33,10 @@ class SessionController extends Controller
         $abilities = DB::table('grp2_ability')
             ->join('grp2_evaluation','grp2_ability.abi_id','=','grp2_evaluation.abi_id')
             ->join('grp2_session','grp2_evaluation.sess_id','=','grp2_session.sess_id')
-            ->join('grp2_user','grp2_evaluation.user_id','=','grp2_user.user_id')
+            ->join('grp2_attendee','grp2_attendee.sess_id','=','grp2_session.sess_id')
+            ->join('grp2_user','grp2_attendee.user_id_attendee','=','grp2_user.user_id')
+            ->where('grp2_user.user_id', '=', session('user_id'))
             ->get();
-
-
-
-
-
-
-
 
         return view('SessionsPage',['club'=>$club, 'sessions'=>$sessions, 'abilities'=>$abilities]);
 

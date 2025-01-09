@@ -38,9 +38,11 @@
                                             <div class="abilities">
                                                 <ul>
                                                     @foreach($abilities as $ability)
-                                                        <li style="list-style: none">
-                                                            <span style="color: red"><strong>A{{$ability->ABI_ID}}</strong></span> : {{$ability->ABI_LABEL}}
-                                                        </li>
+                                                        @if($ability->SESS_DATE == $session->SESS_DATE)
+                                                            <li style="list-style: none">
+                                                                <span style="color: red"><strong>A{{$ability->ABI_ID}}</strong></span> : {{$ability->ABI_LABEL}}
+                                                            </li>
+                                                        @endif
                                                     @endforeach
                                                 </ul>
                                             </div>

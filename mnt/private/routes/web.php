@@ -36,17 +36,6 @@ Route::post('/user', function(){
     return view('MyProfile');
 });
 
-
-// Route::get('/session',function(){
-//     return view('SessionsPage');
-// })->name('session');
-
-Route::get('/session',function(){
-    return view('SessionsPage');
-})->name('session');
-
-
-
 Route::get('/session/create',function(){
     return view('SessionCreate');
 })->name('session.create');
