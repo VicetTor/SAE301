@@ -26,7 +26,7 @@
                         <li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/"> Accueil </a> </li>
                         <?php
                         //Directeur Technique
-                        if (Session('type_id') == 1) {
+                        if (Session('type_id') == 4) {
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session/create"> Créer une formation </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan des formations </a> </li>';
 
@@ -38,7 +38,7 @@
                         }
 
                         //Responsable Formation
-                        if (Session('type_id') == 2) {
+                        if (Session('type_id') == 3) {
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session/create"> Créer Séance </a> </li> ';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan de ma formation </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/students"> Liste des adhérents </a> </li>';
@@ -46,13 +46,13 @@
                         //ajouter liste seance init+RF
 
                         //Initiateur
-                        if (Session('type_id') == 3) {
+                        if (Session('type_id') == 2) {
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan des formations </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/students"> Liste des élèves </a> </li>';
                         }
 
                         //Élève
-                        if (Session('type_id') == 4) {
+                        if (Session('type_id') == 1) {
                             echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/session">Mes Séances</a></li>';
                             echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/sheet">Mon bilan</a></li>';
                         }

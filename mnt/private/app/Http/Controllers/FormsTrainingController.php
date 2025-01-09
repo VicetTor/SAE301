@@ -26,8 +26,11 @@ class FormsTrainingController extends Controller
         $trainDatas = DB::table('grp2_training')
         ->get();
 
+        $levelIds = DB::table('grp2_level')
+        ->get();
 
-        return view('FormsTraining',['trainings'=>$trainings, 'studies'=>$studies, 'trainDatas'=>$trainDatas]);
+
+        return view('FormsTraining',['trainings'=>$trainings, 'studies'=>$studies, 'trainDatas'=>$trainDatas, 'levelIds'=>$levelIds]);
     }
 
     public function validateForms(Request $request) {
@@ -58,6 +61,24 @@ class FormsTrainingController extends Controller
     
         // Retour avec succès
         return redirect()->back()->with('success', 'Les initiateurs et étudiants ont été mis à jour avec succès!');
-    }    
+    }
+    
+    public function validateForms2(Request $request) {
+        // On regarde le nombre de skills qu'il y a et on rajoute plus un au nombre de skills pour le skill_id
+        $skills = DB::table('grp2_skill')
+        ->get();
+        $skill_id = count($skills) + 1;
+
+        // Insérer une donnée dans la table grp2_skills
+        DB::table('grp2_skill')->insert([
+            'SKILL_ID' => $skill_id,
+            'LEVEL_ID' => $request->LEVEL_ID,
+            'SKILL_LABEL' => $request->SKILL_LABEL,
+        ]);
+
+
+        // Retour avec succès
+        return redirect()->back()->with('success', 'L\'ajout d\'une compétence a été effectué avec succès!');
+    }
 
 }

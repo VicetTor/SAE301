@@ -3,6 +3,8 @@
 use App\Http\Controllers\FormsTrainingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\ModificationUserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,6 +41,11 @@ Route::post('/user', function(){
 //     return view('SessionsPage');
 // })->name('session');
 
+Route::get('/session',function(){
+    return view('SessionsPage');
+})->name('session');
+
+
 
 Route::get('/session/create',function(){
     return view('SessionCreate');
@@ -69,7 +76,7 @@ Route::get('/user', function(){
 Route::post('/infoUserUpdate',[App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate');
 Route::get('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate');
-
+Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate');
 
 Route::get('/validate', function(){
     return view('ValidateLevel');
@@ -81,4 +88,11 @@ Route::get('/sheet', function(){
 });
 
 Route::get('/forms-training', [FormsTrainingController::class, 'show']);
-Route::post('/forms-training', [FormsTrainingController::class, 'validateForms']);
+Route::post('/forms-training/validate1', [FormsTrainingController::class, 'validateForms'])->name('validate.forms1');
+Route::post('/forms-training/validate2', [FormsTrainingController::class, 'validateForms2'])->name('validate.forms2');
+
+Route::get('/utilisateur/modification', [ModificationUserController::class, 'show'])->name('modification.users');
+Route::get('/utilisateur/recherche', [ModificationUserController::class, 'search'])->name('modification.users.search');
+Route::get('/modification/users/{id}/edit', [ModificationUserController::class, 'edit'])->name('modification.users.edit');
+Route::post('/modification/users/{id}/delete', [ModificationUserController::class, 'delete'])->name('modification.users.delete');
+Route::put('/modification/users/{id}/update', [ModificationUserController::class, 'update'])->name('modification.users.update');
