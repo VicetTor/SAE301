@@ -108,3 +108,5 @@ Route::post('/select-year', [App\Http\Controllers\TrainingController::class, 'ha
 Route::get('/export-training-data', [App\Http\Controllers\TrainingController::class, 'exportTrainingData'])->name('exportTrainingData');
 Route::get('/training-graph', [App\Http\Controllers\TrainingController::class, 'showTrainingGraph'])->name('trainingGraph');
     
+Route::get('/choixEleve', [App\Http\Controllers\StudentController::class, 'getEleves']);
+Route::post('/updateEvaluation', [App\Http\Controllers\EvaluationController::class, 'updateEvaluation']);
