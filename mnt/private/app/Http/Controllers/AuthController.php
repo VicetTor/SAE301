@@ -60,20 +60,20 @@ class AuthController extends Controller {
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
     
-            // Retrieve the user's club ID from the report or related table
             $clubID = DB::table('REPORT')
                 ->join('grp2_club', 'grp2_club.club_id', '=', 'report.club_id')
-                ->where('user_id', '=', $user->id)  // Assuming you have a user_id in the report table
+                ->where('user_id', '=', $user->id)  
                 ->value('grp2_club.CLUB_ID');
             
-            // Retrieve the site settings for this club
             $site = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first();
     
-            // Get site color and store it in the session
-            $siteColor = $site->SITE_COLOR ?? '#005C8F'; // Default color if not found
+            $siteColor = $site->SITE_COLOR ?? '#005C8F'; 
+            $siteName = $site->SITE_NAME ?? 'Secool'; 
+            $siteLogo = $site->SITE_LOGO; 
             
-            // Store color in session for dynamic use in frontend
             session(['site_color' => $siteColor]);
+            session(['site_name' => $siteName]);
+            session(['site_logo' => $siteLogo]);
     
             // Générer un token d'authentification
             $token = $user->createToken('YourAppName')->plainTextToken;
@@ -81,7 +81,9 @@ class AuthController extends Controller {
             return response()->json([
                 'message' => 'Successfully logged in',
                 'token' => $token,
-                'site_color' => $siteColor,  // Return the color of the site
+                'site_color' => $siteColor,
+                'site_name' => $siteName,
+                'site_logo' => $siteLogo,  
                 'user' => [
                     'id' => $user->id,
                     'email' => $user->USER_MAIL,

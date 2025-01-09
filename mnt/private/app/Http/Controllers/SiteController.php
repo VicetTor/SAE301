@@ -9,27 +9,32 @@ class SiteController extends Controller
 {
     public function showEditForm()
     {
-        $clubID=DB::table('REPORT')
-        ->select(('grp2_club.CLUB_ID'))
-        ->join('grp2_club','grp2_club.club_id','=','report.club_id')
-        ->where('user_id', '=', Session('user_id'))
-        ->first();
+        $clubID = DB::table('REPORT')
+            ->select('grp2_club.CLUB_ID')
+            ->join('grp2_club', 'grp2_club.club_id', '=', 'report.club_id')
+            ->where('user_id', '=', Session('user_id'))
+            ->first();
 
         if ($clubID) {
-            $clubID = $clubID->CLUB_ID; // Extract the actual CLUB_ID value
+            $clubID = $clubID->CLUB_ID; // Extraire la valeur réelle de CLUB_ID
         } else {
-            // Handle the case where no record is found
-            return redirect()->back()->withErrors('Club ID not found.');
+            // Gérer le cas où aucun enregistrement n'est trouvé
+            return redirect()->back()->withErrors('Club ID non trouvé.');
         }
 
         // Charger les paramètres existants depuis la table GRP2_SITE
-        $site = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first(); // Remplacez 1 par l'ID du club actuel
-        
-        // Si aucune donnée n'est trouvée, définissez des valeurs par défaut
+        $site = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first();
+
+        // Si aucune donnée n'est trouvée, définir des valeurs par défaut
         $siteName = $site->SITE_NAME ?? 'Secoule';
-        $siteColor = $site->SITE_COLOR ?? '#005C8F';
+        $siteColor = $site->SITE_COLOR ?? '#005C8F'; // Définir une couleur par défaut si non trouvée
         $siteLogo = $site->SITE_LOGO ? 'data:image/png;base64,' . base64_encode($site->SITE_LOGO) : null;
 
+        session(['site_name' => $siteName]);
+        session(['site_color' => $siteColor]);
+        session(['site_logo' => $siteLogo]);
+
+        // Passer les variables à la vue
         return view('SiteModifying', compact('siteName', 'siteColor', 'siteLogo'));
     }
 
