@@ -21,7 +21,6 @@ Route::get('/', function () {
     return view('Home');
 });
 
-
 Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create'])->name('connexion');
 Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConnect']);
 
@@ -35,7 +34,6 @@ Route::get('/profile',function(){
 Route::get('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'show'])->name('firstconnexion');
 Route::post('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'fill'])->name('firstconnexion');
 
-
 Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
 
 Route::post('/user', function(){
@@ -45,7 +43,6 @@ Route::post('/user', function(){
 Route::get('/TableBilan',function(){
     return view('TableBilan');
 })->name('TableBilan');
-
 
 Route::get('/session/create',function(){
     return view('SessionCreate');
@@ -58,7 +55,6 @@ Route::get('/session/create/form',function(){
 Route::get('/site/edit', [App\Http\Controllers\SiteController::class, 'showEditForm'])->name('modifSite');
 Route::post('/site/update', [App\Http\Controllers\SiteController::class, 'updateSite'])->name('site.update');
 
-
 Route::get('/modifying', function(){
     return view('SiteModifying');
 });
@@ -66,7 +62,6 @@ Route::get('/modifying', function(){
 Route::get('/students', function(){
     return view('StudentsSheet');
 })->name('students');;
-
 
 /* USER MODIFYING */
 Route::get('/user', function(){
@@ -82,12 +77,9 @@ Route::get('/logOut', [App\Http\Controllers\ProfileController::class, 'logOut'])
 Route::get('/', [App\Http\Controllers\HomeController::class, 'dataClub'])->name('');
 Route::post('/', [App\Http\Controllers\HomeController::class, 'dataClub'])->name('');
 
-
-
 Route::get('/validate', function () {
     return view('ValidateLevel');
 });
-
 
 Route::get('/sheet', function () {
     return view('EvolutiveSheet');
@@ -102,7 +94,6 @@ Route::get('/modification/users/search', [ModificationUserController::class, 'se
 Route::get('/modification/users/edit/{id}', [ModificationUserController::class, 'edit'])->name('modification.users.edit');
 Route::post('/modification/users/update/{id}', [ModificationUserController::class, 'update'])->name('modification.users.update');
 Route::post('/modification/users/delete/{id}', [ModificationUserController::class, 'delete'])->name('modification.users.delete');
-
 
 Route::get('/evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
 
