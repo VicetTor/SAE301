@@ -19,11 +19,7 @@ class HomeController extends BaseController
         ->where('user_id', '=', Session('user_id'))
         ->first();
 
-        echo var_dump($clubName);
         return view('Home', ['clubName'=>$clubName]);
-
-
-
 
 
     }
