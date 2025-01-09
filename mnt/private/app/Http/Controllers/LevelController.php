@@ -55,7 +55,7 @@ class LevelController extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Level not find"
+     *         description="Level not found"
      *     ),
      *     @OA\Response(
      *         response=500,

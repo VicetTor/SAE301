@@ -16,6 +16,28 @@ class SiteController extends Controller
      * 
      * @return \Illuminate\View\View
      */
+
+    /**
+     * @OA\Get(
+     *     path="/api/site/edit",
+     *     summary="Show the edit form for modifying the site's settings",
+     *     tags={"Site"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Edit form displayed successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="siteName", type="string", example="Secoule"),
+     *             @OA\Property(property="siteColor", type="string", example="#005C8F"),
+     *             @OA\Property(property="siteLogo", type="string", format="base64", example=null)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Club ID not found"
+     *     )
+     * )
+     */
     public function showEditForm()
     {
         // Retrieve the CLUB_ID based on the current user's ID (from the session)
@@ -58,6 +80,36 @@ class SiteController extends Controller
      * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
+     */
+
+    /**
+     * @OA\Post(
+     *     path="/api/site/update",
+     *     summary="Handle the form submission to update the site's settings",
+     *     tags={"Site"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"site_name", "site_color"},
+     *             @OA\Property(property="site_name", type="string", example="Secoule"),
+     *             @OA\Property(property="site_color", type="string", format="hex", example="#005C8F"),
+     *             @OA\Property(property="site_logo", type="string", format="binary", nullable=true)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Site information updated successfully",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string", example="Site information has been successfully updated."))
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid input"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Club ID not found"
+     *     )
+     * )
      */
     public function updateSite(Request $request)
     {

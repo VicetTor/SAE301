@@ -10,6 +10,23 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *     required={"id", "email", "first_name", "last_name"},
+ *     @OA\Property(property="id", type="integer", description="User ID"),
+ *     @OA\Property(property="email", type="string", format="email", description="User email"),
+ *     @OA\Property(property="first_name", type="string", description="User first name"),
+ *     @OA\Property(property="last_name", type="string", description="User last name"),
+ *     @OA\Property(property="phone_number", type="string", description="User phone number"),
+ *     @OA\Property(property="address", type="string", description="User address"),
+ *     @OA\Property(property="postal_code", type="string", description="User postal code"),
+ *     @OA\Property(property="license_number", type="string", description="User license number"),
+ *     @OA\Property(property="medical_certificate_date", type="string", format="date", description="User medical certificate date")
+ * )
+ */
+
 class AuthController extends Controller {
     /**
      * @OA\Post(
@@ -141,4 +158,3 @@ class AuthController extends Controller {
         return response()->json(['message' => 'User registered successfully'], 201);
     }
 }
-?>

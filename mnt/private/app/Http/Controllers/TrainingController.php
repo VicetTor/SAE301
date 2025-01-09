@@ -8,6 +8,21 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @OA\Schema(
+ *     schema="Training",
+ *     type="object",
+ *     required={"TRAIN_ID", "title", "description", "responsable_id"},
+ *     @OA\Property(property="id", type="integer", description="Training ID"),
+ *     @OA\Property(property="TRAIN_ID", type="integer", description="Training Unique ID"),
+ *     @OA\Property(property="title", type="string", description="Training Title"),
+ *     @OA\Property(property="description", type="string", description="Training Description"),
+ *     @OA\Property(property="responsable_id", type="integer", description="Responsible User ID"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Creation Timestamp"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Update Timestamp")
+ * )
+ */
+
 class TrainingController extends Controller
 {
     /**
@@ -78,8 +93,11 @@ class TrainingController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             type="object",
-     *             required={"TRAIN_ID"},
-     *             @OA\Property(property="TRAIN_ID", type="integer")
+     *             required={"TRAIN_ID", "title", "description", "responsable_id"},
+     *             @OA\Property(property="TRAIN_ID", type="integer"),
+     *             @OA\Property(property="title", type="string"),
+     *             @OA\Property(property="description", type="string"),
+     *             @OA\Property(property="responsable_id", type="integer")
      *         )
      *     ),
      *     @OA\Response(
@@ -130,8 +148,11 @@ class TrainingController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             type="object",
-     *             required={"TRAIN_ID"},
-     *             @OA\Property(property="TRAIN_ID", type="integer")
+     *             required={"TRAIN_ID", "title", "description", "responsable_id"},
+     *             @OA\Property(property="TRAIN_ID", type="integer"),
+     *             @OA\Property(property="title", type="string"),
+     *             @OA\Property(property="description", type="string"),
+     *             @OA\Property(property="responsable_id", type="integer")
      *         )
      *     ),
      *     @OA\Response(
@@ -156,6 +177,9 @@ class TrainingController extends Controller
         // Validates the input data for updating the training.
         $validated = $request->validate([
             'TRAIN_ID' => 'required|integer', // Ensures TRAIN_ID is an integer.
+            'title' => 'required|string|max:255', // Ensures the title is a string and has a maximum length of 255 characters.
+            'description' => 'nullable|string', // Description is optional.
+            'responsable_id' => 'required|exists:users,id', // Ensures the responsible user exists in the database.
         ]);
 
         $training->update($validated); // Updates the training record with validated data.
@@ -295,4 +319,3 @@ class TrainingController extends Controller
         return view('trainingGraph', ['data' => $data]); // Returns a view to display the graph with the training data.
     }
 }
-?>
