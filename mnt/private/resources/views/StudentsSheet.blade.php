@@ -122,10 +122,8 @@ $(document).on('change', '#selectEleve', function() {
             _token: '{{ csrf_token() }}' // Assurez-vous d'inclure le token CSRF
         },
         success: function(response) {
-            alert(response.message); // Affiche un message de succès
         },
         error: function() {
-            alert('Une erreur est survenue pendant la mise à jour.');
         }
     });
 });
