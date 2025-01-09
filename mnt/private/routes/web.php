@@ -89,11 +89,12 @@ Route::get('/forms-training', [FormsTrainingController::class, 'show']);
 Route::post('/forms-training/validate1', [FormsTrainingController::class, 'validateForms'])->name('validate.forms1');
 Route::post('/forms-training/validate2', [FormsTrainingController::class, 'validateForms2'])->name('validate.forms2');
 
-Route::get('/utilisateur/modification', [ModificationUserController::class, 'show'])->name('modification.users');
-Route::get('/utilisateur/recherche', [ModificationUserController::class, 'search'])->name('modification.users.search');
-Route::get('/modification/users/{id}/edit', [ModificationUserController::class, 'edit'])->name('modification.users.edit');
-Route::post('/modification/users/{id}/delete', [ModificationUserController::class, 'delete'])->name('modification.users.delete');
-Route::put('/modification/users/{id}/update', [ModificationUserController::class, 'update'])->name('modification.users.update');
+Route::get('/modification/users', [ModificationUserController::class, 'show'])->name('modification.users');
+Route::get('/modification/users/search', [ModificationUserController::class, 'search'])->name('modification.users.search');
+Route::get('/modification/users/edit/{id}', [ModificationUserController::class, 'edit'])->name('modification.users.edit');
+Route::post('/modification/users/update/{id}', [ModificationUserController::class, 'update'])->name('modification.users.update');
+Route::post('/modification/users/delete/{id}', [ModificationUserController::class, 'delete'])->name('modification.users.delete');
+
 
 Route::get('/evaluations/search', [EvaluationController::class, 'search'])->name('evaluations.search');
 

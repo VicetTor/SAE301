@@ -62,6 +62,8 @@
     }
 </style>
 
+<h1>Créer une formation</h1>
+
 <!-- Formulaire pour choisir les responsables, initiateurs et élèves -->
 <form action="{{ route('validate.forms1') }}" method="POST" onsubmit="return validateForm()">
     @csrf
@@ -141,46 +143,6 @@
     </div>
 </form>
 
-<!-- Formulaire pour ajouter une formation -->
-<form action="{{ route('validate.forms2') }}" method="POST">
-    @csrf
-
-    <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-            <h4>Ajouter une formation</h4>
-        </div>
-
-        <div class="card-body">
-            <!-- Titre de la formation -->
-            <div class="mb-3">
-                <label for="SKILL_LABEL" class="form-label">Titre de la formation</label>
-                <input type="text" id="SKILL_LABEL" name="SKILL_LABEL" class="form-control" value="{{ old('SKILL_LABEL') }}" required>
-                @error('SKILL_LABEL')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <!-- Niveau de la formation -->
-            <div class="mb-3">
-                <label for="LEVEL_ID" class="form-label">Niveau</label>
-                <select name="LEVEL_ID" id="LEVEL_ID" class="form-select" required>
-                    <option value="">Sélectionner un niveau</option>
-                    @foreach($levelIds as $levelId)
-                        <option value="{{$levelId->LEVEL_ID}}" {{ old('LEVEL_ID') == $levelId->LEVEL_ID ? 'selected' : '' }}>{{$levelId->LEVEL_LABEL}}</option>
-                    @endforeach
-                </select>
-                @error('LEVEL_ID')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>
-
-        <!-- Bouton de validation -->
-        <div>
-            <button type="submit" class="btn btn-primary">Valider</button>
-        </div>
-    </div>
-</form>
 @endsection
 
 @push('scripts')
