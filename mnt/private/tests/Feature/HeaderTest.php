@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Session;
 
 class HeaderTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * A basic test example.
      *
