@@ -17,7 +17,15 @@
                     </div>
                 @endif
 
-                @if(session('type_id') == 3 || session('type_id') == 4)
+                @if(session('type_id') == 4)
+                    <div class="col-md-4 mb-3 text-center">
+                        <a href="{{ route('forms.views.edit.training.technical') }}" class="btn btn-danger btn-lg btn-block">
+                            Modifier manuel formation
+                        </a>
+                    </div>
+                @endif
+
+                @if(session('type_id') == 3)
                     <div class="col-md-4 mb-3 text-center">
                         <a href="{{ route('forms.views.edit.responsable.add') }}" class="btn btn-success btn-lg btn-block">
                             Ajouter dans une formation
@@ -25,7 +33,7 @@
                     </div>
                 @endif
 
-                @if(session('type_id') == 3 || session('type_id') == 4)
+                @if(session('type_id') == 3)
                     <div class="col-md-4 mb-3 text-center">
                         <a href="{{ route('forms.views.edit.responsable.remove') }}" class="btn btn-danger btn-lg btn-block">
                             Supprimer d'une formation

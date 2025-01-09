@@ -95,6 +95,8 @@ Route::get('/forms-modification-add', [FormsTrainingController::class, 'showUpda
 Route::post('/forms-modification-add', [FormsTrainingController::class, 'UpdateTraining']);
 Route::get('/forms-modification-remove', [FormsTrainingController::class, 'showUpdateTrainingRemove'])->name('forms.views.edit.responsable.remove');
 Route::post('/forms-modification-remove', [FormsTrainingController::class, 'RemoveTraining']);
+Route::get('/training-modification-technical', [FormsTrainingController::class, 'showModificationTechnical'])->name('forms.views.edit.training.technical');
+Route::post('/training-modification-technical', [FormsTrainingController::class, 'UpdateAbilities']);
 
 Route::get('/modification/users', [ModificationUserController::class, 'show'])->name('modification.users');
 Route::get('/modification/users/search', [ModificationUserController::class, 'search'])->name('modification.users.search');
