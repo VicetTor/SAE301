@@ -41,7 +41,7 @@ class User extends Model
      * )
      */
 
-    
+
     public function formationsResponsable() {
         return $this->hasMany(Training::class, 'type_id');
     }

@@ -26,14 +26,14 @@ Route::get('/connexion',[App\Http\Controllers\LoginController::class, 'create'])
 Route::post('/connexion', [App\Http\Controllers\LoginController::class, 'tryConnect']);
 
 
-Route::get('/inscription',function(){
-    return view('SignInForm');
-})->name('inscription');
+Route::get('/inscription',[\App\Http\Controllers\SignInController::class,'show'])->name('inscription');
+Route::post('/inscription',[\App\Http\Controllers\SignInController::class,'signIn'])->name('inscriptionValidate');
+
+Route::get('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'show'])->name('firstconnexion');
+Route::post('/firstconnexion',[\App\Http\Controllers\FirstConnexionController::class,'fill'])->name('firstconnexion');
 
 
-Route::get('/session',function(){
-    return view('SessionsPage');
-})->name('session');
+Route::get('/session',[\App\Http\Controllers\SessionController::class,'show'])->name('session');
 
 
 Route::get('/session/create',function(){
