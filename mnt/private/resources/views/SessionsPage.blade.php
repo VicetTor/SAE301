@@ -30,9 +30,10 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Prochaine Séance</h5>
                                             <div class="card-text">
-                                                
-                                                <h4 class="fw-bold p-2 fs-4"> {{$session->SESS_DATE}}</h4>
-                                                
+                                                <h4 class="fw-bold p-2 fs-4">
+                                                    {{ strtoupper(\Carbon\Carbon::parse($session->SESS_DATE)->locale('fr')->translatedFormat('l')) }}
+                                                    {{ \Carbon\Carbon::parse($session->SESS_DATE)->locale('fr')->translatedFormat('d F Y à H:i') }}
+                                                </h4>
                                                 <div class="shadow-sm p-2 bg-body-tertiary rounded">
                                                     <h4 class="fw-bold p-2 fs-6">Niveau :&nbsp;{{$session->LEVEL_ID}}</h4>
                                                     <div class="shadow-sm bg-body-secondary rounded">
