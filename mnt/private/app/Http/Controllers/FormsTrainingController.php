@@ -38,7 +38,7 @@ class FormsTrainingController extends Controller {
 
         DB::update('update grp2_user set train_id = ? where user_id = ?', [$request->TRAIN_ID, $request->TRAIN_RESPONSABLE_ID]);
 
-        return redirect()->back()->with('success', 'L\'initiateur est bien devenue responsable!');
+        return view('TrainingHome');
     }
 
     public function showTrainingHome() {
