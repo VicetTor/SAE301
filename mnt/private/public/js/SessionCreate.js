@@ -11,7 +11,7 @@ const divStudent = document.createElement("div");
 const select = document.createElement("select");
 select.classList.add("form-select");
 select.style.width = "200px";
-select.name = "user_id";
+select.name = "user_id[]";
 select.required = true;
 
 // Ajouter une option par défaut
@@ -39,7 +39,7 @@ const divAptitude1 = document.createElement("div");
 const selectAptitude1 = document.createElement("select");
 selectAptitude1.classList.add("form-select");
 selectAptitude1.style.width = "200px";
-selectAptitude1.name = "aptitude_id_1";
+selectAptitude1.name = "aptitude_id[]";
 selectAptitude1.required = true;
 
 const defaultOptionAptitude1 = document.createElement("option");
@@ -50,7 +50,7 @@ selectAptitude1.appendChild(defaultOptionAptitude1);
 // Remplir les options avec les aptitudes
 aptitudes.forEach(function(aptitude) {
     const option = document.createElement("option");
-    option.value = aptitude.Abi_id;  // ID de l'aptitude
+    option.value = aptitude.ABI_ID;  // ID de l'aptitude
     option.textContent = aptitude.Abi_label;  // Label de l'aptitude
     selectAptitude1.appendChild(option);
 });
@@ -63,7 +63,7 @@ const divAptitude2 = document.createElement("div");
 const selectAptitude2 = document.createElement("select");
 selectAptitude2.classList.add("form-select");
 selectAptitude2.style.width = "200px";
-selectAptitude2.name = "aptitude_id_2";
+selectAptitude2.name = "aptitude_id[]";
 selectAptitude2.required = true;
 
 const defaultOptionAptitude2 = document.createElement("option");
@@ -73,7 +73,7 @@ selectAptitude2.appendChild(defaultOptionAptitude2);
 
 aptitudes.forEach(function(aptitude) {
     const option = document.createElement("option");
-    option.value = aptitude.Abi_id;
+    option.value = aptitude.ABI_ID;
     option.textContent = aptitude.Abi_label;
     selectAptitude2.appendChild(option);
 });
@@ -87,7 +87,7 @@ const divAptitude3 = document.createElement("div");
 const selectAptitude3 = document.createElement("select");
 selectAptitude3.classList.add("form-select");
 selectAptitude3.style.width = "200px";
-selectAptitude3.name = "aptitude_id_3";
+selectAptitude3.name = "aptitude_id[]";
 selectAptitude3.required = true;
 
 const defaultOptionAptitude3 = document.createElement("option");
@@ -97,7 +97,7 @@ selectAptitude3.appendChild(defaultOptionAptitude3);
 
 aptitudes.forEach(function(aptitude) {
     const option = document.createElement("option");
-    option.value = aptitude.Abi_id;
+    option.value = aptitude.ABI_ID;
     option.textContent = aptitude.Abi_label;
     selectAptitude3.appendChild(option);
 });
@@ -112,7 +112,7 @@ const divInitiator = document.createElement("div");
 const selectInitiator = document.createElement("select");
 selectInitiator.classList.add("form-select");
 selectInitiator.style.width = "200px";
-selectInitiator.name = "initiator_id";
+selectInitiator.name = "initiator_id[]";
 selectInitiator.required = true;
 
 // Option par défaut

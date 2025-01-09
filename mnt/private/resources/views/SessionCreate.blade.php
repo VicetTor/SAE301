@@ -10,7 +10,7 @@
     <div class="range">
             <div>
                 <p>Date</p>
-                <input type="date" class="form-control" name="date" style="width:200px" required>
+                <input type="date" class="form-control" name="date" style="width:200px" >
             </div>
             <div>
                 <p>Heure</p>
@@ -31,7 +31,7 @@
     <div class="range">
         <div> 
             <p>Elève</p>
-            <select class="form-select" style="width:200px" name="user_id" required>
+            <select class="form-select" style="width:200px" name="user_id[]" required>
                     <option selected>Choix de l'élève</option>
                     @foreach ($users as $user)
                         <option value="{{ $user->USER_ID }}">
@@ -42,40 +42,40 @@
         </div>
         <div> 
         <p>Aptitude 1</p>
-        <select class="form-select" style="width:200px" name="aptitude_id" required>
+        <select class="form-select" style="width:200px" name="aptitude_id[]" required>
                     <option selected>Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->Abi_label }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
                     @endforeach
 
                 </select>
         </div>
         <div> 
         <p>Aptitude 2</p>
-        <select class="form-select" style="width:200px" name="aptitude_id" required>
+        <select class="form-select" style="width:200px" name="aptitude_id[]" required>
                     <option selected>Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->Abi_label }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
                     @endforeach
 
                 </select>
         </div>
         <div> 
         <p>Aptitude 3</p>
-        <select class="form-select" style="width:200px" name="aptitude_id" required>
+        <select class="form-select" style="width:200px" name="aptitude_id[]" required>
                     <option selected>Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->Abi_label }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
                     @endforeach
 
                 </select>
         </div>
         <div> 
         <p>Initiateur</p>
-        <select class="form-select" style="width:200px" name="initiator_id" required>
+        <select class="form-select" style="width:200px" name="initiator_id[]" required>
                     <option selected>Choix de l'initiateur</option>
-                    @foreach ($initiators as $id => $name)
-                        <option value="{{ $id }}">{{ $name->USER_FIRSTNAME}} {{ $name->USER_LASTNAME }}</option>
+                    @foreach ($initiators as $initiator)
+                        <option value="{{$initiator->USER_ID }}">{{ $initiator->USER_FIRSTNAME}} {{ $initiator->USER_LASTNAME }}</option>
                     @endforeach
                 </select>
         </div>
@@ -87,7 +87,7 @@
     <div class="range">
         <div> 
             <p>Elève</p>
-            <select class="form-select" style="width:200px" name="user_id" required>
+            <select class="form-select" style="width:200px" name="user_id[]" required>
                     <option selected>Choix de l'élève</option>
                     @foreach ($users as $user)
                         <option value="{{ $user->USER_ID }}">
@@ -98,7 +98,7 @@
         </div>
         <div> 
         <p>Aptitude 1</p>
-        <select class="form-select" style="width:200px" name="aptitude_id" required>
+        <select class="form-select" style="width:200px" name="aptitude_id[]" required>
                     <option selected>Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
                         <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
@@ -108,7 +108,7 @@
         </div>
         <div> 
         <p>Aptitude 2</p>
-        <select class="form-select" style="width:200px" name="aptitude_id" required>
+        <select class="form-select" style="width:200px" name="aptitude_id[]" required>
                     <option selected>Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
                         <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
@@ -118,7 +118,7 @@
         </div>
         <div> 
         <p>Aptitude 3</p>
-        <select class="form-select" style="width:200px" name="aptitude_id" required>
+        <select class="form-select" style="width:200px" name="aptitude_id[]" required>
                     <option selected>Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
                         <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
@@ -128,10 +128,10 @@
         </div>
         <div> 
         <p>Initiateur</p>
-        <select class="form-select" style="width:200px" name="initiator_id" required>
+        <select class="form-select" style="width:200px" name="initiator_id[]" required>
                     <option selected>Choix de l'initiateur</option>
-                    @foreach ($initiators as $id => $name)
-                        <option value="{{ $id }}">{{ $name->USER_FIRSTNAME}} {{ $name->USER_LASTNAME }}</option>
+                    @foreach ($initiators as $initiator)
+                        <option value="{{$initiator->USER_ID }}">{{ $initiator->USER_FIRSTNAME}} {{ $initiator->USER_LASTNAME }}</option>
                     @endforeach
                 </select>
         </div>
