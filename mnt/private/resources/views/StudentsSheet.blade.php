@@ -88,9 +88,8 @@ $eleves = User::select('*')
     <script>
 $(document).on('change', '#selectEleve', function() {
     var userId = $(this).val();
-    var selectedEleve = $(this).find("option:selected").text(); // Récupère le texte de l'option sélectionnée
+    var selectedEleve = $(this).find("option:selected").text();
 
-    // Met à jour le texte du <h1> avec l'information de l'élève
     $('#result').text("Tableau évolutif de : " + selectedEleve);
 
     $.ajax({
@@ -98,7 +97,6 @@ $(document).on('change', '#selectEleve', function() {
         type: 'GET',
         data: { user_id: userId },
         success: function(response) {
-            // Remplace seulement le contenu du tableau sans le remplacer complètement
             $('#tabletable').html(response.html);
         },
         error: function() {
@@ -108,14 +106,13 @@ $(document).on('change', '#selectEleve', function() {
 
     $(document).on('change', '.scroll', function() {
     var evalId = $(this).data('eval-id');
-    var statutId = $(this).val(); // Récupère la valeur du statut sélectionné
+    var statutId = $(this).val(); 
     var userId = $(this).data('user-id');
     var abiId = $(this).data('abi-id');
     var sessId = $(this).data('sess-id');
 
-    // Envoie la mise à jour de l'évaluation via AJAX
     $.ajax({
-        url: '/updateEvaluation', // Assurez-vous que cette route est correcte
+        url: '/updateEvaluation', 
         type: 'POST',
         data: {
             eval_id: evalId,
@@ -123,7 +120,7 @@ $(document).on('change', '#selectEleve', function() {
             user_id: userId,
             abi_id: abiId,
             sess_id: sessId,
-            _token: '{{ csrf_token() }}' // Assurez-vous d'inclure le token CSRF
+            _token: '{{ csrf_token() }}' 
         },
         success: function(response) {
         },
@@ -150,7 +147,7 @@ $(document).on('change', '#selectEleve', function() {
 
     <!-- Vous pouvez supprimer ce css cetait juste pour etre lisible en attendant !-->
     <style>
-        /* Global table style */
+    
 table {
     width: 100%;
     border-collapse: collapse;
@@ -165,7 +162,6 @@ th, td {
     font-size: 14px;
 }
 
-/* Style for the headers */
 th {
     background-color: #f2f2f2;
     text-align: center;
@@ -175,41 +171,26 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* Ensuring proper alignment of the session date (on the left) */
 td.date-cell {
     text-align: left;
     width: 15%;
 }
 
-/* Ensuring that skills are neatly organized in their columns */
 td.skill-cell {
     text-align: center;
     width: 20%;
 }
 
-/* Ability cells should be centered */
 td.ability-cell {
     text-align: center;
     width: 15%;
 }
 
-/* Select dropdown for the evaluations should have a smaller size */
 td.select-cell select {
     width: 100%;
     padding: 5px;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-    table {
-        width: 100%;
-        font-size: 12px;
-    }
-    
-    td, th {
-        padding: 8px;
-    }
-}
 
     </style>
     
