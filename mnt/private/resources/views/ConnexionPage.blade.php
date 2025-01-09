@@ -19,7 +19,7 @@
                                 <h1 class="fw-bold mb-5">CONNEXION</h1>
                                 <form method="POST" action="">
                                 @csrf    
-                                
+
                                     <div data-mdb-input-init class="mb-4">
                                         <label for="mail" class="form-label">Adresse mail</label>
                                         <input class="form-control form-control-lg" for="mail" name="email" type="email" id="email" value="" placeholder="exemple@mail.fr" required />
@@ -43,10 +43,8 @@
     </section>
     <?php
     use Illuminate\Support\Facades\Session;
-
     Session::put('fail', 0);
     ?>
 </body>
 
 </html>
-
