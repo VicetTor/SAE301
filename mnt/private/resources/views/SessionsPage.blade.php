@@ -24,7 +24,7 @@
                         <div class="d-flex justify-content-center">
                             @foreach($chunk as $session)
                                 @if($session->SESS_ID != session('verify'))
-                                    
+
                                     <div class="card m-5" style="width: 18rem;">
                                         {{ session(['verify' => $session->SESS_ID]) }}
                                         <div class="card-body">
@@ -35,6 +35,7 @@
                                                     {{ \Carbon\Carbon::parse($session->SESS_DATE)->locale('fr')->translatedFormat('d F Y à H:i') }}
                                                 </h4>
                                                 <div class="shadow-sm p-2 bg-body-tertiary rounded">
+                                                    <h4 class="fw-bold p-2 fs-6">Initateur:&nbsp;{{$initiator->USER_FIRSTNAME}} {{$initiator->USER_LASTNAME}}</h4>
                                                     <h4 class="fw-bold p-2 fs-6">Niveau :&nbsp;{{$session->LEVEL_ID}}</h4>
                                                     <div class="shadow-sm bg-body-secondary rounded">
                                                         <h4 class="fw-bold p-2 fs-6">Compétence C{{$session->SKILL_ID}} : </h4><p class="p-2 fs-6"> {{$session->SKILL_LABEL}}</p>
@@ -49,7 +50,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>

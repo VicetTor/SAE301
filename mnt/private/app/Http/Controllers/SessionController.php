@@ -38,7 +38,13 @@ class SessionController extends Controller
             ->where('grp2_user.user_id', '=', session('user_id'))
             ->get();
 
-        return view('SessionsPage',['club'=>$club, 'sessions'=>$sessions, 'abilities'=>$abilities]);
+
+        $initiator = DB::table('grp2_attendee')
+            ->join('grp2_user','grp2_attendee.user_id','=','grp2_user.user_id')
+            ->where('grp2_attendee.user_id_attendee', '=', session('user_id'))
+            ->first();
+
+        return view('SessionsPage',['club'=>$club, 'sessions'=>$sessions, 'abilities'=>$abilities,'initiator'=>$initiator]);
 
 
         //Ici, il faut récupérer les éléments des models avec les select puis les mettre dans des variables
