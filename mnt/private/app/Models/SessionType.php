@@ -10,18 +10,18 @@ class SessionType extends Model
 {
     use HasFactory;
 
-    // Spécifier le nom de la table
-    protected $table = 'grp2_sessiontype';
+    // Specify the table name
+    protected $table = 'grp2_sessiontype'; // The model is associated with the 'grp2_sessiontype' table
 
-    // Spécifier la clé primaire
-    protected $primaryKey = 'SESSTYPE_ID';
+    // Specify the primary key
+    protected $primaryKey = 'SESSTYPE_ID'; // The primary key of the 'grp2_sessiontype' table is 'SESSTYPE_ID'
 
-    // Indiquer que cette table n'a pas de timestamps (created_at, updated_at)
-    public $timestamps = false;
+    // Indicate that this table does not have timestamps (created_at, updated_at)
+    public $timestamps = false; // Disabling automatic timestamp management for this model
 
-    // Définir les attributs qui peuvent être assignés en masse
+    // Define the attributes that can be mass-assigned
     protected $fillable = [
-        'SESSTYPE_ID', 'SESSTYPE_LABEL', // Attributs de la table
+        'SESSTYPE_ID', 'SESSTYPE_LABEL', // These are the attributes that can be mass-assigned
     ];
 
     /**
@@ -29,14 +29,18 @@ class SessionType extends Model
      *     schema="SessionType",
      *     type="object",
      *     required={"SESSTYPE_ID", "SESSTYPE_LABEL"},
-     *     @OA\Property(property="SESSTYPE_ID", type="integer", description="ID du type de session"),
-     *     @OA\Property(property="SESSTYPE_LABEL", type="string", description="Libellé du type de session")
+     *     @OA\Property(property="SESSTYPE_ID", type="integer", description="ID of the session type"),
+     *     @OA\Property(property="SESSTYPE_LABEL", type="string", description="Label of the session type")
      * )
      */
 
-    
+    /**
+     * Relationship with the `Session` model.
+     * This defines a one-to-many relationship where a session type can have many sessions.
+     * The foreign key in the `Session` model is `SESSTYPE_ID`, which corresponds to the primary key `SESSTYPE_ID` in the `SessionType` model.
+     */
     public function sessions()
     {
-        return $this->hasMany(Session::class, 'SESSTYPE_ID', 'SESSTYPE_ID');
+        return $this->hasMany(Session::class, 'SESSTYPE_ID', 'SESSTYPE_ID'); // A session type can have many sessions
     }
 }

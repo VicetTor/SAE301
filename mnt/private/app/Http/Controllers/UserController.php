@@ -27,10 +27,11 @@ class UserController extends Controller
      *     )
      * )
      */
+    // This function returns a list of all users in the database.
     public function index()
     {
-        $users = User::all();
-        return response()->json($users);
+        $users = User::all(); // Retrieve all user records from the database.
+        return response()->json($users); // Return the list of users as a JSON response.
     }
 
     /**
@@ -60,13 +61,14 @@ class UserController extends Controller
      *     )
      * )
      */
+    // This function retrieves a specific user from the database by their ID.
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::find($id); // Find the user by their ID.
         if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['error' => 'User not found'], 404); // Return a 404 error if the user is not found.
         }
-        return response()->json($user);
+        return response()->json($user); // Return the user details as a JSON response.
     }
 
     /**
@@ -97,15 +99,18 @@ class UserController extends Controller
      *     )
      * )
      */
+    // This function creates a new user in the database.
     public function store(Request $request)
     {
+        // Validate the request data for the user's email and password.
         $validated = $request->validate([
-            'USER_MAIL' => 'required|email',
-            'USER_PASSWORD' => 'required|string|min:6',
+            'USER_MAIL' => 'required|email', // Ensure the email is valid.
+            'USER_PASSWORD' => 'required|string|min:6', // Ensure the password is a string and at least 6 characters long.
         ]);
 
+        // Create the new user with the validated data.
         $user = User::create($validated);
-        return response()->json($user, 201);
+        return response()->json($user, 201); // Return the created user as a JSON response with a 201 status.
     }
 }
 ?>

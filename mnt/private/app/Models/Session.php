@@ -30,7 +30,7 @@ class Session extends Model
      * )
      */
 
-    // Relation avec `SessionType` pour obtenir le type de session
+    // Relation with `SessionType`
    
     public function sessionType()
     {

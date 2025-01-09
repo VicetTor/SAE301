@@ -1,8 +1,8 @@
-@extends('Base')
+@extends('Base') <!-- Extends the base layout template -->
 
 @section('title','Tableau évolutif')
 
-@section('content')
+@section('content') <!-- Content section that will be inserted into the base layout -->
 
 <?php
 
@@ -24,7 +24,9 @@
 
     $evaluationsChaqueSeance = [];
     $i = 0;
-    foreach($sessions as $session){
+
+    // For each session, fetch evaluations
+    foreach ($sessions as $session) {
         $evaluations = Evaluation::select('*')
             ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
                 ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
@@ -36,10 +38,17 @@
     }
 ?>
 
-<!-- Mise en page-->
+    <!-- If the user is not logged in (session 'user_mail' is missing), show a "not connected" message -->
+    @if(session()->missing('user_mail'))
+        <p> PAS CONNECTE </p> <!-- "Not connected" -->
+    @endif
 
-<table>
+    <!-- Greet the user with their first and last name from the session -->
+    <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p> <!-- Greeting the user -->
     
+    <!-- Display the user's level -->
+    <p> Vous etes niveau {{ session('level_id') }} </p> <!-- Display user's level -->
+
     @if(session()->missing('user_mail'))
         <p> Vous êtes actuellement NON CONNECTÉ </p>
     @endif
@@ -186,6 +195,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
-
 
 @endsection

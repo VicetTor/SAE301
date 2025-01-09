@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreatePostRequest;
-use App\Models\Level;
-use App\Models\typeUser;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Nette\Utils\Random;
 use Illuminate\Support\Facades\Session;
 
 class FormsTrainingController extends Controller
 {
 
     public function show() {
+        // Retrieve all trainers (users with type_id = 3)
         $trainings = DB::table('grp2_user')
         ->where('type_id','=','3')
         ->get();
@@ -30,6 +25,7 @@ class FormsTrainingController extends Controller
         $levelIds = DB::table('grp2_level')
         ->get();
 
+        // Check if the current user has permissions to edit (type_id = 4)
         $canEdit = session('type_id') == 4;
 
         if($canEdit) {
@@ -39,6 +35,12 @@ class FormsTrainingController extends Controller
         }
     }
 
+    /**
+     * Validate and process the training forms data for trainers and students.
+     *
+     * @param  Request  $request  Incoming request containing form data.
+     * @return \Illuminate\Http\RedirectResponse Redirect back with success or error messages.
+     */
     public function validateForms(Request $request) {
         // Valider les entrées
         $request->validate([
@@ -66,24 +68,26 @@ class FormsTrainingController extends Controller
     
         // Calculer le nombre maximum d'élèves autorisés
         $maxStudents = count($initiators) * 2;
-    
-        // Vérifier que le nombre d'étudiants ne dépasse pas le maximum autorisé
+
+        // Check if the number of students exceeds the allowed maximum
         if (count($students) > $maxStudents) {
-            return redirect()->back()->withErrors(['students' => 'Le nombre d\'étudiants sélectionnés dépasse le maximum autorisé en fonction du nombre d\'initiateurs.']);
+            return redirect()->back()->withErrors([
+                'students' => 'The number of selected students exceeds the allowed maximum based on the number of initiators.'
+            ]);
         }
-    
-        // Boucle pour les initiateurs
+
+        // Assign training ID to each initiator
         foreach ($initiators as $initiatorId) {
             DB::table('grp2_user')
                 ->where('USER_ID', '=', $initiatorId)
-                ->update(['TRAIN_ID' => $request->TRAIN_ID]);
+                ->update(['TRAIN_ID' => session('train_id')]);
         }
-    
-        // Boucle pour les étudiants
+
+        // Assign training ID to each student
         foreach ($students as $studentId) {
             DB::table('grp2_user')
                 ->where('USER_ID', '=', $studentId)
-                ->update(['TRAIN_ID' => $request->TRAIN_ID]);
+                ->update(['TRAIN_ID' => session('train_id')]);
         }
     
         // Retour avec succès
@@ -117,4 +121,22 @@ class FormsTrainingController extends Controller
         // Retour avec succès
         return redirect()->back()->with('success', 'L\'ajout d\'une compétence a été effectué avec succès!');
     }
+
+    public function showModificationTechnical() {
+        $abilities = DB::table('grp2_ability')
+        ->get();
+
+        return view('TrainingModificationTechnical', ['abilities'=>$abilities]);
+    }
+
+    public function UpdateAbilities(Request $request) {
+
+        DB::table('grp2_ability')
+            ->where('abi_id', '=', $request->abilitie_id)
+            ->update(['abi_label' => $request->new_abilitie_id]);
+
+        // Retour avec succès
+        return view('TrainingHome');
+    }
+    
 }
