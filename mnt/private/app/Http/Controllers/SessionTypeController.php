@@ -6,6 +6,16 @@ use App\Models\SessionType; // Import the SessionType model
 use Illuminate\Http\Request; // Import the Request class to handle incoming HTTP requests
 use OpenApi\Annotations as OA; // Import OpenAPI annotations for documentation
 
+/**
+ * @OA\Schema(
+ *     schema="SessionType",
+ *     type="object",
+ *     required={"SESSTYPE_LABEL"},
+ *     @OA\Property(property="id", type="integer", description="Session Type ID"),
+ *     @OA\Property(property="SESSTYPE_LABEL", type="string", description="Session Type Label")
+ * )
+ */
+
 class SessionTypeController extends Controller
 {
     /**
@@ -18,7 +28,7 @@ class SessionTypeController extends Controller
      *         description="List of all session types",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/SessionType") // Reference to the SessionType schema for documentation
+     *             @OA\Items(ref="#/components/schemas/SessionType")
      *         )
      *     ),
      *     @OA\Response(
@@ -49,7 +59,7 @@ class SessionTypeController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Session type found",
-     *         @OA\JsonContent(ref="#/components/schemas/SessionType") // Reference to the SessionType schema for documentation
+     *         @OA\JsonContent(ref="#/components/schemas/SessionType")
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -84,13 +94,13 @@ class SessionTypeController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"SESSTYPE_LABEL"},
-     *             @OA\Property(property="SESSTYPE_LABEL", type="string", example="Theoretical training") // Example input
+     *             @OA\Property(property="SESSTYPE_LABEL", type="string", example="Theoretical training")
      *         )
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Session Type Created",
-     *         @OA\JsonContent(ref="#/components/schemas/SessionType") // Return the created session type in response
+     *         @OA\JsonContent(ref="#/components/schemas/SessionType")
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -106,7 +116,7 @@ class SessionTypeController extends Controller
     {
         // Validate the incoming request data
         $validated = $request->validate([
-            'SESSTYPE_LABEL' => 'required|string|max:255', // SESSTYPE_LABEL is required and must be a string with a max length of 255 characters
+            'SESSTYPE_LABEL' => 'required|string|max:255',
         ]);
 
         // Create a new session type record using the validated data
@@ -132,13 +142,13 @@ class SessionTypeController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"SESSTYPE_LABEL"},
-     *             @OA\Property(property="SESSTYPE_LABEL", type="string", example="Practical training") // Example input for the session type label
+     *             @OA\Property(property="SESSTYPE_LABEL", type="string", example="Practical training")
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Session type updated",
-     *         @OA\JsonContent(ref="#/components/schemas/SessionType") // Return the updated session type in response
+     *         @OA\JsonContent(ref="#/components/schemas/SessionType")
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -162,7 +172,7 @@ class SessionTypeController extends Controller
 
         // Validate the incoming request data
         $validated = $request->validate([
-            'SESSTYPE_LABEL' => 'required|string|max:255', // SESSTYPE_LABEL is required and must be a string with a max length of 255 characters
+            'SESSTYPE_LABEL' => 'required|string|max:255',
         ]);
 
         // Update the session type record with the validated data
@@ -188,7 +198,7 @@ class SessionTypeController extends Controller
      *         response=200,
      *         description="Session type deleted",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Session type deleted successfully") // Success message after deletion
+     *             @OA\Property(property="message", type="string", example="Session type deleted successfully")
      *         )
      *     ),
      *     @OA\Response(

@@ -21,6 +21,33 @@ class ProfileController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
+
+     /**
+     * @OA\Put(
+     *     path="/api/profile/update",
+     *     summary="Updates the user's information (email, phone, address, postal code)",
+     *     tags={"Profile"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"inputEmail", "inputPhoneNumber", "inputAddress", "inputPostalCode"},
+     *             @OA\Property(property="inputEmail", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="inputPhoneNumber", type="string", example="123-456-7890"),
+     *             @OA\Property(property="inputAddress", type="string", example="123 Main St"),
+     *             @OA\Property(property="inputPostalCode", type="string", example="12345")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User information updated successfully",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string", example="User information updated successfully"))
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid input"
+     *     )
+     * )
+     */
     function infoUpdate(Request $request)
     {
         // Validate the incoming request data
@@ -88,6 +115,18 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
+    /**
+     * @OA\Post(
+     *     path="/api/logout",
+     *     summary="Logs the user out and redirects them to the login page",
+     *     tags={"Profile"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="User logged out successfully",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string", example="User logged out successfully"))
+     *     )
+     * )
+     */
     function logOut()
     {
         // Log the user out using Laravel's authentication system
@@ -105,6 +144,35 @@ class ProfileController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
+     */
+    /**
+     * @OA\Put(
+     *     path="/api/profile/password",
+     *     summary="Updates the user's password",
+     *     tags={"Profile"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"inputActualPassword", "inputNewPassword", "inputPasswordVerif"},
+     *             @OA\Property(property="inputActualPassword", type="string", format="password", example="currentpassword123"),
+     *             @OA\Property(property="inputNewPassword", type="string", format="password", example="newpassword123"),
+     *             @OA\Property(property="inputPasswordVerif", type="string", format="password", example="newpassword123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Password updated successfully",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string", example="Password updated successfully"))
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid input"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authentication failed"
+     *     )
+     * )
      */
     function pswdUpdate(Request $request)
     {

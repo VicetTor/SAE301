@@ -6,6 +6,19 @@ use App\Models\Club;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *     schema="Club",
+ *     type="object",
+ *     required={"club_name", "club_postalcode", "club_city", "club_address"},
+ *     @OA\Property(property="id", type="integer", description="Club ID"),
+ *     @OA\Property(property="club_name", type="string", description="Club name"),
+ *     @OA\Property(property="club_postalcode", type="integer", description="Postal code"),
+ *     @OA\Property(property="club_city", type="string", description="City"),
+ *     @OA\Property(property="club_address", type="string", description="Address")
+ * )
+ */
+
 class ClubController extends Controller
 {
     /**
@@ -229,4 +242,3 @@ class ClubController extends Controller
         return response()->json(['message' => 'Club deleted successfully']);
     }
 }
-?>

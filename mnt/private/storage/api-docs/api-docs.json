@@ -17,7 +17,7 @@
                 "tags": [
                     "Abilities"
                 ],
-                "summary": "Get list of abilities",
+                "summary": "Get a list of all abilities",
                 "operationId": "8878dd9cc0d17f160a9e7b01390e12ff",
                 "responses": {
                     "200": {
@@ -140,20 +140,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "SKILL_ID",
-                                    "ABI_LABEL"
-                                ],
-                                "properties": {
-                                    "SKILL_ID": {
-                                        "type": "integer"
-                                    },
-                                    "ABI_LABEL": {
-                                        "type": "string",
-                                        "maxLength": 255
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/Ability"
                             }
                         }
                     }
@@ -169,6 +156,9 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Invalid input"
+                    },
                     "404": {
                         "description": "Ability not found"
                     }
@@ -178,7 +168,7 @@
                 "tags": [
                     "Abilities"
                 ],
-                "summary": "Delete a specific ability",
+                "summary": "Delete an ability",
                 "operationId": "3d2395d936cd1464c9f44d7b5834e041",
                 "parameters": [
                     {
@@ -192,7 +182,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "204": {
                         "description": "Ability deleted successfully"
                     },
                     "404": {
@@ -202,6 +192,18 @@
             }
         },
         "/api/login": {
+            "get": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Displays the login page",
+                "operationId": "502e09d4edf3fc40004e53dd6b4a6b78",
+                "responses": {
+                    "200": {
+                        "description": "Login page displayed successfully"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Authentication"
@@ -538,6 +540,526 @@
                 }
             }
         },
+        "/api/evaluations/history/{userId}/{clubId}": {
+            "get": {
+                "tags": [
+                    "Evaluations"
+                ],
+                "summary": "Displays the evaluation history for a given user and club",
+                "operationId": "bf73df24555cdfe25eb2caa5fe5ec4cc",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "The ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "clubId",
+                        "in": "path",
+                        "description": "The ID of the club",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Evaluation history retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Evaluation"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User or club not found"
+                    }
+                }
+            }
+        },
+        "/api/evaluations/search": {
+            "get": {
+                "tags": [
+                    "Evaluations"
+                ],
+                "summary": "Search for evaluations based on various filters",
+                "operationId": "0b014d6a66511bb52ed62a98e67be217",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "description": "Filter by user ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Search results retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Evaluation"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/evaluations/update": {
+            "post": {
+                "tags": [
+                    "Evaluations"
+                ],
+                "summary": "Update or create an evaluation",
+                "operationId": "fa30472c1d58c73a5136fba6b36f8ac0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "eval_id",
+                                    "statut_id",
+                                    "user_id",
+                                    "abi_id",
+                                    "sess_id"
+                                ],
+                                "properties": {
+                                    "eval_id": {
+                                        "type": "integer"
+                                    },
+                                    "statut_id": {
+                                        "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "type": "integer"
+                                    },
+                                    "abi_id": {
+                                        "type": "integer"
+                                    },
+                                    "sess_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Evaluation updated or created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Nouvelle évaluation créée avec succès!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/first-connexion": {
+            "get": {
+                "tags": [
+                    "First Connexion"
+                ],
+                "summary": "Display the 'First Connection' form for a specific user",
+                "operationId": "e41acac16b384b62477f049e66234322",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "query",
+                        "description": "The ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "First connection form displayed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "utilisateur": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "First Connexion"
+                ],
+                "summary": "Handle the form submission for setting a new password during the first login",
+                "operationId": "a7c2f351d8e9c5664f584b86a0d09ab8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "inputNewPassword",
+                                    "inputPasswordVerif"
+                                ],
+                                "properties": {
+                                    "inputNewPassword": {
+                                        "description": "The new password",
+                                        "type": "string"
+                                    },
+                                    "inputPasswordVerif": {
+                                        "description": "The confirmation of the new password",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Password updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "The new password does not match the verification"
+                    }
+                }
+            }
+        },
+        "/api/forms-training": {
+            "get": {
+                "tags": [
+                    "Forms Training"
+                ],
+                "summary": "Retrieve all trainers and students",
+                "operationId": "d1fefa30505de54362cf4803875eb156",
+                "responses": {
+                    "200": {
+                        "description": "Retrieved all trainers and students successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "trainings": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        },
+                                        "studies": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        },
+                                        "trainDatas": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Training"
+                                            }
+                                        },
+                                        "levelIds": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Level"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    }
+                }
+            }
+        },
+        "/api/forms-training/validate": {
+            "post": {
+                "tags": [
+                    "Forms Training"
+                ],
+                "summary": "Validate and process the training forms data for trainers and students",
+                "operationId": "a106548edd66e21d40ed090374c76ff3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "TRAIN_RESPONSABLE_ID",
+                                    "TRAIN_ID",
+                                    "initiators",
+                                    "students"
+                                ],
+                                "properties": {
+                                    "TRAIN_RESPONSABLE_ID": {
+                                        "type": "integer"
+                                    },
+                                    "TRAIN_ID": {
+                                        "type": "integer"
+                                    },
+                                    "initiators": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "students": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Training forms validated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Les initiateurs et étudiants ont été mis à jour avec succès!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/forms-training/validate2": {
+            "post": {
+                "tags": [
+                    "Forms Training"
+                ],
+                "summary": "Validate and process the addition of a new skill",
+                "operationId": "c557de8ca25fb822f119a6b4454a5cec",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "LEVEL_ID",
+                                    "SKILL_LABEL"
+                                ],
+                                "properties": {
+                                    "LEVEL_ID": {
+                                        "type": "integer"
+                                    },
+                                    "SKILL_LABEL": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "New skill added successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "L'ajout d'une compétence a été effectué avec succès!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/forms-training/modification-technical": {
+            "get": {
+                "tags": [
+                    "Forms Training"
+                ],
+                "summary": "Show modification technical form",
+                "operationId": "efa816a2bfe479b8b4ab616146f8fd84",
+                "responses": {
+                    "200": {
+                        "description": "Retrieved abilities successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Ability"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/forms-training/update-abilities": {
+            "post": {
+                "tags": [
+                    "Forms Training"
+                ],
+                "summary": "Update abilities",
+                "operationId": "c89fee45bf36676c9b2c61df3ca7042d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "abilitie_id",
+                                    "new_abilitie_id"
+                                ],
+                                "properties": {
+                                    "abilitie_id": {
+                                        "type": "integer"
+                                    },
+                                    "new_abilitie_id": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ability updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ability updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/club-name": {
+            "get": {
+                "tags": [
+                    "Home"
+                ],
+                "summary": "Fetch the club name associated with the logged-in user and display it on the Home page",
+                "operationId": "e4b2ea74a16ad13b74494210680bbf9c",
+                "responses": {
+                    "200": {
+                        "description": "Club name fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "clubName": {
+                                            "description": "The name of the club",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "User not logged in"
+                    },
+                    "404": {
+                        "description": "Club not found"
+                    }
+                }
+            }
+        },
         "/api/levels": {
             "get": {
                 "tags": [
@@ -639,7 +1161,7 @@
                         }
                     },
                     "404": {
-                        "description": "Level not find"
+                        "description": "Level not found"
                     },
                     "500": {
                         "description": "Server error"
@@ -650,7 +1172,7 @@
                 "tags": [
                     "Levels"
                 ],
-                "summary": "Update existant level",
+                "summary": "Update existing level",
                 "operationId": "4176bd984204f4faaf9389a29ef8464c",
                 "parameters": [
                     {
@@ -740,6 +1262,432 @@
                     },
                     "500": {
                         "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/users/search": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Searches for users by first name, last name, or license number",
+                "operationId": "e31af0f075527c9d2ccd7c7c01de0ed6",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of users matching the search term",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Retrieve a specific user by ID",
+                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Updates a user's information",
+                "operationId": "07b85e59f0acce0a8ba0121c87a61406",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "USER_FIRSTNAME",
+                                    "USER_LASTNAME",
+                                    "USER_LICENSENUMBER",
+                                    "USER_MAIL",
+                                    "USER_PHONENUMBER",
+                                    "USER_ADDRESS",
+                                    "USER_POSTALCODE",
+                                    "TYPE_ID",
+                                    "LEVEL_ID_RESUME",
+                                    "USER_MEDICCERTIFICATEDATE"
+                                ],
+                                "properties": {
+                                    "USER_FIRSTNAME": {
+                                        "type": "string"
+                                    },
+                                    "USER_LASTNAME": {
+                                        "type": "string"
+                                    },
+                                    "USER_LICENSENUMBER": {
+                                        "type": "string"
+                                    },
+                                    "USER_MAIL": {
+                                        "type": "string"
+                                    },
+                                    "USER_PHONENUMBER": {
+                                        "type": "string"
+                                    },
+                                    "USER_ADDRESS": {
+                                        "type": "string"
+                                    },
+                                    "USER_POSTALCODE": {
+                                        "type": "string"
+                                    },
+                                    "TYPE_ID": {
+                                        "type": "integer"
+                                    },
+                                    "LEVEL_ID_RESUME": {
+                                        "type": "integer"
+                                    },
+                                    "USER_MEDICCERTIFICATEDATE": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User information successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User information successfully updated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Deactivates a user by setting USER_ISACTIVE to 0",
+                "operationId": "7f267b8007efaa4c774b27392c09c8f0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully deactivated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User successfully deactivated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/profile/update": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Updates the user's information (email, phone, address, postal code)",
+                "operationId": "b08980cc0e7f23574681c256ab16e35a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "inputEmail",
+                                    "inputPhoneNumber",
+                                    "inputAddress",
+                                    "inputPostalCode"
+                                ],
+                                "properties": {
+                                    "inputEmail": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "inputPhoneNumber": {
+                                        "type": "string",
+                                        "example": "123-456-7890"
+                                    },
+                                    "inputAddress": {
+                                        "type": "string",
+                                        "example": "123 Main St"
+                                    },
+                                    "inputPostalCode": {
+                                        "type": "string",
+                                        "example": "12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User information updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User information updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Logs the user out and redirects them to the login page",
+                "operationId": "f68b40b884695318dcf0ecaad91d54b2",
+                "responses": {
+                    "200": {
+                        "description": "User logged out successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User logged out successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/password": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Updates the user's password",
+                "operationId": "7cf63ef77ae59c4d77e571a5d2a23993",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "inputActualPassword",
+                                    "inputNewPassword",
+                                    "inputPasswordVerif"
+                                ],
+                                "properties": {
+                                    "inputActualPassword": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "currentpassword123"
+                                    },
+                                    "inputNewPassword": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword123"
+                                    },
+                                    "inputPasswordVerif": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Password updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "401": {
+                        "description": "Authentication failed"
+                    }
+                }
+            }
+        },
+        "/api/sessions": {
+            "get": {
+                "tags": [
+                    "Session"
+                ],
+                "summary": "Displays the session details and related data for the user",
+                "operationId": "4686401161ff05760d80ddf1cc6e948f",
+                "responses": {
+                    "200": {
+                        "description": "Session details displayed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "club": {
+                                            "properties": {
+                                                "club_name": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "sessions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "abilities": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "initiator": {
+                                            "properties": {
+                                                "user_id": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized"
                     }
                 }
             }
@@ -946,6 +1894,210 @@
                     },
                     "500": {
                         "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/signin": {
+            "post": {
+                "tags": [
+                    "SignIn"
+                ],
+                "summary": "Handle the sign-in process by validating and creating a new user",
+                "operationId": "3a8da166fd4df89636b15574b45fe6a8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "USER_MAIL",
+                                    "USER_FIRSTNAME",
+                                    "USER_LASTNAME",
+                                    "USER_PHONENUMBER",
+                                    "USER_BIRTHDATE",
+                                    "USER_ADDRESS",
+                                    "USER_POSTALCODE",
+                                    "USER_LICENSENUMBER",
+                                    "USER_MEDICCERTIFICATEDATE",
+                                    "LEVEL_ID",
+                                    "TYPE_ID"
+                                ],
+                                "properties": {
+                                    "USER_MAIL": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "USER_FIRSTNAME": {
+                                        "type": "string",
+                                        "example": "John"
+                                    },
+                                    "USER_LASTNAME": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    },
+                                    "USER_PHONENUMBER": {
+                                        "type": "string",
+                                        "example": "123-456-7890"
+                                    },
+                                    "USER_BIRTHDATE": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-01-01"
+                                    },
+                                    "USER_ADDRESS": {
+                                        "type": "string",
+                                        "example": "123 Main St"
+                                    },
+                                    "USER_POSTALCODE": {
+                                        "type": "string",
+                                        "example": "12345"
+                                    },
+                                    "USER_LICENSENUMBER": {
+                                        "type": "string",
+                                        "example": "A1234567"
+                                    },
+                                    "USER_MEDICCERTIFICATEDATE": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-01-09"
+                                    },
+                                    "LEVEL_ID": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "TYPE_ID": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User signed in successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "password": {
+                                            "type": "string",
+                                            "example": "randompassword"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/site/edit": {
+            "get": {
+                "tags": [
+                    "Site"
+                ],
+                "summary": "Show the edit form for modifying the site's settings",
+                "operationId": "80442b398c1d14ac7a674ffe940422b9",
+                "responses": {
+                    "200": {
+                        "description": "Edit form displayed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "siteName": {
+                                            "type": "string",
+                                            "example": "Secoule"
+                                        },
+                                        "siteColor": {
+                                            "type": "string",
+                                            "example": "#005C8F"
+                                        },
+                                        "siteLogo": {
+                                            "type": "string",
+                                            "format": "base64",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Club ID not found"
+                    }
+                }
+            }
+        },
+        "/api/site/update": {
+            "post": {
+                "tags": [
+                    "Site"
+                ],
+                "summary": "Handle the form submission to update the site's settings",
+                "operationId": "d7df65b431c7db9926788187f8a68e85",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "site_name",
+                                    "site_color"
+                                ],
+                                "properties": {
+                                    "site_name": {
+                                        "type": "string",
+                                        "example": "Secoule"
+                                    },
+                                    "site_color": {
+                                        "type": "string",
+                                        "format": "hex",
+                                        "example": "#005C8F"
+                                    },
+                                    "site_logo": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Site information updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Site information has been successfully updated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Club ID not found"
                     }
                 }
             }
@@ -1166,6 +2318,47 @@
                 }
             }
         },
+        "/api/students": {
+            "get": {
+                "tags": [
+                    "Student"
+                ],
+                "summary": "Get the details of a student's sessions and evaluations",
+                "operationId": "e39bdd4a3ccb763e0abaddd2af0f97f8",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User ID of the student",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Student details retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "html": {
+                                            "type": "string",
+                                            "example": "<table>...</table>"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Student not found"
+                    }
+                }
+            }
+        },
         "/api/trainings": {
             "get": {
                 "tags": [
@@ -1204,10 +2397,22 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "TRAIN_ID"
+                                    "TRAIN_ID",
+                                    "title",
+                                    "description",
+                                    "responsable_id"
                                 ],
                                 "properties": {
                                     "TRAIN_ID": {
+                                        "type": "integer"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "responsable_id": {
                                         "type": "integer"
                                     }
                                 },
@@ -1290,10 +2495,22 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "TRAIN_ID"
+                                    "TRAIN_ID",
+                                    "title",
+                                    "description",
+                                    "responsable_id"
                                 ],
                                 "properties": {
                                     "TRAIN_ID": {
+                                        "type": "integer"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "responsable_id": {
                                         "type": "integer"
                                     }
                                 },
@@ -1416,44 +2633,6 @@
                     },
                     "400": {
                         "description": "Invalid data"
-                    },
-                    "500": {
-                        "description": "Server error"
-                    }
-                }
-            }
-        },
-        "/api/users/{id}": {
-            "get": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Retrieve a specific user by ID",
-                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "User ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "User found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found"
                     },
                     "500": {
                         "description": "Server error"
@@ -1712,6 +2891,211 @@
     },
     "components": {
         "schemas": {
+            "User": {
+                "required": [
+                    "id",
+                    "email",
+                    "first_name",
+                    "last_name"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "User ID",
+                        "type": "integer"
+                    },
+                    "email": {
+                        "description": "User email",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "first_name": {
+                        "description": "User first name",
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "description": "User last name",
+                        "type": "string"
+                    },
+                    "phone_number": {
+                        "description": "User phone number",
+                        "type": "string"
+                    },
+                    "address": {
+                        "description": "User address",
+                        "type": "string"
+                    },
+                    "postal_code": {
+                        "description": "User postal code",
+                        "type": "string"
+                    },
+                    "license_number": {
+                        "description": "User license number",
+                        "type": "string"
+                    },
+                    "medical_certificate_date": {
+                        "description": "User medical certificate date",
+                        "type": "string",
+                        "format": "date"
+                    }
+                },
+                "type": "object"
+            },
+            "Club": {
+                "required": [
+                    "club_name",
+                    "club_postalcode",
+                    "club_city",
+                    "club_address"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Club ID",
+                        "type": "integer"
+                    },
+                    "club_name": {
+                        "description": "Club name",
+                        "type": "string"
+                    },
+                    "club_postalcode": {
+                        "description": "Postal code",
+                        "type": "integer"
+                    },
+                    "club_city": {
+                        "description": "City",
+                        "type": "string"
+                    },
+                    "club_address": {
+                        "description": "Address",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SessionType": {
+                "required": [
+                    "SESSTYPE_LABEL"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Session Type ID",
+                        "type": "integer"
+                    },
+                    "SESSTYPE_LABEL": {
+                        "description": "Session Type Label",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Skill": {
+                "required": [
+                    "LEVEL_ID",
+                    "SKILL_LABEL"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Skill ID",
+                        "type": "integer"
+                    },
+                    "LEVEL_ID": {
+                        "description": "Level ID",
+                        "type": "integer"
+                    },
+                    "SKILL_LABEL": {
+                        "description": "Skill Label",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Training": {
+                "required": [
+                    "TRAIN_ID",
+                    "title",
+                    "description",
+                    "responsable_id"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Training ID",
+                        "type": "integer"
+                    },
+                    "TRAIN_ID": {
+                        "description": "Training Unique ID",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "description": "Training Title",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Training Description",
+                        "type": "string"
+                    },
+                    "responsable_id": {
+                        "description": "Responsible User ID",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "Creation Timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Update Timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Validation": {
+                "required": [
+                    "SKILL_ID",
+                    "ABI_ID",
+                    "LEVEL_ID",
+                    "EVAL_ID",
+                    "VALID_DATE"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Validation ID",
+                        "type": "integer"
+                    },
+                    "SKILL_ID": {
+                        "description": "Skill ID",
+                        "type": "integer"
+                    },
+                    "ABI_ID": {
+                        "description": "Ability ID",
+                        "type": "integer"
+                    },
+                    "LEVEL_ID": {
+                        "description": "Level ID",
+                        "type": "integer"
+                    },
+                    "EVAL_ID": {
+                        "description": "Evaluation ID",
+                        "type": "integer"
+                    },
+                    "VALID_DATE": {
+                        "description": "Validation Date",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "created_at": {
+                        "description": "Creation Timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Update Timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "Ability": {
                 "required": [
                     "id",
@@ -1734,34 +3118,33 @@
                 },
                 "type": "object"
             },
-            "Club": {
+            "Evaluation": {
                 "required": [
-                    "club_id",
-                    "club_name",
-                    "club_postalcode",
-                    "club_city",
-                    "club_address"
+                    "USER_ID",
+                    "STATUSTYPE_ID",
+                    "SESS_ID",
+                    "ABI_ID"
                 ],
                 "properties": {
-                    "club_id": {
-                        "description": "ID du club",
+                    "id": {
+                        "description": "Evaluation ID",
                         "type": "integer"
                     },
-                    "club_name": {
-                        "description": "Nom du club",
-                        "type": "string"
-                    },
-                    "club_postalcode": {
-                        "description": "Code postal du club",
+                    "USER_ID": {
+                        "description": "User ID",
                         "type": "integer"
                     },
-                    "club_city": {
-                        "description": "Ville du club",
-                        "type": "string"
+                    "STATUSTYPE_ID": {
+                        "description": "Status Type ID",
+                        "type": "integer"
                     },
-                    "club_address": {
-                        "description": "Adresse du club",
-                        "type": "string"
+                    "SESS_ID": {
+                        "description": "Session ID",
+                        "type": "integer"
+                    },
+                    "ABI_ID": {
+                        "description": "Ability ID",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -1773,11 +3156,11 @@
                 ],
                 "properties": {
                     "LEVEL_ID": {
-                        "description": "ID du niveau",
+                        "description": "ID of the level",
                         "type": "integer"
                     },
                     "LEVEL_LABEL": {
-                        "description": "Libellé du niveau",
+                        "description": "Label of the level",
                         "type": "string"
                     }
                 },
@@ -1809,152 +3192,6 @@
                     }
                 },
                 "type": "object"
-            },
-            "SessionType": {
-                "required": [
-                    "SESSTYPE_ID",
-                    "SESSTYPE_LABEL"
-                ],
-                "properties": {
-                    "SESSTYPE_ID": {
-                        "description": "ID du type de session",
-                        "type": "integer"
-                    },
-                    "SESSTYPE_LABEL": {
-                        "description": "Libellé du type de session",
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "Skill": {
-                "required": [
-                    "SKILL_ID",
-                    "LEVEL_ID",
-                    "SKILL_LABEL"
-                ],
-                "properties": {
-                    "SKILL_ID": {
-                        "description": "ID de la compétence",
-                        "type": "integer"
-                    },
-                    "LEVEL_ID": {
-                        "description": "ID du niveau associé à la compétence",
-                        "type": "integer"
-                    },
-                    "SKILL_LABEL": {
-                        "description": "Libellé de la compétence",
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "Training": {
-                "required": [
-                    "TRAIN_ID"
-                ],
-                "properties": {
-                    "TRAIN_ID": {
-                        "description": "ID de la formation",
-                        "type": "integer"
-                    }
-                },
-                "type": "object"
-            },
-            "User": {
-                "required": [
-                    "USER_ID",
-                    "USER_MAIL",
-                    "USER_FIRSTNAME",
-                    "USER_LASTNAME"
-                ],
-                "properties": {
-                    "USER_ID": {
-                        "description": "ID de l'utilisateur",
-                        "type": "integer"
-                    },
-                    "USER_MAIL": {
-                        "description": "Email de l'utilisateur",
-                        "type": "string"
-                    },
-                    "USER_PASSWORD": {
-                        "description": "Mot de passe de l'utilisateur",
-                        "type": "string"
-                    },
-                    "USER_FIRSTNAME": {
-                        "description": "Prénom de l'utilisateur",
-                        "type": "string"
-                    },
-                    "USER_LASTNAME": {
-                        "description": "Nom de l'utilisateur",
-                        "type": "string"
-                    },
-                    "USER_PHONENUMBER": {
-                        "description": "Numéro de téléphone de l'utilisateur",
-                        "type": "string"
-                    },
-                    "USER_BIRTHDATE": {
-                        "description": "Date de naissance de l'utilisateur",
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "USER_ADDRESS": {
-                        "description": "Adresse de l'utilisateur",
-                        "type": "string"
-                    },
-                    "USER_POSTALCODE": {
-                        "description": "Code postal de l'utilisateur",
-                        "type": "string"
-                    },
-                    "USER_LICENSENUMBER": {
-                        "description": "Numéro de licence de l'utilisateur",
-                        "type": "string"
-                    },
-                    "USER_MEDICCERTIFICATEDATE": {
-                        "description": "Date du certificat médical de l'utilisateur",
-                        "type": "string",
-                        "format": "date"
-                    }
-                },
-                "type": "object"
-            },
-            "Validation": {
-                "required": [
-                    "VALID_ID",
-                    "VALID_DATE",
-                    "SKILL_ID",
-                    "ABI_ID",
-                    "LEVEL_ID",
-                    "EVAL_ID"
-                ],
-                "properties": {
-                    "VALID_ID": {
-                        "description": "ID de la validation",
-                        "type": "integer"
-                    },
-                    "SKILL_ID": {
-                        "description": "ID de la compétence validée",
-                        "type": "integer"
-                    },
-                    "ABI_ID": {
-                        "description": "ID de l'aptitude validée",
-                        "type": "integer"
-                    },
-                    "LEVEL_ID": {
-                        "description": "ID du niveau de la validation",
-                        "type": "integer"
-                    },
-                    "EVAL_ID": {
-                        "description": "ID de l'évaluation associée à la validation",
-                        "type": "integer"
-                    },
-                    "VALID_DATE": {
-                        "description": "Date de la validation",
-                        "type": "string",
-                        "format": "date"
-                    }
-                },
-                "type": "object"
             }
         }
     },
@@ -1972,24 +3209,64 @@
             "description": "Clubs"
         },
         {
+            "name": "Evaluations",
+            "description": "Evaluations"
+        },
+        {
+            "name": "First Connexion",
+            "description": "First Connexion"
+        },
+        {
+            "name": "Forms Training",
+            "description": "Forms Training"
+        },
+        {
+            "name": "Home",
+            "description": "Home"
+        },
+        {
             "name": "Levels",
             "description": "Levels"
+        },
+        {
+            "name": "Login",
+            "description": "Login"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Profile",
+            "description": "Profile"
+        },
+        {
+            "name": "Session",
+            "description": "Session"
         },
         {
             "name": "Session Types",
             "description": "Session Types"
         },
         {
+            "name": "SignIn",
+            "description": "SignIn"
+        },
+        {
+            "name": "Site",
+            "description": "Site"
+        },
+        {
             "name": "Skills",
             "description": "Skills"
         },
         {
-            "name": "Trainings",
-            "description": "Trainings"
+            "name": "Student",
+            "description": "Student"
         },
         {
-            "name": "Users",
-            "description": "Users"
+            "name": "Trainings",
+            "description": "Trainings"
         },
         {
             "name": "Validations",

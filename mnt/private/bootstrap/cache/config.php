@@ -4,13 +4,13 @@
     'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://localhost',
+    'url' => 'http://localhost:8000',
     'asset_url' => NULL,
     'timezone' => 'UTC',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:RpKLzvN8YDoddq25osqiNEhHwvuK1r2kelPPcXU0L5w=',
+    'key' => 'base64:3rdT9wzPQkCYrryHFl5CnTq40Z7uP/YM5YqtVj2TMcg=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -184,7 +184,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -275,7 +275,7 @@
       array (
         'driver' => 'mysql',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
         'database' => 'sae301grp2_bd',
         'username' => 'root',
@@ -295,7 +295,7 @@
       array (
         'driver' => 'pgsql',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
         'database' => 'sae301grp2_bd',
         'username' => 'root',
@@ -310,7 +310,7 @@
       array (
         'driver' => 'sqlsrv',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'port' => '3306',
         'database' => 'sae301grp2_bd',
         'username' => 'root',
@@ -355,13 +355,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\storage\\app',
+        'root' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\storage\\app/public',
-        'url' => 'http://localhost/storage',
+        'root' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\storage\\app/public',
+        'url' => 'http://localhost:8000/storage',
         'visibility' => 'public',
       ),
       's3' => 
@@ -378,7 +378,7 @@
     ),
     'links' => 
     array (
-      'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\public\\storage' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\storage\\app/public',
+      'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\public\\storage' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -419,7 +419,7 @@
           'format_to_use_for_docs' => 'json',
           'annotations' => 
           array (
-            0 => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\app',
+            0 => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\app',
           ),
         ),
       ),
@@ -451,8 +451,8 @@
       ),
       'paths' => 
       array (
-        'docs' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\storage\\api-docs',
-        'views' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\resources/views/vendor/l5-swagger',
+        'docs' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\storage\\api-docs',
+        'views' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\resources/views/vendor/l5-swagger',
         'base' => NULL,
         'excludes' => 
         array (
@@ -533,13 +533,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -590,7 +590,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -656,7 +656,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -719,11 +719,6 @@
     'stateful' => 
     array (
       0 => 'localhost',
-      1 => 'localhost:3000',
-      2 => '127.0.0.1',
-      3 => '127.0.0.1:8000',
-      4 => '::1',
-      5 => 'localhost',
     ),
     'guard' => 
     array (
@@ -761,7 +756,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -781,9 +776,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\resources\\views',
+      0 => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\resources\\views',
     ),
-    'compiled' => 'C:\\xampp\\htdocs\\SAE301\\mnt\\private\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\houll\\Desktop\\SAE301\\mnt\\private\\storage\\framework\\views',
   ),
   'flare' => 
   array (

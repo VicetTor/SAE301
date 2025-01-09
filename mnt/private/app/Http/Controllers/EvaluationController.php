@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -7,15 +8,39 @@ use App\Models\Club;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use OpenApi\Annotations as OA;
 
 class EvaluationController extends Controller
 {
     /**
-     * Displays the evaluation history for a given user and club.
-     *
-     * @param  int  $userId  The ID of the user.
-     * @param  int  $clubId  The ID of the club.
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/api/evaluations/history/{userId}/{clubId}",
+     *     summary="Displays the evaluation history for a given user and club",
+     *     tags={"Evaluations"},
+     *     @OA\Parameter(
+     *         name="userId",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the user",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="clubId",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the club",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Evaluation history retrieved successfully",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Evaluation"))
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User or club not found"
+     *     )
+     * )
      */
     public function historiqueEvaluations($userId, $clubId) {
         if (session('type_id') != 4) {
@@ -59,10 +84,30 @@ class EvaluationController extends Controller
     }
 
     /**
-     * Search for evaluations based on various filters.
-     *
-     * @param  Request  $request  The HTTP request object.
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/api/evaluations/search",
+     *     summary="Search for evaluations based on various filters",
+     *     tags={"Evaluations"},
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         required=false,
+     *         description="Search term",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="userId",
+     *         in="query",
+     *         required=false,
+     *         description="Filter by user ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Search results retrieved successfully",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Evaluation"))
+     *     )
+     * )
      */
     public function search(Request $request) {
 
@@ -113,8 +158,6 @@ class EvaluationController extends Controller
     
         // Apply club ID filter if provided
         if ($clubId) {
-
-
             $evaluationsQuery->whereHas('user.reports', function ($query) use ($clubId) {
                 $query->where('CLUB_ID', $clubId);
             });
@@ -134,10 +177,32 @@ class EvaluationController extends Controller
         }
     }
 
-
+    /**
+     * @OA\Post(
+     *     path="/api/evaluations/update",
+     *     summary="Update or create an evaluation",
+     *     tags={"Evaluations"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"eval_id", "statut_id", "user_id", "abi_id", "sess_id"},
+     *             @OA\Property(property="eval_id", type="integer"),
+     *             @OA\Property(property="statut_id", type="integer"),
+     *             @OA\Property(property="user_id", type="integer"),
+     *             @OA\Property(property="abi_id", type="integer"),
+     *             @OA\Property(property="sess_id", type="integer")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Evaluation updated or created successfully",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string", example="Nouvelle évaluation créée avec succès!"))
+     *     )
+     * )
+     */
     public function updateEvaluation(Request $request)
     {
-        
         $evalId = $request->input('eval_id');
         $statutId = $request->input('statut_id');
         $user_id = $request->input('user_id');
@@ -145,7 +210,7 @@ class EvaluationController extends Controller
         $sess_id = $request->input('sess_id');
     
         if($evalId == 0){
-            $evalId = Evaluation::count()+1;
+            $evalId = Evaluation::count() + 1;
         }
     
         DB::table('grp2_evaluation')->updateOrInsert(
@@ -157,15 +222,7 @@ class EvaluationController extends Controller
                 'ABI_ID' => $abi_id
             ]
         );
-        
-    
-            
     
         return response()->json(['message' => 'Nouvelle évaluation créée avec succès!']);
     }
-    
-    
-
-
 }
-?>
