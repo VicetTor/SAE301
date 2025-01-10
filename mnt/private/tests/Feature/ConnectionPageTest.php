@@ -8,6 +8,7 @@ use Tests\TestCase;
 class ConnectionPageTest extends TestCase
 {
 
+    
     /**
      * A basic test example.
      *

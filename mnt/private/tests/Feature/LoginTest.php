@@ -4,6 +4,10 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Session;
+
+
+
 
 class LoginTest extends TestCase
 {
@@ -41,7 +45,10 @@ class LoginTest extends TestCase
      */
     public function test_connection_student_is_succes_with_valid_login()
     {
+        Session::start();
+
         $response = $this->post('/connexion', [
+            '_token' => csrf_token(),
             'email' => 'eleve1@secool.fr',
             'password' => 'Password123',
         ]);
@@ -53,7 +60,10 @@ class LoginTest extends TestCase
 
     public function test_connection_dt_is_succes_with_valid_login()
     {
+        Session::start();
+
         $response = $this->post('/connexion', [
+            '_token' => csrf_token(),
             'email' => 'dt3@secool.fr',
             'password' => 'Password123',
         ]);
@@ -70,7 +80,10 @@ class LoginTest extends TestCase
      */
     public function test_login_fails_when_wrong_password()
     {
+        Session::start();
+
         $response = $this->post('/connexion', [
+            '_token' => csrf_token(),
             'email' => 'eleve1@secool.fr',
             'password' => 'password456',
         ]);
@@ -90,7 +103,10 @@ class LoginTest extends TestCase
      */
     public function test_attempt_connection_with_nonexistent_account_connection_failure()
     {
+        Session::start();
+
         $response = $this->post('/connexion', [
+            '_token' => csrf_token(),
             'email' => 'louisa@secool.fr',
             'password' => 'whynot123',
         ]);
@@ -107,7 +123,10 @@ class LoginTest extends TestCase
      */
     public function test_login_fails_when_email_is_missing()
     {
+        Session::start();
+
         $response = $this->post('/connexion', [
+            '_token' => csrf_token(),
             'password' => 'Password123',
         ]);
 
@@ -122,7 +141,10 @@ class LoginTest extends TestCase
      */
     public function test_login_fails_when_password_is_missing()
     {
+        Session::start();
+
         $response = $this->post('/connexion', [
+            '_token' => csrf_token(),
             'email' => 'eleve1@secool.fr',
         ]);
 
@@ -137,7 +159,10 @@ class LoginTest extends TestCase
      */
     public function test_login_fails_with_invalid_email_format()
     {
+        Session::start();
+
         $response = $this->post('/connexion', [
+            '_token' => csrf_token(),
             'email' => 'whynot',
             'password' => 'Password123',
         ]);
@@ -153,7 +178,10 @@ class LoginTest extends TestCase
      */
     public function test_login_fails_when_password_is_too_short()
     {
+        Session::start();
+
         $response = $this->post('/connexion', [
+            '_token' => csrf_token(),
             'email' => 'eleve1@secool.fr',
             'password' => '123',
         ]);

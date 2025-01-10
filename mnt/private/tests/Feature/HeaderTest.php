@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 class HeaderTest extends TestCase
 {
+    
     /**
      * A basic test example.
      *

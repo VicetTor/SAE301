@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class ExampleTest extends TestCase
 {
+    
 
     /**
      * A basic test example.
