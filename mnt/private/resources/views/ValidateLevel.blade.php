@@ -4,33 +4,28 @@
 
 @section('content')
     <?php
-
-use App\Models\Ability;
-use App\Models\Evaluation;
-use App\Models\Skill;
-use App\Models\User;
+        use App\Models\Ability;
+        use App\Models\Evaluation;
+        use App\Models\Skill;
+        use App\Models\User;
     ?>
-    <h1>Valider les compétences</h1>
 
+    <h1>Valider les compétences</h1>
     <?php
         $user = User::select('*')
         ->where('LEVEL_ID_RESUME', '=', '1')
         ->orWhere('LEVEL_ID_RESUME', '=', '2')
         ->orWhere('LEVEL_ID_RESUME', '=', '3')
         ->get();
-
         foreach($user as $user){
             $isValide = true;
-
             $competencesDeUser = Skill::select('*')
             ->where('LEVEL_ID', '=', $user->LEVEL_ID_RESUME)
             ->get();
-            
             foreach($competencesDeUser as $competence){
                 $aptitudesDeUser = Ability::select('*')
                 ->where('SKILL_ID', '=', $competence->SKILL_ID)
                 ->get();
-
                 foreach($aptitudesDeUser as $aptitude){ 
                     $nbAcquisDeApt = Evaluation::select('*')
                     ->where('ABI_ID', '=', $aptitude->ABI_ID)
@@ -83,10 +78,6 @@ use App\Models\User;
 </script>
 
 <style>
-.userName{
-    background-color: red;
-}
-
 
 </style>
 
