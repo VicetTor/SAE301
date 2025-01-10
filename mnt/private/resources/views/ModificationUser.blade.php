@@ -29,7 +29,7 @@
     <tbody>
         <!-- Loop through each user and display their details in the table rows -->
         @foreach ($users as $user)
-        @if($user->USER_ID != Session('user_id'))
+        @if($user->USER_ID != Session('user_id') && $clubs_id->CLUB_ID == $user->CLUB_ID)
         <tr>
             <!-- User's first name -->
             <td>{{ $user->USER_FIRSTNAME }}</td>
@@ -38,18 +38,16 @@
             <!-- User's license number -->
             <td>{{ $user->USER_LICENSENUMBER }}</td>
             <td class="d-flex">
-                @if ($canEdit) <!-- Check if the user has permission to edit -->
-                    <!-- Edit button for each user -->
-                    <a href="{{ route('modification.users.edit', $user->USER_ID) }}" class="btn btn-warning me-2">Modifier</a>
+                <!-- Edit button for each user -->
+                <a href="{{ route('modification.users.edit', $user->USER_ID) }}" class="btn btn-warning me-2">Modifier</a>
 
-                    <!-- Form to delete the user -->
-                    <form action="{{ route('modification.users.delete', $user->USER_ID) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('POST') <!-- Ensures DELETE method works with POST -->
-                        <!-- Delete button -->
-                        <button type="submit" class="btn btn-danger">Supprimer</button>
-                    </form>
-                @endif
+                <!-- Form to delete the user -->
+                <form action="{{ route('modification.users.delete', $user->USER_ID) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('POST') <!-- Ensures DELETE method works with POST -->
+                    <!-- Delete button -->
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
             </td>
         </tr>
         @endif
