@@ -64,7 +64,6 @@
     ->get();
 
 ?>
-{{$attendee}}
 
 <!-- Verify if the user is not a student !-->
 @if(!(Session('type_id') == 3) && !(Session('type_id') == 2))

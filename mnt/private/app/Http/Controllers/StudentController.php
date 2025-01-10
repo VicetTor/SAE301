@@ -30,7 +30,7 @@ class StudentController extends Controller
     $sessions = Attendee::select('*', 'grp2_user.*')
     ->join('grp2_user', 'grp2_attendee.USER_ID_ATTENDEE', '=', 'grp2_user.USER_ID')
     ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_attendee.SESS_ID')
-    ->where('grp2_user.USER_ID', '=', $eleve->USER_ID)
+    ->where('grp2_user.USER_ID', '=', $user_id)
     ->get();
 
     

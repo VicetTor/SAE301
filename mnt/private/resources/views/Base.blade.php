@@ -48,7 +48,7 @@
                         }
                         if (Session('type_id') == 3) {
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session/create"> Créer séance </a> </li>';;
-                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan formation </a> </li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/validate"> Valider Niveaux </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/students">Liste adhérents</a></li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/evaluations/search">Historique evaluations</a></li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/formation-accueil">Gestion formation</a></li>';
