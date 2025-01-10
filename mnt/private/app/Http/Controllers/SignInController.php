@@ -82,14 +82,11 @@ class SignInController extends Controller
      * )
      */
     public function signIn(CreatePostRequest $request){
-        if (session('type_id') == 3) {
+        if (session('type_id') != 4) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {
             return redirect()->route('connexion');
-        }
-        if (session('type_id') == 1) {
-            return redirect()->route('home');
         }
         // Create a new User instance
         $utilisateur = new User();
@@ -104,7 +101,7 @@ class SignInController extends Controller
         $utilisateur->TYPE_ID = $request->input('TYPE_ID');
 
         // If the user type is '1', assign a LEVEL_ID_RESUME based on the input, otherwise set it to NULL
-        if($request->input('TYPE_ID') == 1){
+        if($request->input('TYPE_ID') == 4){
             $utilisateur->LEVEL_ID_RESUME = $request->input('LEVEL_ID_RESUME');
         }
         else{

@@ -88,11 +88,11 @@ class SessionController extends Controller
             DB::table('grp2_attendee')->insert([
                 'ATTE_ID' => $sumATTENDEE + 1,
                 'SESS_ID' => $sumSESSION + 1,
-                'USER_ID' => $request->user_id[$i],
-                'USER_ID_ATTENDEE' => $request->initiator_id[$i],
+                'USER_ID' => $request->initiator_id[$i],
+                'USER_ID_ATTENDEE' => $request->user_id[$i],
             ]);
 
-            if($request->aptitude_id1[$i] != "Choix des aptitudes"){
+            if($request->aptitude_id1[$i] != "-1"){
 
                 $sumEVALUATION = DB::table('grp2_evaluation')->max('EVAL_ID');
 
@@ -106,7 +106,7 @@ class SessionController extends Controller
                 ]);
             }
 
-            if($request->aptitude_id2[$i] != "Choix des aptitudes"){
+            if($request->aptitude_id2[$i] != "-1"){
 
                 $sumEVALUATION = DB::table('grp2_evaluation')->max('EVAL_ID');
 
@@ -120,7 +120,7 @@ class SessionController extends Controller
                 ]);
             }
 
-            if($request->aptitude_id3[$i] != "Choix des aptitudes"){
+            if($request->aptitude_id3[$i] != "-1"){
 
                 $sumEVALUATION = DB::table('grp2_evaluation')->max('EVAL_ID');
 
