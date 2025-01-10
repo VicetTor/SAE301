@@ -65,13 +65,6 @@
 
 ?>
 
-<!-- Verify if the user is not a student !-->
-@if(!(Session('type_id') == 3) && !(Session('type_id') == 2))
-    <h1>Vous n'avez les droits nécessaires</h1>
-    <script>
-        window.stop();
-    </script>
-@endif
 
 
 <p class="fw-medium fs-3"> Vous êtes connecté(e) en tant que : {{ session('user_firstname') }} {{ session('user_lastname') }} </p>

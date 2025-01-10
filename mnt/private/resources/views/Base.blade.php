@@ -46,6 +46,7 @@
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/select-year"> CSV </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/formation-accueil">Gestion formation</a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/training-graph">Graphique</a> </li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/students">Bilan Formations</a> </li>';
                         }
                         if (Session('type_id') == 3) {
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session/create"> Créer séance </a> </li>';;
