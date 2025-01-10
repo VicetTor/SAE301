@@ -56,6 +56,7 @@ selectAptitude1.required = true;
 const defaultOptionAptitude1 = document.createElement("option");
 defaultOptionAptitude1.selected = true;
 defaultOptionAptitude1.textContent = "Choix des aptitudes";
+defaultOptionAptitude1.value = -1;
 selectAptitude1.appendChild(defaultOptionAptitude1);
 
 // Remplir les options avec les aptitudes
@@ -80,6 +81,7 @@ selectAptitude2.required = true;
 const defaultOptionAptitude2 = document.createElement("option");
 defaultOptionAptitude2.selected = true;
 defaultOptionAptitude2.textContent = "Choix des aptitudes";
+defaultOptionAptitude2.value = -1;
 selectAptitude2.appendChild(defaultOptionAptitude2);
 
 aptitudes.forEach(function(aptitude) {
@@ -104,6 +106,7 @@ selectAptitude3.required = true;
 const defaultOptionAptitude3 = document.createElement("option");
 defaultOptionAptitude3.selected = true;
 defaultOptionAptitude3.textContent = "Choix des aptitudes";
+defaultOptionAptitude3.value = -1;
 selectAptitude3.appendChild(defaultOptionAptitude3);
 
 aptitudes.forEach(function(aptitude) {
