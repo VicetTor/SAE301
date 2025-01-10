@@ -16,7 +16,8 @@ class LevelValidationController extends Controller
         $id_resume = $request->input('id_resume');
 
         $user = User::find($user_id);
-
+        
+        $user->LEVEL_ID = $id_resume;
         $user->LEVEL_ID_RESUME = $id_resume+1;
         $user->save();
         

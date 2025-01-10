@@ -24,10 +24,7 @@ class SignInController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
-        if (session('type_id') == 1) {
-            return redirect()->route('home');
-        }
-        if (session('type_id') == 3) {
+        if (session('type_id') != 3) {
             return redirect()->route('home');
         }
         // Return the 'SignInForm' view with data for user types, levels, and users
@@ -82,7 +79,7 @@ class SignInController extends Controller
      * )
      */
     public function signIn(CreatePostRequest $request){
-        if (session('type_id') != 4) {
+        if (session('type_id') == 3) {
             return redirect()->route('home');
         }
         if (session('user_id') == null) {

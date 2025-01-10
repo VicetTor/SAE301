@@ -18,7 +18,7 @@ class SessionController extends Controller
      */
     public function create()
     {
-        if(Session('type_id') != 3){
+        if(Session('type_id') != 2){
             return redirect()->route('home');
         }if(Session('user_id') == null){
             return redirect()->route('connexion');

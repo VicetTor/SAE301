@@ -7,7 +7,6 @@
 <!-- ligne 1 -->
 <form action="" method="POST">
     @csrf
-    <p>{{$errors}}</p>
     <div class="range">
             <div>
                 <p>Date</p>
@@ -58,7 +57,7 @@
         <select class="form-select" style="width:200px" name="aptitude_id1[]" >
                     <option value="-1">Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->ABI_LABEL }}</option>
                     @endforeach
                 </select>
             @error('aptitude_id1.*')
@@ -70,7 +69,7 @@
         <select class="form-select" style="width:200px" name="aptitude_id2[]" >
                     <option value="-1">Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->ABI_LABEL }}</option>
                     @endforeach
 
                 </select>
@@ -83,7 +82,7 @@
         <select class="form-select" style="width:200px" name="aptitude_id3[]" >
                     <option value="-1">Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->ABI_LABEL }}</option>
                     @endforeach
 
                 </select>
@@ -99,6 +98,9 @@
                         <option value="{{$initiator->USER_ID }}">{{ $initiator->USER_FIRSTNAME}} {{ $initiator->USER_LASTNAME }}</option>
                     @endforeach
                 </select>
+            @error('initiator_id.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
             @error('initiator_id.*')
             <span style="color: red;">{{ $message }}</span>
             @enderror
@@ -128,7 +130,7 @@
         <select class="form-select" style="width:200px" name="aptitude_id1[]" >
                     <option value="-1">Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->ABI_LABEL }}</option>
                     @endforeach
                 </select>
             @error('aptitude_id1.*')
@@ -140,7 +142,7 @@
         <select class="form-select" style="width:200px" name="aptitude_id2[]" >
                     <option value="-1">Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->ABI_LABEL }}</option>
                     @endforeach
 
                 </select>
@@ -153,7 +155,7 @@
         <select class="form-select" style="width:200px" name="aptitude_id3[]" >
                     <option value="-1">Choix des aptitudes</option>
                     @foreach ($aptitudes as $label)
-                        <option value="{{ $label->ABI_ID }}">{{ $label->Abi_label }}</option>
+                        <option value="{{ $label->ABI_ID }}">{{ $label->ABI_LABEL }}</option>
                     @endforeach
 
                 </select>
@@ -169,6 +171,9 @@
                         <option value="{{$initiator->USER_ID }}">{{ $initiator->USER_FIRSTNAME}} {{ $initiator->USER_LASTNAME }}</option>
                     @endforeach
                 </select>
+            @error('initiator_id.*')
+            <span style="color: red;">{{ $message }}</span>
+            @enderror
             @error('initiator_id.*')
             <span style="color: red;">{{ $message }}</span>
             @enderror

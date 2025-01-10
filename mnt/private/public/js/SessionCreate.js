@@ -63,7 +63,7 @@ selectAptitude1.appendChild(defaultOptionAptitude1);
 aptitudes.forEach(function(aptitude) {
     const option = document.createElement("option");
     option.value = aptitude.ABI_ID;  // ID de l'aptitude
-    option.textContent = aptitude.Abi_label;  // Label de l'aptitude
+    option.textContent = aptitude.ABI_LABEL;  // Label de l'aptitude
     selectAptitude1.appendChild(option);
 });
 
@@ -87,7 +87,7 @@ selectAptitude2.appendChild(defaultOptionAptitude2);
 aptitudes.forEach(function(aptitude) {
     const option = document.createElement("option");
     option.value = aptitude.ABI_ID;
-    option.textContent = aptitude.Abi_label;
+    option.textContent = aptitude.ABI_LABEL;
     selectAptitude2.appendChild(option);
 });
 
@@ -112,7 +112,7 @@ selectAptitude3.appendChild(defaultOptionAptitude3);
 aptitudes.forEach(function(aptitude) {
     const option = document.createElement("option");
     option.value = aptitude.ABI_ID;
-    option.textContent = aptitude.Abi_label;
+    option.textContent = aptitude.ABI_LABEL;
     selectAptitude3.appendChild(option);
 });
 
