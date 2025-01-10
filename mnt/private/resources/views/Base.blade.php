@@ -59,7 +59,8 @@
                         }
                         if (Session('type_id') == 1) {
                             echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/session">Mes Séances</a></li>';
-                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/sheet">Mon bilan</a></li>';
+                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/TableBilan">Mon bilan</a></li>';
+                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/sheet">Ma progression</a></li>';
                         }
                         ?>
                         <li class="nav-item d-block d-lg-none">

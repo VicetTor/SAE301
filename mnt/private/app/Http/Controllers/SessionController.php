@@ -158,7 +158,7 @@ class SessionController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
-        if (session('type_id') != 3) {
+        if (session('type_id') != 1) {
             return redirect()->route('home');
         }
 
