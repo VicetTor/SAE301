@@ -25,13 +25,13 @@ class TemporaryPasswordController extends Controller {
         }   
 
         $club =DB::table('report')
-        ->where('report.user_id' , '=', Session('user_id'))
+        ->where('report.USER_ID' , '=', Session('user_id'))
         ->first();  
         $clubId = $club->CLUB_ID;
 
         $users = DB::table('grp2_user')
-        ->join('report','report.user_id','=','grp2_user.user_id')
-        ->where('report.club_id', '=',  $clubId)
+        ->join('report','report.USER_ID','=','grp2_user.USER_ID')
+        ->where('report.CLUB_ID', '=',  $clubId)
         ->where('USER_ISFIRSTLOGIN', '=', 1)
         ->get();
                 

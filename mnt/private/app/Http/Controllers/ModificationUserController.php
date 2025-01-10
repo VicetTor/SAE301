@@ -26,12 +26,12 @@ class ModificationUserController extends Controller {
         }
 
         $club = DB::table('report')
-        ->where('report.user_id' , '=', Session('user_id'))
+        ->where('report.USER_ID' , '=', Session('user_id'))
         ->first();
 
 
         $users = User::where('USER_ISACTIVE', 1)
-                    ->join('report' , 'report.user_id', '=','grp2_user.user_id')
+                    ->join('report' , 'report.USER_ID', '=','grp2_user.USER_ID')
                       ->where('TYPE_ID', '!=', 4)
                       ->where('CLUB_ID', '=', $club->CLUB_ID)
                       ->get();

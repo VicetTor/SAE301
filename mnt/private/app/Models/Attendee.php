@@ -15,7 +15,7 @@ class Attendee extends Model
      *
      * @var string
      */
-    protected $table = 'GRP2_ATTENDEE';
+    protected $table = 'grp2_attendee';
 
 
     /**

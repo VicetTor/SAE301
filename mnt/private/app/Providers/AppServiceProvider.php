@@ -26,10 +26,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $clubID = DB::table('REPORT')
+        $clubID = DB::table('report')
             ->select('grp2_club.CLUB_ID')
-            ->join('grp2_club', 'grp2_club.club_id', '=', 'report.club_id')
-            ->where('user_id', '=', Session('user_id'))
+            ->join('grp2_club', 'grp2_club.CLUB_ID', '=', 'report.CLUB_ID')
+            ->where('USER_ID', '=', Session('user_id'))
             ->first();
 
         if ($clubID) {
@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Charger les paramètres existants depuis la table GRP2_SITE
-        $site = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first();
+        $site = DB::table('grp2_site')->where('CLUB_ID', $clubID)->first();
 
         // Si aucune donnée n'est trouvée, définir des valeurs par défaut
         $siteName = $site->SITE_NAME ?? 'Secoule';

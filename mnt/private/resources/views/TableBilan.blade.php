@@ -21,19 +21,19 @@
     ->where('LEVEL_ID','<=',$levelPreparer)
     ->get();
     
-    $sessions = Attendee::select('*', 'GRP2_USER.*')
-    ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_attendee', '=', 'GRP2_USER.USER_ID')
-    ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
-    ->where('GRP2_USER.USER_ID', '=', $user_id)
+    $sessions = Attendee::select('*', 'grp2_user.*')
+    ->join('grp2_user', 'grp2_attendee.USER_ID_attendee', '=', 'grp2_user.USER_ID')
+    ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_attendee.SESS_ID')
+    ->where('grp2_user.USER_ID', '=', $user_id)
     ->get();
 
     $evaluationsChaqueSeance = [];
     $i = 0;
     foreach($sessions as $session){
         $evaluations = Evaluation::select('*')
-            ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
-            ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
-            ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
+            ->join('grp2_statustype', 'grp2_statustype.STATUSTYPE_ID', '=', 'grp2_evaluation.STATUSTYPE_ID')
+            ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_evaluation.SESS_ID')
+            ->where('grp2_evaluation.SESS_ID', '=', $session->SESS_ID)
             ->get();
         $evaluationsChaqueSeance[$i] = $evaluations;
         $i++;

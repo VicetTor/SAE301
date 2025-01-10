@@ -21,7 +21,7 @@ class SessionViewController extends Controller
     {
         
         $sessions = Session::select('SESS_ID', 'TRAIN_ID', 'SESS_DATE')
-            ->where('TRAIN_ID', '=', session('level_id_resume'))
+            ->where('TRAIN_ID', '=', session('train_id'))
             ->get();
         
 

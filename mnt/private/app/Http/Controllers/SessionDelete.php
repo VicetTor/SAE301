@@ -15,10 +15,10 @@ class SessionDelete extends Controller
     {
 
          // Supprimer d'abord les enregistrements associés dans la table GRP2_ATTENDEE
-        DB::table('GRP2_ATTENDEE')->where('SESS_ID', $id)->delete();
+        DB::table('grp2_attendee')->where('SESS_ID', $id)->delete();
 
         // Trouver les évaluations associées à la session et les supprimer
-        DB::table('GRP2_EVALUATION')->where('SESS_ID', $id)->delete();
+        DB::table('grp2_evaluation')->where('SESS_ID', $id)->delete();
     
         // Trouver la session à supprimer
         $session = Session::findOrFail($id);

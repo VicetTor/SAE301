@@ -15,5 +15,5 @@ class Attend extends Model
      *
      * @var string
      */
-    protected $table = 'Attend';
+    protected $table = 'attend';
 }

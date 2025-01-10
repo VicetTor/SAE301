@@ -13,14 +13,14 @@ class Club extends Model
     protected $table = 'grp2_club'; // The table name in the database is 'grp2_club'
 
     // Define the primary key
-    protected $primaryKey = 'club_id'; // The primary key of the 'grp2_club' table is 'club_id'
+    protected $primaryKey = 'CLUB_ID'; // The primary key of the 'grp2_club' table is 'club_id'
 
     // Indicate that this table does not have timestamps (created_at, updated_at)
     public $timestamps = false; // No automatic timestamping for 'created_at' and 'updated_at' columns
 
     // Define the attributes that can be mass-assigned
     protected $fillable = [
-        'club_name', 'club_postalcode', 'club_city', 'club_address', // These are the fields that can be filled when creating or updating a club record
+        'CLUB_NAME', 'CLUB_POSTALCODE', 'CLUB_CITY', 'CLUB_ADDRESS', // These are the fields that can be filled when creating or updating a club record
     ];
 
     /**

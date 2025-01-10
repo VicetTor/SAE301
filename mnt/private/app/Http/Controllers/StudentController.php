@@ -28,10 +28,10 @@ class StudentController extends Controller
     $level = $eleve->LEVEL_ID_RESUME;
     
 
-    $sessions = Attendee::select('*', 'GRP2_USER.*')
-    ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_attendee', '=', 'GRP2_USER.USER_ID')
-    ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
-    ->where('GRP2_USER.USER_ID', '=', $user_id)
+    $sessions = Attendee::select('*', 'grp2_user.*')
+    ->join('grp2_user', 'grp2_attendee.USER_ID_ATTENDEE', '=', 'grp2_user.USER_ID')
+    ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_attendee.SESS_ID')
+    ->where('grp2_user.USER_ID', '=', $user_id)
     ->get();
 
     
@@ -39,10 +39,10 @@ class StudentController extends Controller
     $i = 0;
     foreach($sessions as $session){
         $evaluations = Evaluation::select('*')
-            ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
-            ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
-            ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
-            ->where('GRP2_EVALUATION.USER_ID', '=', $user_id)
+            ->join('grp2_statustype', 'grp2_statustype.STATUSTYPE_ID', '=', 'grp2_evaluation.STATUSTYPE_ID')
+            ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_evaluation.SESS_ID')
+            ->where('grp2_evaluation.SESS_ID', '=', $session->SESS_ID)
+            ->where('grp2_evaluation.USER_ID', '=', $user_id)
             ->get();
         $evaluationsChaqueSeance[$i] = $evaluations;
         $i++;
@@ -65,12 +65,12 @@ class StudentController extends Controller
     foreach($sessions as $session)
 
         $skills = DB::select(DB::raw('
-        select distinct GRP2_SKILL.SKILL_ID, GRP2_SKILL.SKILL_LABEL from GRP2_SKILL
-        inner join GRP2_ABILITY using (SKILL_ID)
-        inner join GRP2_EVALUATION using (ABI_ID)
-        where GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
-        and GRP2_SKILL.LEVEL_ID ='.$level.'
-        and GRP2_EVALUATION.USER_ID ='.$user_id
+        select distinct grp2_skill.SKILL_ID, grp2_skill.SKILL_LABEL from grp2_skill
+        inner join grp2_ability using (SKILL_ID)
+        inner join grp2_evaluation using (ABI_ID)
+        where grp2_evaluation.SESS_ID ='.$session->SESS_ID.'
+        and grp2_skill.LEVEL_ID ='.$level.'
+        and grp2_evaluation.USER_ID ='.$user_id
         ));
 
         
@@ -80,11 +80,11 @@ class StudentController extends Controller
         foreach($skills as $skill){
 
             $result = DB::select(DB::raw('
-            select * from GRP2_ABILITY
-            inner join GRP2_EVALUATION using (ABI_ID)
-            where GRP2_ABILITY.SKILL_ID ='.$skill->SKILL_ID.'
-            and GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
-            and GRP2_EVALUATION.USER_ID ='.$user_id
+            select * from grp2_ability
+            inner join grp2_evaluation using (ABI_ID)
+            where grp2_ability.SKILL_ID ='.$skill->SKILL_ID.'
+            and grp2_evaluation.SESS_ID ='.$session->SESS_ID.'
+            and grp2_evaluation.USER_ID ='.$user_id
             ));
 
             $taille+=count($result);
@@ -92,20 +92,20 @@ class StudentController extends Controller
 
         $level = $eleve->LEVEL_ID_RESUME;
 
-        $sessions = Attendee::select('*', 'GRP2_USER.*')
-            ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_attendee', '=', 'GRP2_USER.USER_ID')
-            ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
-            ->where('GRP2_USER.USER_ID', '=', $user_id)
+        $sessions = Attendee::select('*', 'grp2_user.*')
+            ->join('grp2_user', 'grp2_attendee.USER_ID_ATTENDEE', '=', 'grp2_user.USER_ID')
+            ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_attendee.SESS_ID')
+            ->where('grp2_user.USER_ID', '=', $user_id)
             ->get();
 
         $evaluationsChaqueSeance = [];
         $i = 0;
         foreach($sessions as $session){
             $evaluations = Evaluation::select('*')
-                ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
-                ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
-                ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
-                ->where('GRP2_EVALUATION.USER_ID', '=', $user_id)
+                ->join('grp2_statustype', 'grp2_statustype.STATUSTYPE_ID', '=', 'grp2_evaluation.STATUSTYPE_ID')
+                ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_evaluation.SESS_ID')
+                ->where('grp2_evaluation.SESS_ID', '=', $session->SESS_ID)
+                ->where('grp2_evaluation.USER_ID', '=', $user_id)
                 ->get();
             $evaluationsChaqueSeance[$i] = $evaluations;
             $i++;
@@ -126,12 +126,12 @@ class StudentController extends Controller
         foreach($sessions as $session){
 
             $skills = DB::select(DB::raw('
-            select distinct GRP2_SKILL.SKILL_ID, GRP2_SKILL.SKILL_LABEL from GRP2_SKILL
-            inner join GRP2_ABILITY using (SKILL_ID)
-            inner join GRP2_EVALUATION using (ABI_ID)
-            where GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
-            and GRP2_SKILL.LEVEL_ID ='.$level.'
-            and GRP2_EVALUATION.USER_ID ='.$user_id
+            select distinct grp2_skill.SKILL_ID, grp2_skill.SKILL_LABEL from grp2_skill
+            inner join grp2_ability using (SKILL_ID)
+            inner join grp2_evaluation using (ABI_ID)
+            where grp2_evaluation.SESS_ID ='.$session->SESS_ID.'
+            and grp2_skill.LEVEL_ID ='.$level.'
+            and grp2_evaluation.USER_ID ='.$user_id
             ));
 
             $nbSkills = count($skills);
@@ -139,11 +139,11 @@ class StudentController extends Controller
             foreach($skills as $skill){
 
                 $result = DB::select(DB::raw('
-                select * from GRP2_ABILITY
-                inner join GRP2_EVALUATION using (ABI_ID)
-                where GRP2_ABILITY.SKILL_ID ='.$skill->SKILL_ID.'
-                and GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
-                and GRP2_EVALUATION.USER_ID ='.$user_id
+                select * from grp2_ability
+                inner join grp2_evaluation using (ABI_ID)
+                where grp2_ability.SKILL_ID ='.$skill->SKILL_ID.'
+                and grp2_evaluation.SESS_ID ='.$session->SESS_ID.'
+                and grp2_evaluation.USER_ID ='.$user_id
                 ));
 
                 $taille+=count($result);
@@ -156,11 +156,11 @@ class StudentController extends Controller
             foreach($skills as $skill){
 
                 $result = DB::select(DB::raw('
-                select * from GRP2_ABILITY
-                inner join GRP2_EVALUATION using (ABI_ID)
-                where GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
-                and GRP2_EVALUATION.USER_ID ='.$user_id.'
-                and GRP2_ABILITY.SKILL_ID ='.$skill->SKILL_ID
+                select * from grp2_ability
+                inner join grp2_evaluation using (ABI_ID)
+                where grp2_evaluation.SESS_ID ='.$session->SESS_ID.'
+                and grp2_evaluation.USER_ID ='.$user_id.'
+                and grp2_ability.SKILL_ID ='.$skill->SKILL_ID
                 ));
                 $nombre = count($result);
 
@@ -169,11 +169,11 @@ class StudentController extends Controller
                 $skill->SKILL_LABEL.'</td>';
 
                 $aptitude = DB::select(DB::raw('
-                select * from GRP2_ABILITY
-                inner join GRP2_EVALUATION using (ABI_ID)
+                select * from grp2_ability
+                inner join grp2_evaluation using (ABI_ID)
                 where SKILL_ID = '.$skill->SKILL_ID.'
-                and GRP2_EVALUATION.SESS_ID ='.$session->SESS_ID.'
-                and GRP2_EVALUATION.USER_ID ='.$user_id
+                and grp2_evaluation.SESS_ID ='.$session->SESS_ID.'
+                and grp2_evaluation.USER_ID ='.$user_id
                 ));
                 $compteur = 0;
 

@@ -21,12 +21,12 @@ class FormsTrainingController extends Controller {
             return redirect()->route('home');
         }
         $trainings = DB::table('grp2_user')
-        ->where('type_id','=','2')
-        ->where('train_id', '=', '0')
+        ->where('TYPE_ID','=','2')
+        ->where('TRAIN_ID', '=', '0')
         ->get();
 
         $trainDatas = DB::table('grp2_training')
-        ->where('train_id', '!=', 0)
+        ->where('TRAIN_ID', '!=', 0)
 
         ->get();
 
@@ -46,9 +46,9 @@ class FormsTrainingController extends Controller {
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
-        DB::update('update grp2_user set type_id = ? where user_id = ?', [3, $request->TRAIN_RESPONSABLE_ID]);
+        DB::update('update grp2_user set TYPE_ID = ? where USER_ID = ?', [3, $request->TRAIN_RESPONSABLE_ID]);
 
-        DB::update('update grp2_user set train_id = ? where user_id = ?', [$request->TRAIN_ID, $request->TRAIN_RESPONSABLE_ID]);
+        DB::update('update grp2_user set TRAIN_ID = ? where USER_ID = ?', [$request->TRAIN_ID, $request->TRAIN_RESPONSABLE_ID]);
 
         return redirect()->back()->with('success', 'L\'initiateur est bien devenue responsable!');
     }
@@ -72,13 +72,13 @@ class FormsTrainingController extends Controller {
         }
 
         $students = DB::table('grp2_user')
-        ->where('type_id','=','2')
-        ->where('train_id', '=', '0')
+        ->where('TYPE_ID','=','2')
+        ->where('TRAIN_ID', '=', '0')
         ->get();
 
         $studies = DB::table('grp2_user')
-        ->where('type_id','=','1')
-        ->where('train_id', '=', '0')
+        ->where('TYPE_ID','=','1')
+        ->where('TRAIN_ID', '=', '0')
         ->get();
 
         return view('FormsModificationAdd',['trainings' =>  $students,'studies' => $studies]);
@@ -92,13 +92,13 @@ class FormsTrainingController extends Controller {
             return redirect()->route('connexion');
         }
         $students = DB::table('grp2_user')
-        ->where('type_id','=','2')
-        ->where('train_id', '=', session('train_id'))
+        ->where('TYPE_ID','=','2')
+        ->where('TRAIN_ID', '=', session('train_id'))
         ->get();
 
         $studies = DB::table('grp2_user')
-        ->where('type_id','=','1')
-        ->where('train_id', '=', session('train_id'))
+        ->where('TYPE_ID','=','1')
+        ->where('TRAIN_ID', '=', session('train_id'))
         ->get();
 
         return view('FormsModificationRemove',['trainings' =>  $students,'studies' => $studies]);
@@ -192,8 +192,8 @@ class FormsTrainingController extends Controller {
             return redirect()->route('home');
         }
         DB::table('grp2_ability')
-            ->where('abi_id', '=', $request->abilitie_id)
-            ->update(['abi_label' => $request->new_abilitie_id]);
+            ->where('ABI_ID', '=', $request->abilitie_id)
+            ->update(['ABI_LABEL' => $request->new_abilitie_id]);
         // Retour avec succès
         return view('TrainingHome');
     }
