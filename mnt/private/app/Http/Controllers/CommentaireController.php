@@ -33,7 +33,7 @@ class CommentaireController extends Controller
         <hr></hr>
         <div id="popup-body">
             <label for="popup-comment" class="fst-italic fs-6 mb-2">commentaire :</label>
-            <textarea class="popup-comment rounded-4" rows="4" cols="40" '.$txtReadOnly.'>'.$evaluation->EVAL_OBSERVATION.'</textarea>
+            <textarea class="popup-comment rounded-4" rows="4" cols="30" '.$txtReadOnly.'>'.$evaluation->EVAL_OBSERVATION.'</textarea>
             <button class="popup-submit btn btn-success mt-3 mb-3 btn-lg" data-eval-id="'.$evalId.'">Valider</button> 
         </div>
     </div>'

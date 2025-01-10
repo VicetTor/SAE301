@@ -25,7 +25,7 @@ class TrainingAddRequest extends FormRequest
     public function rules()
     {
         return [
-            'initiators' => [new VerifTraining($this)],
+            //'initiators' => [new VerifTraining($this)],
         ];
     }
 }

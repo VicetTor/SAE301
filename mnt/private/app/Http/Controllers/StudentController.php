@@ -26,12 +26,11 @@ class StudentController extends Controller
     $eleve = User::find($user_id);
 
     $level = $eleve->LEVEL_ID_RESUME;
-    
 
     $sessions = Attendee::select('*', 'grp2_user.*')
     ->join('grp2_user', 'grp2_attendee.USER_ID_ATTENDEE', '=', 'grp2_user.USER_ID')
     ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_attendee.SESS_ID')
-    ->where('grp2_user.USER_ID', '=', $user_id)
+    ->where('grp2_user.USER_ID', '=', $eleve->USER_ID)
     ->get();
 
     

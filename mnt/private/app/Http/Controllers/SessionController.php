@@ -18,7 +18,7 @@ class SessionController extends Controller
      */
     public function create()
     {
-        if(Session('type_id') != 2){
+        if(Session('type_id') != 3){
             return redirect()->route('home');
         }if(Session('user_id') == null){
             return redirect()->route('connexion');
@@ -71,7 +71,8 @@ class SessionController extends Controller
      */
     public function store(SessionRequest $request)
     {
-        if(session('type_id') != 2 ){
+
+        if(session('type_id') != 3 ){
             return redirect()->route('home');
         }if(Session('user_id') == null){
             return redirect()->route('connexion');
@@ -103,6 +104,7 @@ class SessionController extends Controller
                 'USER_ID_ATTENDEE' => $request->user_id[$i],
             ]);
 
+        
             if($request->aptitude_id1[$i] != "-1"){
 
                 $sumEVALUATION = DB::table('grp2_evaluation')->max('EVAL_ID');
@@ -156,7 +158,7 @@ class SessionController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
-        if (session('type_id') == 3 || session('type_id') == 4) {
+        if (session('type_id') != 3) {
             return redirect()->route('home');
         }
 
