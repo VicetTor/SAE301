@@ -266,7 +266,7 @@ class TrainingController extends Controller
         // Retrieves the available years from the database.
         $years = DB::table('grp2_year')->pluck('ANNU_YEAR');
 
-        return view('selectYear', ['years' => $years]); // Returns a view with the available years for selection.
+        return view('SelectYear', ['years' => $years]); // Returns a view with the available years for selection.
     }
 
     // Handles the year selection form submission
@@ -382,6 +382,6 @@ class TrainingController extends Controller
                 yea.ANNU_YEAR, tra.TRAIN_ID
         ");
 
-        return view('trainingGraph', ['data' => $data]); // Returns a view to display the graph with the training data.
+        return view('TrainingGraph', ['data' => $data]); // Returns a view to display the graph with the training data.
     }
 }

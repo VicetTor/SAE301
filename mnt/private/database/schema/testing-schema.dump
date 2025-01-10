@@ -1,0 +1,1072 @@
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_ability`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_ability` (
+  `ABI_ID` int(11) NOT NULL,
+  `SKILL_ID` int(11) NOT NULL,
+  `ABI_LABEL` varchar(255) NOT NULL,
+  PRIMARY KEY (`ABI_ID`),
+  KEY `I_FK_GRP2_ABILITY_GRP2_SKILL` (`SKILL_ID`),
+  CONSTRAINT `FK_GRP2_ABILITY_GRP2_SKILL` FOREIGN KEY (`SKILL_ID`) REFERENCES `grp2_skill` (`SKILL_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_attendee`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_attendee` (
+  `ATTE_ID` int(11) NOT NULL,
+  `SESS_ID` int(11) NOT NULL,
+  `USER_ID` bigint(6) NOT NULL,
+  `USER_ID_ATTENDEE` bigint(6) NOT NULL,
+  PRIMARY KEY (`ATTE_ID`),
+  KEY `I_FK_GRP2_ATTENDEE_GRP2_SESSION` (`SESS_ID`),
+  KEY `I_FK_GRP2_ATTENDEE_GRP2_USER` (`USER_ID`),
+  KEY `I_FK_GRP2_ATTENDEE_GRP2_USER1` (`USER_ID_ATTENDEE`),
+  CONSTRAINT `FK_GRP2_ATTENDEE_GRP2_SESSION` FOREIGN KEY (`SESS_ID`) REFERENCES `grp2_session` (`SESS_ID`),
+  CONSTRAINT `FK_GRP2_ATTENDEE_GRP2_USER` FOREIGN KEY (`USER_ID`) REFERENCES `grp2_user` (`USER_ID`),
+  CONSTRAINT `FK_GRP2_ATTENDEE_GRP2_USER1` FOREIGN KEY (`USER_ID_ATTENDEE`) REFERENCES `grp2_user` (`USER_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_club`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_club` (
+  `CLUB_ID` bigint(6) NOT NULL,
+  `CLUB_NAME` varchar(255) NOT NULL,
+  `CLUB_POSTALCODE` char(5) NOT NULL,
+  `CLUB_CITY` varchar(255) NOT NULL,
+  `CLUB_ADDRESS` varchar(255) NOT NULL,
+  PRIMARY KEY (`CLUB_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_evaluation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_evaluation` (
+  `EVAL_ID` int(11) NOT NULL,
+  `STATUSTYPE_ID` bigint(1) NOT NULL,
+  `USER_ID` bigint(6) NOT NULL,
+  `SESS_ID` int(11) NOT NULL,
+  `ABI_ID` int(11) NOT NULL,
+  `EVAL_OBSERVATION` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`EVAL_ID`),
+  KEY `I_FK_GRP2_EVALUATION_GRP2_STATUSTYPE` (`STATUSTYPE_ID`),
+  KEY `I_FK_GRP2_EVALUATION_GRP2_USER` (`USER_ID`),
+  KEY `I_FK_GRP2_EVALUATION_GRP2_SESSION` (`SESS_ID`),
+  KEY `I_FK_GRP2_EVALUATION_GRP2_ABILITY` (`ABI_ID`),
+  CONSTRAINT `FK_GRP2_EVALUATION_GRP2_ABILITY` FOREIGN KEY (`ABI_ID`) REFERENCES `grp2_ability` (`ABI_ID`),
+  CONSTRAINT `FK_GRP2_EVALUATION_GRP2_SESSION` FOREIGN KEY (`SESS_ID`) REFERENCES `grp2_session` (`SESS_ID`),
+  CONSTRAINT `FK_GRP2_EVALUATION_GRP2_STATUSTYPE` FOREIGN KEY (`STATUSTYPE_ID`) REFERENCES `grp2_statustype` (`STATUSTYPE_ID`),
+  CONSTRAINT `FK_GRP2_EVALUATION_GRP2_USER` FOREIGN KEY (`USER_ID`) REFERENCES `grp2_user` (`USER_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_level`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_level` (
+  `LEVEL_ID` int(11) NOT NULL,
+  `LEVEL_LABEL` varchar(255) NOT NULL,
+  PRIMARY KEY (`LEVEL_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_session` (
+  `SESS_ID` int(11) NOT NULL,
+  `TRAIN_ID` int(11) NOT NULL,
+  `SESSTYPE_ID` int(11) NOT NULL,
+  `SESS_DATE` datetime NOT NULL,
+  PRIMARY KEY (`SESS_ID`),
+  KEY `I_FK_GRP2_SESSION_GRP2_TRAINING` (`TRAIN_ID`),
+  KEY `I_FK_GRP2_SESSION_GRP2_SESSIONTYPE` (`SESSTYPE_ID`),
+  CONSTRAINT `FK_GRP2_SESSION_GRP2_SESSIONTYPE` FOREIGN KEY (`SESSTYPE_ID`) REFERENCES `grp2_sessiontype` (`SESSTYPE_ID`),
+  CONSTRAINT `FK_GRP2_SESSION_GRP2_TRAINING` FOREIGN KEY (`TRAIN_ID`) REFERENCES `grp2_training` (`TRAIN_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_sessiontype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_sessiontype` (
+  `SESSTYPE_ID` int(11) NOT NULL,
+  `SESSTYPE_LABEL` varchar(255) NOT NULL,
+  PRIMARY KEY (`SESSTYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_site`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_site` (
+  `PK_GRP2_SITE` int(11) NOT NULL AUTO_INCREMENT,
+  `CLUB_ID` bigint(6) unsigned NOT NULL,
+  `SITE_NAME` varchar(255) NOT NULL,
+  `SITE_COLOR` varchar(7) NOT NULL,
+  `SITE_LOGO` longblob DEFAULT NULL,
+  PRIMARY KEY (`PK_GRP2_SITE`),
+  KEY `I_FK_GRP2_USER_GRP2_CLUB` (`PK_GRP2_SITE`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_skill`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_skill` (
+  `SKILL_ID` int(11) NOT NULL,
+  `LEVEL_ID` int(11) NOT NULL,
+  `SKILL_LABEL` varchar(255) NOT NULL,
+  PRIMARY KEY (`SKILL_ID`),
+  KEY `I_FK_GRP2_SKILL_GRP2_LEVEL` (`LEVEL_ID`),
+  CONSTRAINT `FK_GRP2_SKILL_GRP2_LEVEL` FOREIGN KEY (`LEVEL_ID`) REFERENCES `grp2_level` (`LEVEL_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_statustype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_statustype` (
+  `STATUSTYPE_ID` bigint(1) NOT NULL,
+  `STATUSTYPE_LABEL` char(32) NOT NULL,
+  PRIMARY KEY (`STATUSTYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_training`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_training` (
+  `TRAIN_ID` int(11) NOT NULL,
+  PRIMARY KEY (`TRAIN_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_typeuser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_typeuser` (
+  `TYPE_ID` int(11) NOT NULL,
+  `TYPE_LABEL` varchar(255) NOT NULL,
+  PRIMARY KEY (`TYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_user` (
+  `USER_ID` bigint(6) NOT NULL,
+  `LEVEL_ID` int(11) NOT NULL,
+  `TYPE_ID` int(11) NOT NULL,
+  `TRAIN_ID` int(11) DEFAULT NULL,
+  `LEVEL_ID_RESUME` int(11) DEFAULT NULL,
+  `USER_MAIL` varchar(255) NOT NULL,
+  `USER_PASSWORD` varchar(255) NOT NULL,
+  `USER_FIRSTNAME` varchar(255) NOT NULL,
+  `USER_LASTNAME` varchar(255) NOT NULL,
+  `USER_PHONENUMBER` char(13) DEFAULT NULL,
+  `USER_BIRTHDATE` date NOT NULL,
+  `USER_ADDRESS` varchar(255) NOT NULL,
+  `USER_POSTALCODE` char(5) NOT NULL,
+  `USER_LICENSENUMBER` char(32) NOT NULL,
+  `USER_MEDICCERTIFICATEDATE` date NOT NULL,
+  `USER_ISFIRSTLOGIN` int(11) NOT NULL,
+  `USER_ISACTIVE` int(11) NOT NULL,
+  PRIMARY KEY (`USER_ID`),
+  KEY `I_FK_GRP2_USER_GRP2_LEVEL` (`LEVEL_ID`),
+  KEY `I_FK_GRP2_USER_GRP2_TYPEUSER` (`TYPE_ID`),
+  KEY `I_FK_GRP2_USER_GRP2_TRAINING` (`TRAIN_ID`),
+  KEY `I_FK_GRP2_USER_GRP2_LEVEL1` (`LEVEL_ID_RESUME`),
+  CONSTRAINT `FK_GRP2_USER_GRP2_LEVEL` FOREIGN KEY (`LEVEL_ID`) REFERENCES `grp2_level` (`LEVEL_ID`),
+  CONSTRAINT `FK_GRP2_USER_GRP2_LEVEL1` FOREIGN KEY (`LEVEL_ID_RESUME`) REFERENCES `grp2_level` (`LEVEL_ID`),
+  CONSTRAINT `FK_GRP2_USER_GRP2_TRAINING` FOREIGN KEY (`TRAIN_ID`) REFERENCES `grp2_training` (`TRAIN_ID`),
+  CONSTRAINT `FK_GRP2_USER_GRP2_TYPEUSER` FOREIGN KEY (`TYPE_ID`) REFERENCES `grp2_typeuser` (`TYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_validation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_validation` (
+  `VALID_ID` bigint(4) NOT NULL,
+  `SKILL_ID` int(11) NOT NULL,
+  `ABI_ID` int(11) NOT NULL,
+  `LEVEL_ID` int(11) NOT NULL,
+  `EVAL_ID` int(11) NOT NULL,
+  `VALID_DATE` date DEFAULT NULL,
+  PRIMARY KEY (`VALID_ID`),
+  KEY `I_FK_GRP2_VALIDATION_GRP2_SKILL` (`SKILL_ID`),
+  KEY `I_FK_GRP2_VALIDATION_GRP2_ABILITY` (`ABI_ID`),
+  KEY `I_FK_GRP2_VALIDATION_GRP2_LEVEL` (`LEVEL_ID`),
+  KEY `I_FK_GRP2_VALIDATION_GRP2_EVALUATION` (`EVAL_ID`),
+  CONSTRAINT `FK_GRP2_VALIDATION_GRP2_ABILITY` FOREIGN KEY (`ABI_ID`) REFERENCES `grp2_ability` (`ABI_ID`),
+  CONSTRAINT `FK_GRP2_VALIDATION_GRP2_EVALUATION` FOREIGN KEY (`EVAL_ID`) REFERENCES `grp2_evaluation` (`EVAL_ID`),
+  CONSTRAINT `FK_GRP2_VALIDATION_GRP2_LEVEL` FOREIGN KEY (`LEVEL_ID`) REFERENCES `grp2_level` (`LEVEL_ID`),
+  CONSTRAINT `FK_GRP2_VALIDATION_GRP2_SKILL` FOREIGN KEY (`SKILL_ID`) REFERENCES `grp2_skill` (`SKILL_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `grp2_year`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grp2_year` (
+  `ANNU_YEAR` date NOT NULL,
+  PRIMARY KEY (`ANNU_YEAR`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `report`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `report` (
+  `CLUB_ID` bigint(6) NOT NULL,
+  `USER_ID` bigint(6) NOT NULL,
+  `ANNU_YEAR` date NOT NULL,
+  PRIMARY KEY (`CLUB_ID`,`USER_ID`,`ANNU_YEAR`),
+  KEY `I_FK_REPORT_GRP2_CLUB` (`CLUB_ID`),
+  KEY `I_FK_REPORT_GRP2_USER` (`USER_ID`),
+  KEY `I_FK_REPORT_GRP2_YEAR` (`ANNU_YEAR`),
+  CONSTRAINT `FK_REPORT_GRP2_CLUB` FOREIGN KEY (`CLUB_ID`) REFERENCES `grp2_club` (`CLUB_ID`),
+  CONSTRAINT `FK_REPORT_GRP2_USER` FOREIGN KEY (`USER_ID`) REFERENCES `grp2_user` (`USER_ID`),
+  CONSTRAINT `FK_REPORT_GRP2_YEAR` FOREIGN KEY (`ANNU_YEAR`) REFERENCES `grp2_year` (`ANNU_YEAR`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `to_date`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `to_date` (
+  `CLUB_ID` bigint(6) NOT NULL,
+  `ANNU_YEAR` date NOT NULL,
+  `CLUB_INSCRIPTIONNB` bigint(4) DEFAULT NULL,
+  `CLUB_NBDEGREEOBTAINED` char(32) DEFAULT NULL,
+  PRIMARY KEY (`CLUB_ID`,`ANNU_YEAR`),
+  KEY `I_FK_TO_DATE_GRP2_CLUB` (`CLUB_ID`),
+  KEY `I_FK_TO_DATE_GRP2_YEAR` (`ANNU_YEAR`),
+  CONSTRAINT `FK_TO_DATE_GRP2_CLUB` FOREIGN KEY (`CLUB_ID`) REFERENCES `grp2_club` (`CLUB_ID`),
+  CONSTRAINT `FK_TO_DATE_GRP2_YEAR` FOREIGN KEY (`ANNU_YEAR`) REFERENCES `grp2_year` (`ANNU_YEAR`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+/*!40014 SET FOREIGN_KEY_CHECKS=0 */;
+
+INSERT INTO `grp2_ability` (`ABI_ID`, `SKILL_ID`, `ABI_LABEL`) VALUES
+(1, 1, 'Gréage et dégréage'),
+(2, 1, 'Capelage et décapelage'),
+(3, 1, 'Choix de son matériel personnel'),
+(4, 2, 'Saut droit'),
+(5, 2, 'Bascule arrière'),
+(6, 2, 'Départ plage'),
+(7, 2, 'Sortir de l\'eau'),
+(8, 3, 'Canard'),
+(9, 3, 'Phoque'),
+(10, 4, 'Palmage ventral en surface'),
+(11, 4, 'Palmage dorsal'),
+(12, 4, 'Palmage de sustentation'),
+(13, 4, 'Palmage en immersion'),
+(14, 4, 'Nage en capelé'),
+(15, 5, 'Ventilation en immersion'),
+(16, 5, 'Ventilation sur tuba et vidage du tuba'),
+(17, 5, 'Vidage du masque'),
+(18, 5, 'Lâcher et reprise d\'embout'),
+(19, 6, 'Gestion du gilet de stabilisation'),
+(20, 6, 'Poumon ballast'),
+(21, 7, 'Exécution des signes conventionnels'),
+(22, 8, 'Application des procédures mises en œuvre par le GP'),
+(23, 8, 'Intervention en relais'),
+(24, 9, 'Aisance aquatique'),
+(25, 10, 'Maîtrise de la vitesse de remontée'),
+(26, 10, 'Tenue d\'un palier'),
+(27, 10, 'Tour d\'horizon'),
+(28, 10, 'Gonflage du gilet en surface'),
+(29, 10, 'Remontée en expiration contrôlée'),
+(30, 11, 'Ventilation en surface et en immersion'),
+(31, 11, 'Vidage du masque'),
+(32, 11, 'Stabilisation'),
+(33, 12, 'Connaissance de tous les signes et codes'),
+(34, 13, 'Gestion de la désaturation'),
+(35, 13, 'Gestion d’une remontée isolée'),
+(36, 14, 'Intervention en relai'),
+(37, 15, 'Gréage et dégréage'),
+(38, 15, 'Capelage et décapelage'),
+(39, 15, 'Saut droit et bascule arrière et remonté échelle'),
+(40, 16, 'Canard et phoque'),
+(41, 16, 'Palmages'),
+(42, 16, 'Remontée en expiration contrôlée REC'),
+(43, 16, 'Descente et remontée'),
+(44, 17, 'Aisance aquatique'),
+(45, 18, 'Compréhension des directives du DP'),
+(46, 18, 'Compréhension de la topologie du site de plongée, orientation'),
+(47, 18, 'Détermination du profil de la plongée et des différentes procédures en immersion'),
+(48, 19, 'Mise en œuvre de son propre matériel'),
+(49, 19, 'Connaissance du matériel des équipiers'),
+(50, 20, 'Sécurité de la palanquée'),
+(51, 21, 'Observation, compréhension et réaction face à un incident'),
+(52, 22, 'Prise en compte des directives du DP'),
+(53, 22, 'Compréhension de la topologie du site orientation'),
+(54, 22, 'Determination du profil de la plongée et des différentes procédures en immersion'),
+(55, 23, 'Orientation'),
+(56, 23, 'Évolution subaquatique'),
+(57, 23, 'Désaturation'),
+(58, 24, 'Observation, compréhension et réaction face à un incident'),
+(59, 25, 'Stabilisation'),
+(60, 25, 'Mise en œuvre de l’ensemble des autres techniques'),
+(61, 26, 'Choix du site'),
+(62, 26, 'Organisation des conditions de la plongée'),
+(63, 26, 'Sécurisation de l’activité'),
+(64, 27, 'Orientation'),
+(65, 27, 'Évolution subaquatique'),
+(66, 27, 'Désaturation');
+
+
+INSERT INTO `grp2_attendee` (`ATTE_ID`, `SESS_ID`, `USER_ID`, `USER_ID_ATTENDEE`) VALUES
+(1, 1, 42, 1),
+(2, 2, 42, 2),
+(3, 3, 43, 3),
+(4, 4, 43, 4),
+(5, 5, 44, 22),
+(6, 6, 44, 23),
+(7, 7, 45, 24),
+(8, 8, 45, 25);
+
+
+INSERT INTO `grp2_club` (`CLUB_ID`, `CLUB_NAME`, `CLUB_POSTALCODE`, `CLUB_CITY`, `CLUB_ADDRESS`) VALUES
+(1, 'Club Plongée Océan', '75001', 'Paris', '10 Rue de la Plongée, 75001 Paris'),
+(2, 'AquaSport Club', '13001', 'Marseille', '22 Avenue des Sports, 13001 Marseille'),
+(3, 'Plongée Horizon', '69001', 'Lyon', '33 Rue des Alpes, 69001 Lyon'),
+(4, 'Aqua Diving', '06000', 'Nice', '44 Boulevard de la Mer, 06000 Nice'),
+(5, 'Plongée Club 83', '83000', 'Toulon', '55 Quai de la Plage, 83000 Toulon'),
+(6, 'Mer et Océan', '44000', 'Nantes', '66 Rue de l\'Océan, 44000 Nantes'),
+(7, 'Plongée Passion', '34000', 'Montpellier', '77 Avenue des Plongeurs, 34000 Montpellier'),
+(8, 'Club de Plongée Lyon', '69002', 'Lyon', '88 Place des Arts, 69002 Lyon'),
+(9, 'AquaDive Club', '59000', 'Lille', '99 Rue de la Mer, 59000 Lille'),
+(10, 'Plongée Tropicale', '97400', 'Saint-Denis', '101 Rue des Îles, 97400 Saint-Denis'),
+(11, 'Plongée Nautique', '35000', 'Rennes', '112 Boulevard de la Mer, 35000 Rennes'),
+(12, 'Dive Club Paris', '75002', 'Paris', '123 Rue de la Seine, 75002 Paris'),
+(13, 'Aqua-Club Toulon', '83001', 'Toulon', '134 Avenue de la Mer, 83001 Toulon'),
+(14, 'Blue Ocean Dive', '74000', 'Annecy', '145 Rue du Lac, 74000 Annecy'),
+(15, 'Club Subaquatique', '75003', 'Paris', '156 Rue des Abysses, 75003 Paris'),
+(16, 'Plongée Nature', '38000', 'Grenoble', '167 Rue des Alpes, 38000 Grenoble'),
+(17, 'Plongée Liberté', '06001', 'Nice', '178 Boulevard de la Liberté, 06001 Nice'),
+(18, 'Evasion Plongée', '13002', 'Marseille', '189 Avenue des Évasions, 13002 Marseille'),
+(19, 'Plongée Zen', '29000', 'Quimper', '200 Rue du Zen, 29000 Quimper'),
+(20, 'Ocean Club', '80000', 'Amiens', '211 Rue de l\'Océan, 80000 Amiens'),
+(21, 'Mer Plongée', '69003', 'Lyon', '222 Rue de la Mer, 69003 Lyon'),
+(22, 'Plongée Grand Bleu', '20000', 'Ajaccio', '233 Rue des Grandes Plongées, 20000 Ajaccio'),
+(23, 'Plongée Sud', '34001', 'Montpellier', '244 Rue du Sud, 34001 Montpellier'),
+(24, 'Aqua-Dive Nice', '06001', 'Nice', '255 Boulevard de Nice, 06001 Nice'),
+(25, 'Club Subaqueo', '75004', 'Paris', '266 Rue de la Plongée, 75004 Paris'),
+(26, 'Plongée Rêve', '13003', 'Marseille', '277 Avenue des Rêves, 13003 Marseille'),
+(27, 'Plongée Montagne', '40000', 'Cahors', '288 Rue de la Montagne, 40000 Cahors'),
+(28, 'Aqua-Vibes', '44001', 'Nantes', '299 Rue des Vagues, 44001 Nantes'),
+(29, 'Plongée Récif', '31000', 'Toulouse', '310 Rue des Récifs, 31000 Toulouse'),
+(30, 'Club Nagero', '10000', 'Châlons-en-Champagne', '311 Rue des Nageros, 10000 Châlons-en-Champagne'),
+(31, 'Plongée Océanique', '95000', 'Cergy', '322 Rue de l\'Océan, 95000 Cergy'),
+(32, 'AquaCoral', '60000', 'Beauvais', '333 Boulevard du Corail, 60000 Beauvais'),
+(33, 'Plongée Univers', '40001', 'Angoulême', '344 Rue Universelle, 40001 Angoulême'),
+(34, 'Plongée Passion Nautique', '50000', 'Saint-Lô', '355 Rue des Passionnés, 50000 Saint-Lô'),
+(35, 'Plongée Aventure', '21000', 'Dijon', '366 Rue de l\'Aventure, 21000 Dijon'),
+(36, 'Plongée Extrême', '75005', 'Paris', '377 Rue des Extrêmes, 75005 Paris'),
+(37, 'AquaDive Marseille', '13004', 'Marseille', '388 Rue des Plongeurs, 13004 Marseille'),
+(38, 'Club Aqualife', '40001', 'Cahors', '399 Avenue de l\'Aqualife, 40001 Cahors'),
+(39, 'Diving Club Paris', '75006', 'Paris', '400 Rue des Plongées, 75006 Paris'),
+(40, 'Plongée Horizon Bleu', '83002', 'Toulon', '411 Rue de l\'Horizon, 83002 Toulon'),
+(41, 'Plongée Submarin', '95001', 'Cergy', '422 Rue des Submersions, 95001 Cergy'),
+(42, 'Aqua Club Aventure', '69004', 'Lyon', '433 Rue des Aventuriers, 69004 Lyon'),
+(43, 'Plongée Arc-en-Ciel', '76000', 'Rouen', '444 Rue Arc-en-Ciel, 76000 Rouen'),
+(44, 'Aqua Horizon', '87000', 'Limoges', '455 Rue du Horizon, 87000 Limoges'),
+(45, 'Plongée Évasion', '58000', 'Nevers', '466 Rue de l\'Évasion, 58000 Nevers'),
+(46, 'Plongée Tout Bleu', '93000', 'Bobigny', '477 Rue du Bleu, 93000 Bobigny'),
+(47, 'Aqua Dive Montpellier', '34002', 'Montpellier', '488 Rue des Dives, 34002 Montpellier'),
+(48, 'Plongée Sublime', '49000', 'Angers', '499 Rue Sublime, 49000 Angers'),
+(49, 'Aqua Club Paris', '75007', 'Paris', '500 Rue de l\'Aqua, 75007 Paris'),
+(50, 'Ocean Dive Club', '59001', 'Lille', '511 Rue des Océans, 59001 Lille'),
+(51, 'Plongée Extreme Sport', '13005', 'Marseille', '522 Rue du Sport, 13005 Marseille'),
+(52, 'Plongée Sportive', '75008', 'Paris', '533 Rue des Sportifs, 75008 Paris'),
+(53, 'Aqua Center', '42000', 'Saint-Étienne', '544 Rue de l\'Aqua, 42000 Saint-Étienne'),
+(54, 'Plongée Défi', '31001', 'Toulouse', '555 Rue du Défi, 31001 Toulouse'),
+(55, 'Plongée Nova', '44002', 'Nantes', '566 Rue Nova, 44002 Nantes'),
+(56, 'Ocean Diving', '76001', 'Rouen', '577 Rue de l\'Océan, 76001 Rouen'),
+(57, 'Plongée Aventureux', '83003', 'Toulon', '588 Rue des Aventureux, 83003 Toulon'),
+(58, 'Diving Horizon', '35001', 'Rennes', '599 Rue des Horizons, 35001 Rennes'),
+(59, 'Plongée Passion Atlantique', '33000', 'Bordeaux', '610 Rue Atlantique, 33000 Bordeaux'),
+(60, 'Aqua Adventure Club', '56000', 'Vannes', '621 Rue Aventure, 56000 Vannes'),
+(61, 'Plongée Aux Étoiles', '29001', 'Quimper', '632 Rue des Étoiles, 29001 Quimper'),
+(62, 'Plongée Du Sud', '11000', 'Carcassonne', '643 Rue du Sud, 11000 Carcassonne'),
+(63, 'Club Atlantis', '54000', 'Nancy', '654 Rue Atlantis, 54000 Nancy'),
+(64, 'Plongée Horizon Bleu', '97000', 'Pointe-à-Pitre', '665 Rue du Bleu, 97000 Pointe-à-Pitre'),
+(65, 'AquaOcean', '13006', 'Marseille', '676 Rue Océan, 13006 Marseille'),
+(66, 'Plongée Excellente', '44003', 'Nantes', '687 Rue de l\'Excellence, 44003 Nantes'),
+(67, 'Plongée Mont-Blanc', '74001', 'Chamonix', '698 Rue du Mont-Blanc, 74001 Chamonix'),
+(68, 'Plongée Vibes', '37000', 'Tours', '709 Rue des Vibes, 37000 Tours'),
+(69, 'Diving Quest', '34003', 'Montpellier', '710 Rue des Quêtes, 34003 Montpellier'),
+(70, 'Plongée Spéciale', '71000', 'Macon', '721 Rue Spéciale, 71000 Macon'),
+(71, 'Plongée Marine', '76002', 'Rouen', '732 Rue Marine, 76002 Rouen'),
+(72, 'Aqua Dive Toulon', '83004', 'Toulon', '743 Rue du Dive, 83004 Toulon'),
+(73, 'Plongée Atlantis', '14000', 'Caen', '754 Rue Atlantis, 14000 Caen'),
+(74, 'Club Scuba Dive', '84000', 'Avignon', '765 Rue des Scubas, 84000 Avignon'),
+(75, 'Plongée 2000', '10001', 'Châlons-en-Champagne', '776 Rue du 2000, 10001 Châlons-en-Champagne'),
+(76, 'Club Nautique', '95002', 'Cergy', '787 Rue Nautique, 95002 Cergy'),
+(77, 'Plongée Médoc', '33001', 'Bordeaux', '798 Rue du Médoc, 33001 Bordeaux'),
+(78, 'Aqua-Scuba', '12000', 'Rodez', '809 Rue des Scubas, 12000 Rodez'),
+(79, 'Plongée Arc', '67000', 'Strasbourg', '810 Rue des Arcs, 67000 Strasbourg'),
+(80, 'Plongée Bleue', '69005', 'Lyon', '821 Rue Bleue, 69005 Lyon'),
+(81, 'AquaLuxe', '85000', 'La Roche-sur-Yon', '832 Rue Luxe, 85000 La Roche-sur-Yon'),
+(82, 'Plongée Sur Mer', '33002', 'Bordeaux', '843 Rue de la Mer, 33002 Bordeaux'),
+(83, 'Plongée Saint-Tropez', '83990', 'Saint-Tropez', '854 Rue du Soleil, 83990 Saint-Tropez'),
+(84, 'AquaSun', '22000', 'Saint-Brieuc', '865 Rue du Soleil, 22000 Saint-Brieuc'),
+(85, 'Plongée Passion Sud', '70000', 'Besançon', '876 Rue Passion, 70000 Besançon'),
+(86, 'Plongée Montagne & Mer', '17000', 'La Rochelle', '887 Rue des Montagnes, 17000 La Rochelle'),
+(87, 'Plongée Divertissement', '75009', 'Paris', '898 Rue Divertissement, 75009 Paris'),
+(88, 'Plongée France', '94000', 'Créteil', '909 Rue de France, 94000 Créteil'),
+(89, 'Aqua-Venture', '65000', 'Tarbes', '920 Rue de l\'Aventure, 65000 Tarbes'),
+(90, 'Diving Club Nantes', '44004', 'Nantes', '931 Rue du Diving, 44004 Nantes'),
+(91, 'Plongée Alpha', '34004', 'Montpellier', '942 Rue Alpha, 34004 Montpellier'),
+(92, 'Aqua Dive Sport', '92001', 'Nanterre', '953 Rue du Dive, 92001 Nanterre'),
+(93, 'Plongée Horizon Sud', '38001', 'Grenoble', '964 Rue Horizon, 38001 Grenoble'),
+(94, 'Plongée Nomade', '69006', 'Lyon', '975 Rue Nomade, 69006 Lyon'),
+(95, 'Aqua Ocean', '13007', 'Marseille', '986 Rue de l\'Océan, 13007 Marseille'),
+(96, 'Plongée Blue Planet', '50001', 'Saint-Lô', '997 Rue Blue, 50001 Saint-Lô'),
+(97, 'Club de la Mer', '75010', 'Paris', '1008 Rue Mer, 75010 Paris'),
+(98, 'Plongée et Aventure', '51000', 'Châlons-en-Champagne', '1019 Rue Aventure, 51000 Châlons-en-Champagne'),
+(99, 'Oceanic Club', '38002', 'Grenoble', '1030 Rue Océanique, 38002 Grenoble'),
+(100, 'Plongée Horizon Mer', '68000', 'Colmar', '1041 Rue des Horizons, 68000 Colmar');
+
+
+INSERT INTO `grp2_evaluation` (`EVAL_ID`, `STATUSTYPE_ID`, `USER_ID`, `SESS_ID`, `ABI_ID`, `EVAL_OBSERVATION`) VALUES
+(1, 1, 1, 1, 1, 'L\'élève a maîtrisé cette compétence après quelques tentatives.'),
+(2, 1, 2, 2, 2, 'Compétence en cours d\'acquisition, l\'élève doit améliorer cette aptitude.'),
+(3, 2, 3, 3, 3, 'Évaluation non effectuée, élève absent lors de cette session.'),
+(4, 1, 4, 4, 4, 'L\'élève a parfaitement maîtrisé l\'aptitude, prêt pour le niveau suivant.'),
+(5, 1, 5, 5, 5, 'L\'évaluation est en cours, il y a encore des progrès à faire sur cette compétence.'),
+(6, 1, 6, 6, 6, 'L\'élève a bien maîtrisé l\'aptitude après une révision des concepts.'),
+(7, 2, 7, 7, 7, 'En cours d\'acquisition, l\'élève doit encore pratiquer cette compétence.'),
+(8, 2, 8, 8, 8, 'L\'aptitude a été acquise avec succès et sans difficulté majeure.'),
+(9, 1, 9, 9, 9, 'L\'élève a bien pratiqué cette compétence et l\'a réussie avec succès.'),
+(10, 2, 10, 10, 1, 'L\'évaluation est en attente, l\'élève a manqué cette session.'),
+(11, 1, 11, 11, 3, 'L\'élève a réussi l\'évaluation sans problème et maîtrise parfaitement l\'aptitude.'),
+(12, 2, 12, 12, 2, 'L\'évaluation montre des progrès, mais l\'élève doit encore pratiquer.'),
+(13, 3, 13, 13, 3, 'Évaluation réussie, l\'aptitude a été validée après révisions.'),
+(14, 1, 14, 14, 1, 'L\'évaluation a été manquée à cause d\'une absence de l\'élève.'),
+(15, 1, 15, 15, 2, 'Les progrès sont notables, mais l\'élève doit encore travailler cette aptitude.');
+
+
+INSERT INTO `grp2_level` (`LEVEL_ID`, `LEVEL_LABEL`) VALUES
+(0, 'Niveau 0 - Débutant'),
+(1, 'Niveau 1 - Plongeur encadré jusqu\'à 20m'),
+(2, 'Niveau 2 - Plongeur autonome jusqu\'à 20m'),
+(3, 'Niveau 3 - Plongeur autonome jusqu\'à 60m'),
+(4, 'Niveau 4 - Moniteur de plongée supervision des formations'),
+(5, 'MF1 - Moniteur fédéral 1er degré'),
+(6, 'MF2 - Moniteur fédéral 2eme degré');
+
+
+INSERT INTO `grp2_session` (`SESS_ID`, `TRAIN_ID`, `SESSTYPE_ID`, `SESS_DATE`) VALUES
+(1, 1, 1, '2025-01-08 00:00:00'),
+(2, 1, 2, '2025-01-15 00:00:00'),
+(3, 1, 3, '2025-01-22 00:00:00'),
+(4, 1, 4, '2025-01-29 00:00:00'),
+(5, 1, 1, '2025-02-04 00:00:00'),
+(6, 1, 2, '2025-02-12 00:00:00'),
+(7, 2, 3, '2025-02-19 00:00:00'),
+(8, 2, 4, '2025-02-26 00:00:00'),
+(9, 2, 1, '2025-03-05 00:00:00'),
+(10, 2, 2, '2025-03-12 00:00:00'),
+(11, 2, 3, '2025-03-19 00:00:00'),
+(12, 2, 4, '2025-03-26 00:00:00'),
+(13, 3, 1, '2025-04-02 00:00:00'),
+(14, 3, 2, '2025-04-09 00:00:00'),
+(15, 3, 3, '2025-04-16 00:00:00'),
+(16, 3, 4, '2025-04-23 00:00:00');
+
+
+INSERT INTO `grp2_sessiontype` (`SESSTYPE_ID`, `SESSTYPE_LABEL`) VALUES
+(1, 'Piscine'),
+(2, 'Milieu naturel'),
+(3, 'Formation théorique'),
+(4, 'Évaluation');
+
+
+INSERT INTO `grp2_site` (`PK_GRP2_SITE`, `CLUB_ID`, `SITE_NAME`, `SITE_COLOR`, `SITE_LOGO`) VALUES
+(1, 1, 'Secool', '#005c8f', NULL),
+(2, 2, 'Seporq2', '#008040', NULL),
+(3, 3, 'SePorq', '#ff8040', NULL),
+(4, 4, 'Secool', '#005C8F', NULL),
+(5, 5, 'Secool', '#005C8F', NULL),
+(6, 6, 'Secool', '#005C8F', NULL),
+(7, 7, 'Secool', '#005C8F', NULL),
+(8, 8, 'Secool', '#005C8F', NULL),
+(9, 9, 'Secool', '#005C8F', NULL),
+(10, 10, 'Secool', '#005C8F', NULL),
+(11, 11, 'Secool', '#005C8F', NULL),
+(12, 12, 'Secool', '#005C8F', NULL),
+(13, 13, 'Secool', '#005C8F', NULL),
+(14, 14, 'Secool', '#005C8F', NULL),
+(15, 15, 'Secool', '#005C8F', NULL),
+(16, 16, 'Secool', '#005C8F', NULL),
+(17, 17, 'Secool', '#005C8F', NULL),
+(18, 18, 'Secool', '#005C8F', NULL),
+(19, 19, 'Secool', '#005C8F', NULL),
+(20, 20, 'Secool', '#005C8F', NULL),
+(21, 21, 'Secool', '#005C8F', NULL),
+(22, 22, 'Secool', '#005C8F', NULL),
+(23, 23, 'Secool', '#005C8F', NULL),
+(24, 24, 'Secool', '#005C8F', NULL),
+(25, 25, 'Secool', '#005C8F', NULL),
+(26, 26, 'Secool', '#005C8F', NULL),
+(27, 27, 'Secool', '#005C8F', NULL),
+(28, 28, 'Secool', '#005C8F', NULL),
+(29, 29, 'Secool', '#005C8F', NULL),
+(30, 30, 'Secool', '#005C8F', NULL),
+(31, 31, 'Secool', '#005C8F', NULL),
+(32, 32, 'Secool', '#005C8F', NULL),
+(33, 33, 'Secool', '#005C8F', NULL),
+(34, 34, 'Secool', '#005C8F', NULL),
+(35, 35, 'Secool', '#005C8F', NULL),
+(36, 36, 'Secool', '#005C8F', NULL),
+(37, 37, 'Secool', '#005C8F', NULL),
+(38, 38, 'Secool', '#005C8F', NULL),
+(39, 39, 'Secool', '#005C8F', NULL),
+(40, 40, 'Secool', '#005C8F', NULL),
+(41, 41, 'Secool', '#005C8F', NULL),
+(42, 42, 'Secool', '#005C8F', NULL),
+(43, 43, 'Secool', '#005C8F', NULL),
+(44, 44, 'Secool', '#005C8F', NULL),
+(45, 45, 'Secool', '#005C8F', NULL),
+(46, 46, 'Secool', '#005C8F', NULL),
+(47, 47, 'Secool', '#005C8F', NULL),
+(48, 48, 'Secool', '#005C8F', NULL),
+(49, 49, 'Secool', '#005C8F', NULL),
+(50, 50, 'Secool', '#005C8F', NULL),
+(51, 51, 'Secool', '#005C8F', NULL),
+(52, 52, 'Secool', '#005C8F', NULL),
+(53, 53, 'Secool', '#005C8F', NULL),
+(54, 54, 'Secool', '#005C8F', NULL),
+(55, 55, 'Secool', '#005C8F', NULL),
+(56, 56, 'Secool', '#005C8F', NULL),
+(57, 57, 'Secool', '#005C8F', NULL),
+(58, 58, 'Secool', '#005C8F', NULL),
+(59, 59, 'Secool', '#005C8F', NULL),
+(60, 60, 'Secool', '#005C8F', NULL),
+(61, 61, 'Secool', '#005C8F', NULL),
+(62, 62, 'Secool', '#005C8F', NULL),
+(63, 63, 'Secool', '#005C8F', NULL),
+(64, 64, 'Secool', '#005C8F', NULL),
+(65, 65, 'Secool', '#005C8F', NULL),
+(66, 66, 'Secool', '#005C8F', NULL),
+(67, 67, 'Secool', '#005C8F', NULL),
+(68, 68, 'Secool', '#005C8F', NULL),
+(69, 69, 'Secool', '#005C8F', NULL),
+(70, 70, 'Secool', '#005C8F', NULL),
+(71, 71, 'Secool', '#005C8F', NULL),
+(72, 72, 'Secool', '#005C8F', NULL),
+(73, 73, 'Secool', '#005C8F', NULL),
+(74, 74, 'Secool', '#005C8F', NULL),
+(75, 75, 'Secool', '#005C8F', NULL),
+(76, 76, 'Secool', '#005C8F', NULL),
+(77, 77, 'Secool', '#005C8F', NULL),
+(78, 78, 'Secool', '#005C8F', NULL),
+(79, 79, 'Secool', '#005C8F', NULL),
+(80, 80, 'Secool', '#005C8F', NULL),
+(81, 81, 'Secool', '#005C8F', NULL),
+(82, 82, 'Secool', '#005C8F', NULL),
+(83, 83, 'Secool', '#005C8F', NULL),
+(84, 84, 'Secool', '#005C8F', NULL),
+(85, 85, 'Secool', '#005C8F', NULL),
+(86, 86, 'Secool', '#005C8F', NULL),
+(87, 87, 'Secool', '#005C8F', NULL),
+(88, 88, 'Secool', '#005C8F', NULL),
+(89, 89, 'Secool', '#005C8F', NULL),
+(90, 90, 'Secool', '#005C8F', NULL),
+(91, 91, 'Secool', '#005C8F', NULL),
+(92, 92, 'Secool', '#005C8F', NULL),
+(93, 93, 'Secool', '#005C8F', NULL),
+(94, 94, 'Secool', '#005C8F', NULL),
+(95, 95, 'Secool', '#005C8F', NULL),
+(96, 96, 'Secool', '#005C8F', NULL),
+(97, 97, 'Secool', '#005C8F', NULL),
+(98, 98, 'Secool', '#005C8F', NULL),
+(99, 99, 'Secool', '#005C8F', NULL),
+(100, 100, 'Secool', '#005C8F', NULL);
+
+
+INSERT INTO `grp2_skill` (`SKILL_ID`, `LEVEL_ID`, `SKILL_LABEL`) VALUES
+(1, 1, 'S\'équiper et se déséquiper'),
+(2, 1, 'Se mettre à l\'eau et en sortir'),
+(3, 1, 'Évoluer dans l\'eau s\'immerger'),
+(4, 1, 'Évoluer dans l\'eau se propulser'),
+(5, 1, 'Évoluer dans l\'eau se ventiler'),
+(6, 1, 'Évoluer dans l\'eau s\'équilibrer'),
+(7, 1, 'Communiquer'),
+(8, 1, 'Appliquer les conduites de sécurité'),
+(9, 1, 'Respecter le milieu et l\'environnement'),
+(10, 1, 'Retourner en surface'),
+(11, 2, 'Ventiler et s’équilibrer'),
+(12, 2, 'Communiquer avec le GP'),
+(13, 2, 'Retourner en surface'),
+(14, 2, 'Intervenir en relai sur un équipier'),
+(15, 2, 'S’équiper et se mettre à l’eau'),
+(16, 2, 'S’immerger et se propulser'),
+(17, 2, 'Respecter le milieu et l’environnement'),
+(18, 2, 'Planifier la plongée'),
+(19, 2, 'Être attentif au matériel des équipiers'),
+(20, 2, 'Évoluer en autonomie'),
+(21, 2, 'Intervenir et porter assistance'),
+(22, 3, 'Planifier la plongée'),
+(23, 3, 'Évoluer en autonomie'),
+(24, 3, 'Intervenir et porter assistance'),
+(25, 3, 'S’adapter à la profondeur'),
+(26, 3, 'Organiser la plongée'),
+(27, 3, 'Évoluer en autonomie');
+
+
+INSERT INTO `grp2_statustype` (`STATUSTYPE_ID`, `STATUSTYPE_LABEL`) VALUES
+(0, 'Absent'),
+(1, 'Non évaluée'),
+(2, 'En Cours d\'Acquisition'),
+(3, 'Acquise');
+
+
+INSERT INTO `grp2_training` (`TRAIN_ID`) VALUES
+(0),
+(1),
+(2),
+(3);
+
+
+INSERT INTO `grp2_typeuser` (`TYPE_ID`, `TYPE_LABEL`) VALUES
+(1, 'Elève'),
+(2, 'Initiateur'),
+(3, 'Responsable de Formation'),
+(4, 'Directeur Technique');
+
+
+INSERT INTO `grp2_user` (`USER_ID`, `LEVEL_ID`, `TYPE_ID`, `TRAIN_ID`, `LEVEL_ID_RESUME`, `USER_MAIL`, `USER_PASSWORD`, `USER_FIRSTNAME`, `USER_LASTNAME`, `USER_PHONENUMBER`, `USER_BIRTHDATE`, `USER_ADDRESS`, `USER_POSTALCODE`, `USER_LICENSENUMBER`, `USER_MEDICCERTIFICATEDATE`, `USER_ISFIRSTLOGIN`, `USER_ISACTIVE`) VALUES
+(1, 0, 1, 1, 1, 'eleve1@secool.fr', '$2y$10$1FRFM0KK6KA81Rct3gf07.VZFb6/8eCIKIJaANxQMqCSbpWJAEsoO', 'Pierre', 'Dupont', '0623456789', '2002-01-01', '10 rue de la Plongée, Paris', '75001', 'A-33-567890', '2023-05-12', 0, 1),
+(2, 0, 1, 1, 1, 'eleve2@secool.fr', '$2y$10$zN4GgFa.mJQBDwph8rlYXu3m/b1kMAQvNS19kRou1baiqJsmJsb6.', 'Marie', 'Lemoine', '0623456790', '2003-02-02', '11 avenue des Océans, Marseille', '13001', 'A-28-567891', '2023-06-10', 0, 1),
+(3, 0, 1, 1, 1, 'eleve3@secool.fr', '$2y$10$Pzs//KyclKZ8LeyT.oGxg.FoA.XRXI9YuvF04XUthx9CKvY3YAH8.', 'Lucas', 'Martin', '0623456798', '2005-03-01', 'Lyon, 69000', '69000', 'A-45-123456', '2023-07-15', 0, 1),
+(4, 0, 1, 1, 1, 'eleve4@secool.fr', '$2y$10$CjXC8W6t0XVpt8yOTaje/OE6Lfh1Dis60GgTOSH1.JxBk4ztFNX7m', 'Emma', 'Bernard', '0623456799', '2004-10-14', 'Nice, 06000', '06000', 'A-12-654321', '2023-05-20', 0, 1),
+(5, 0, 1, 1, 1, 'eleve5@secool.fr', '$2y$10$9hu1GkXokQIjp/1fdV2iBOZJ2E7UnjyaJkGcToAixavjGafK4I64m', 'Gabriel', 'Dubois', '0623456800', '2002-08-09', 'Toulouse, 31000', '31000', 'A-78-234567', '2023-09-10', 0, 1),
+(6, 0, 1, 1, 1, 'eleve6@secool.fr', 'Password123', 'Chloé', 'Thomas', '0623456801', '2003-01-23', 'Marseille, 13000', '13000', 'A-56-987654', '2023-04-15', 0, 1),
+(7, 0, 1, 1, 1, 'eleve7@secool.fr', 'Password123', 'Nathan', 'Robert', '0623456802', '2004-12-05', 'Bordeaux, 33000', '33000', 'A-34-456789', '2023-06-22', 0, 1),
+(8, 0, 1, 1, 1, 'eleve8@secool.fr', 'Password123', 'Léa', 'Petit', '0623456803', '2001-11-20', 'Strasbourg, 67000', '67000', 'A-89-345678', '2023-03-10', 0, 1),
+(9, 0, 1, 1, 1, 'eleve9@secool.fr', 'Password123', 'Arthur', 'Durand', '0623456804', '2005-06-30', 'Lille, 59000', '59000', 'A-23-987123', '2023-10-05', 0, 1),
+(10, 0, 1, 1, 1, 'eleve10@secool.fr', 'Password123', 'Sophie', 'Lemoine', '0623456805', '2004-03-15', 'Rennes, 35000', '35000', 'A-77-456123', '2023-11-12', 0, 1),
+(11, 0, 1, 1, 1, 'eleve11@secool.fr', 'Password123', 'Hugo', 'Morel', '0623456806', '2003-07-07', 'Nantes, 44000', '44000', 'A-65-321654', '2023-02-18', 0, 1),
+(12, 0, 1, 1, 1, 'eleve12@secool.fr', 'Password123', 'Camille', 'Roux', '0623456807', '2002-05-29', 'Dijon, 21000', '21000', 'A-11-789123', '2023-08-25', 0, 1),
+(13, 0, 1, 1, 1, 'eleve13@secool.fr', 'Password123', 'Julien', 'Blanc', '0623456808', '2003-12-12', 'Orléans, 45000', '45000', 'A-90-234891', '2023-06-08', 0, 1),
+(14, 0, 1, 1, 1, 'eleve14@secool.fr', 'Password123', 'Elodie', 'Garcia', '0623456809', '2005-04-18', 'Metz, 57000', '57000', 'A-54-567123', '2023-10-19', 0, 1),
+(15, 0, 1, 1, 1, 'eleve15@secool.fr', 'Password123', 'Maxime', 'Hernandez', '0623456810', '2004-02-03', 'Clermont-Ferrand, 63000', '63000', 'A-76-345891', '2023-05-01', 0, 1),
+(16, 0, 1, 1, 1, 'eleve16@secool.fr', 'Password123', 'Lucie', 'Martinez', '0623456811', '2003-08-27', 'Reims, 51100', '51100', 'A-88-891234', '2023-07-23', 0, 1),
+(17, 0, 1, 1, 1, 'eleve17@secool.fr', 'Password123', 'Antoine', 'Lopez', '0623456812', '2002-06-14', 'Nancy, 54000', '54000', 'A-44-123678', '2023-09-04', 0, 1),
+(18, 0, 1, 1, 1, 'eleve18@secool.fr', 'Password123', 'Clara', 'Perrin', '0623456813', '2005-11-21', 'Perpignan, 66000', '66000', 'A-33-987321', '2023-10-29', 0, 1),
+(19, 0, 1, 1, 1, 'eleve19@secool.fr', 'Password123', 'Jules', 'Fernandez', '0623456814', '2001-09-10', 'Annecy, 74000', '74000', 'A-22-654987', '2023-12-01', 0, 1),
+(20, 0, 1, 1, 1, 'eleve20@secool.fr', 'Password123', 'Sarah', 'Fabre', '0623456815', '2003-10-30', 'Caen, 14000', '14000', 'A-99-789321', '2023-03-29', 0, 1),
+(21, 1, 1, 2, 2, 'eleve36@secool.fr', '$2y$10$9Xh/TpkUy21pSze3KVkJz.4gOSrkOTSKgMPSKTIvwOM7JuH4nImDm', 'Sarah', 'Leroy', '0623456831', '2004-07-26', 'Chambéry, 73000', '73000', 'A-99-891234', '2023-12-04', 0, 1),
+(22, 1, 1, 2, 2, 'eleve37@secool.fr', '$2y$10$0NceZSkhL16H5241.xt.jekL7Y6wo58Xs3vIl3bnVBFaElPxmvLXu', 'Antoine', 'Renaud', '0623456832', '2002-03-03', 'Troyes, 10000', '10000', 'A-65-456123', '2023-11-16', 0, 1),
+(23, 1, 1, 2, 2, 'eleve23@secool.fr', '$2y$10$BmclNWYl6MVVpPXS/kgizexnF/Y2jnmCguK.rnY/zR1VtU4v6sly2', 'Louis', 'Morin', '0623456818', '2002-07-12', 'Grenoble, 38000', '38000', 'A-34-123789', '2023-07-10', 0, 1),
+(24, 1, 1, 2, 2, 'eleve24@secool.fr', 'Password123', 'Manon', 'Picard', '0623456819', '2001-03-22', 'Rouen, 76000', '76000', 'A-45-987654', '2023-11-05', 0, 1),
+(25, 1, 1, 2, 2, 'eleve25@secool.fr', 'Password123', 'Thomas', 'Gonzalez', '0623456820', '2003-05-15', 'Avignon, 84000', '84000', 'A-78-654123', '2023-09-18', 0, 1),
+(26, 1, 1, 2, 2, 'eleve26@secool.fr', 'Password123', 'Emma', 'Fontaine', '0623456821', '2004-11-08', 'Besançon, 25000', '25000', 'A-56-321789', '2023-06-03', 0, 1),
+(27, 1, 1, 2, 2, 'eleve27@secool.fr', 'Password123', 'Alexandre', 'Chevalier', '0623456822', '2005-01-30', 'Tours, 37000', '37000', 'A-23-789456', '2023-04-25', 0, 1),
+(28, 1, 1, 2, 2, 'eleve28@secool.fr', 'Password123', 'Julie', 'Lambert', '0623456823', '2002-02-17', 'Poitiers, 86000', '86000', 'A-67-234567', '2023-05-20', 0, 1),
+(29, 1, 1, 2, 2, 'eleve29@secool.fr', 'Password123', 'Lucas', 'Poirier', '0623456824', '2001-12-24', 'Mulhouse, 68100', '68100', 'A-89-456123', '2023-10-12', 0, 1),
+(30, 1, 1, 2, 2, 'eleve30@secool.fr', 'Password123', 'Clara', 'Renard', '0623456825', '2003-06-05', 'Le Havre, 76600', '76600', 'A-21-345678', '2023-08-15', 0, 1),
+(31, 1, 1, 2, 2, 'eleve31@secool.fr', 'Password123', 'Maxime', 'Benoit', '0623456826', '2005-09-11', 'Aix-en-Provence, 13090', '13090', 'A-33-678123', '2023-03-01', 0, 1),
+(32, 2, 1, 3, 3, 'eleve32@secool.fr', '$2y$10$u6MWtmrDyukVDZnW5sVPMOTpOAJpqUXc5lfn6qk9u/Q35PPyt8Q4K', 'Camille', 'Giraud', '0623456827', '2004-02-14', 'Pau, 64000', '64000', 'A-44-123456', '2023-09-27', 0, 1),
+(33, 2, 1, 3, 3, 'eleve33@secool.fr', '$2y$10$sBrZvz0xmS6aww8tja7OtubE4YIg1.TJFA3SIETGPVOkz3fWgn7U2', 'Jules', 'Barbier', '0623456828', '2002-08-19', 'Saint-Étienne, 42000', '42000', 'A-66-234567', '2023-07-02', 0, 1),
+(34, 2, 1, 3, 3, 'eleve34@secool.fr', '$2y$10$mPD9t8Mk7F2CbRn7mCPlheDZTWaWhQxnbr7ppTPBIUVldfqneRvue', 'Lucie', 'Descamps', '0623456829', '2003-10-10', 'Nancy, 54000', '54000', 'A-77-345678', '2023-06-11', 0, 1),
+(35, 2, 1, 3, 3, 'eleve35@secool.fr', '$2y$10$luNLkx3ReYLZdjMDA2ZuqOQPJHLPrQOwxPEVMEsm1NtZ2/YEesk7m', 'Nathan', 'Fabre', '0623456830', '2005-01-09', 'Limoges, 87000', '87000', 'A-88-456789', '2023-05-06', 0, 1),
+(36, 2, 1, 3, 3, 'eleve36@secool.fr', '$2y$10$TuurQonY7d//253Qt53Df.KBiNNeCruATJfUDyc.tOpYAmmr8rd/2', 'Sarah', 'Leroy', '0623456831', '2004-07-26', 'Chambéry, 73000', '73000', 'A-99-567890', '2023-12-04', 0, 1),
+(37, 2, 1, 3, 3, 'eleve37@secool.fr', '$2y$10$tBkq2Aw/mnQznzZnd4WmRO4w9npRV5PqB1aDHVAJ0OBexv9kCdDS6', 'Antoine', 'Renaud', '0623456832', '2002-03-03', 'Troyes, 10000', '10000', 'A-11-678901', '2023-11-16', 0, 1),
+(38, 2, 1, 3, 3, 'eleve38@secool.fr', '$2y$10$xY4Rh3ls8dS3wsTE6.l3Su4hUA7qSIxRowcOYh79I/gEe0Ch4wv/G', 'Chloé', 'Vasseur', '0623456833', '2003-05-21', 'Bayonne, 64100', '64100', 'A-22-789012', '2023-04-09', 0, 1),
+(39, 2, 1, 3, 3, 'eleve39@secool.fr', '$2y$10$0S3H9wm.d0UFm6oOUtMSnOSCXlYRH2K1SymdiZCXNZNLi4qZd5gsW', 'Hugo', 'Noël', '0623456834', '2005-10-31', 'Valence, 26000', '26000', 'A-33-890123', '2023-09-08', 0, 1),
+(40, 2, 1, 3, 3, 'eleve40@secool.fr', 'Password123', 'Léa', 'Charpentier', '0623456835', '2004-06-12', 'Ajaccio, 20000', '20000', 'A-44-901234', '2023-08-21', 0, 1),
+(41, 2, 1, 3, 3, 'eleve41@secool.fr', 'Password123', 'Gabriel', 'Duval', '0623456836', '2001-11-07', 'Carcassonne, 11000', '11000', 'A-55-012345', '2023-10-14', 0, 1),
+(42, 2, 2, 1, 0, 'initiateur_dupont@secool.fr', '$2y$10$qs0zjPFR7nZswGm/CqT1yOg6tscZGBERkFm3pCieDJxPNQG0ZLhle', 'Jean', 'Dupont', '0623456800', '1990-01-01', '20 rue de la Mer, Paris', '75002', 'A-34-543210', '2020-04-10', 0, 1),
+(43, 2, 2, 1, 0, 'initiateur_duval@secool.fr', '$2y$10$KJO67/r0scYCWWEx2a5s6en08f/2xBVQrg9EKxVhVuqoq0I6kd0l2', 'Léa', 'Bernier', '0623456801', '1985-02-10', '21 avenue des Plongées, Marseille', '13002', 'A-34-3211', '2021-03-15', 0, 1),
+(44, 3, 2, 2, 0, 'initiateur3@secool.fr', 'Password123', 'Michel', 'Giraud', '0623456802', '1987-03-20', '22 boulevard des Océans, Nice', '06001', 'A-34-543212', '2022-05-30', 0, 1),
+(45, 3, 2, 2, 0, 'initiateur4@secool.fr', 'Password123', 'Lucie', 'Moreau', '0623456803', '1991-04-15', '23 rue des Abysses, Toulouse', '31001', 'A-34-543213', '2021-06-05', 0, 1),
+(46, 3, 2, 2, 0, 'initiateur5@secool.fr', 'Password123', 'Pierre', 'Petit', '0623456804', '1988-05-25', '24 avenue de la Mer, Nantes', '44001', 'A-34-453214', '2020-11-01', 0, 1),
+(47, 3, 2, 2, 0, 'initiateur6@secool.fr', 'Password123', 'Paul', 'Durand', '0623456805', '1995-06-17', '25 rue des Poissons, Bordeaux', '33001', 'A-34-543215', '2022-01-10', 0, 1),
+(48, 4, 2, 3, 0, 'initiateur7@secool.fr', '$2y$10$m7pC9r4FWd8zk8sGOsAmBeZskR464lE24/JaGJoMFdJFiV64MO4KK', 'Cécile', 'Legrand', '0623456806', '1992-07-28', '26 rue des Mers, Lille', '59001', 'A-34-543216', '2021-08-20', 0, 1),
+(49, 4, 2, 3, 0, 'initiateur8@secool.fr', '$2y$10$TtO0m7KZ7C2Ukwx2B0/j4e8eSJezDV9sJDHnWHAQLM54sVKQdvfPS', 'Julien', 'Roch', '0623456807', '1989-08-15', '27 avenue des Profondeurs, Strasbourg', '67001', 'A-34-543217', '2020-10-05', 0, 1),
+(50, 2, 3, 1, 0, 'rf1@secool.fr', '$2y$10$CsC5FWWpf3P37fZotJNyjuFJEFthaRzFkaeStcCjmqSjKL.Ph1G4q', 'Laurent', 'Blanc', '0623456808', '1980-01-15', '28 rue des Profondeurs, Paris', '75003', 'A-34-334455', '2019-03-10', 0, 1),
+(51, 3, 3, 1, 0, 'rf2@secool.fr', 'Password123', 'Nicolas', 'Robert', '0623456809', '1982-02-25', '29 avenue de la Mer, Marseille', '13003', 'A-25-334456', '2020-06-05', 0, 1),
+(52, 3, 3, 2, 0, 'rf3@secool.fr', 'Password123', 'Aline', 'Dupuis', '0623456810', '1983-03-12', '30 boulevard des Mers, Nice', '06002', 'A-34-334457', '2021-08-01', 0, 1),
+(53, 4, 3, 2, 0, 'rf4@secool.fr', 'Password123', 'Henri', 'Delorme', '0623456811', '1981-04-20', '31 rue des Abysses, Toulouse', '31002', 'A-37-334458', '2018-09-15', 0, 1),
+(54, 4, 3, 2, 0, 'rf5@secool.fr', 'Password123', 'Sophie', 'Lemoine', '0623456812', '1984-05-18', '32 rue des Plongées, Nantes', '44002', 'A-17-334459', '2020-07-05', 0, 1),
+(55, 4, 4, 0, 0, 'dt1@secool.fr', 'Password123', 'Julie', 'Lemoine', '0623456813', '1989-06-22', '33 rue des Océans, Paris', '75004', 'A-25-445566', '2019-04-25', 0, 1),
+(56, 4, 4, 0, 0, 'dt2@secool.fr', 'Password123', 'Antoine', 'Benoit', '0623456814', '1985-07-30', '34 avenue des Profondeurs, Marseille', '13004', 'A-34-445567', '2020-08-10', 0, 1),
+(57, 4, 4, 0, 0, 'dt3@secool.fr', '$2y$10$hnOkkfnfFw9btbSNAedz5OkUVXmpiScWQME53y1hW20UTUZMq4N0C', 'Marie', 'Vidal', '0623456815', '1987-09-10', '35 boulevard des Mers, Nice', '06003', 'A-74-445568', '2021-05-25', 0, 1),
+(58, 4, 4, 0, 0, 'dt4@secool.fr', 'Password123', 'Benoit', 'Lemoine', '0623456816', '1988-10-14', '36 rue des Océans, Lille', '59001', 'A-27-445569', '2020-09-10', 0, 1),
+(59, 4, 4, 0, 0, 'dt5@secool.fr', 'Password123', 'Delphine', 'Girard', '0623456817', '1986-11-25', '37 avenue de la Plongée, Strasbourg', '67002', 'A-34-445570', '2021-07-12', 0, 1),
+(60, 4, 4, 0, 0, 'dt5@secool.fr', 'Password123', 'Delphine', 'Girard', '0623456817', '1986-11-25', '37 avenue de la Plongée, Strasbourg', '67002', 'A-48-945570', '2021-07-12', 0, 1),
+(61, 2, 2, 1, 0, 'initiateur1@secool.fr', '$2y$10$OArDU0F2ouIGE6bFhWHP9ubJibXmm8zX3W02DHfewJZBWpBxc9.u.', 'Jean', 'Dupont', '0623456800', '1990-01-01', '20 rue de la Mer, Paris', '75002', 'A-34-543210', '2020-04-10', 0, 1),
+(62, 2, 2, 1, 0, 'initiateur2@secool.fr', '$2y$10$3HkxLdqiSyA/h5bk2LLkJexOvjjlNE7skUu1YLZA2VhQvhCQrk5Xy', 'Léa', 'Bernier', '0623456801', '1985-02-10', '21 avenue des Plongées, Marseille', '13002', 'A-34-321147', '2021-03-15', 0, 1),
+(63, 2, 2, 1, 5, '1initiateurMF1@secool.fr', '$2y$10$Giq5Bqa6ubxFBELBN3fkrO/gHwV5vPhpspNGQQ9wU4q6BdHV6tH3G', 'Léon', 'Berne', '0623456801', '1985-02-10', '21 avenue des Plongées, Marseille', '13002', 'A-34-321145', '2021-03-15', 0, 1),
+(65, 5, 2, 1, 0, '2initiateurMF1@secool.fr', '$2y$10$E0SpE3jZuvFjsDudas3Mie4klUz/HYxQhcUOefQu2vSYaea7c2SEm', 'Léona', 'Bernere', '0623456801', '1985-02-10', '21 avenue des Plongées, Marseille', '13002', 'A-34-321145', '2021-03-15', 0, 1),
+(66, 5, 2, 1, 0, 'initiateurdurantMF1@secool.fr', '$2y$10$YkFOaUelzJ/7S4AQLfN2DOm6pH3rUrgySqoUUSg/IpuAGbUR0DNpm', 'Léonie', 'Berer', '0623456801', '1985-02-10', '21 avenue des Plongées, Marseille', '13002', 'A-34-321145', '2021-03-15', 0, 1);
+
+
+INSERT INTO `grp2_validation` (`VALID_ID`, `SKILL_ID`, `ABI_ID`, `LEVEL_ID`, `EVAL_ID`, `VALID_DATE`) VALUES
+(1, 1, 1, 1, 1, '2024-02-20'),
+(2, 2, 2, 1, 2, '2024-02-21'),
+(3, 3, 3, 1, 3, '2024-02-22'),
+(4, 4, 4, 1, 4, '2024-02-23'),
+(5, 5, 5, 1, 5, '2024-02-24'),
+(6, 6, 6, 1, 6, '2024-02-25'),
+(7, 7, 7, 1, 7, '2024-02-26'),
+(8, 8, 8, 1, 8, '2024-02-27'),
+(9, 9, 9, 1, 9, '2024-02-28'),
+(10, 10, 10, 1, 10, '2024-03-01');
+
+
+INSERT INTO `grp2_year` (`ANNU_YEAR`) VALUES
+('0000-00-00'),
+('1910-01-01'),
+('1911-01-01'),
+('1912-01-01'),
+('1913-01-01'),
+('1914-01-01'),
+('1915-01-01'),
+('1916-01-01'),
+('1917-01-01'),
+('1918-01-01'),
+('1919-01-01'),
+('1920-01-01'),
+('1921-01-01'),
+('1922-01-01'),
+('1923-01-01'),
+('1924-01-01'),
+('1925-01-01'),
+('1926-01-01'),
+('1927-01-01'),
+('1928-01-01'),
+('1929-01-01'),
+('1930-01-01'),
+('1931-01-01'),
+('1932-01-01'),
+('1933-01-01'),
+('1934-01-01'),
+('1935-01-01'),
+('1936-01-01'),
+('1937-01-01'),
+('1938-01-01'),
+('1939-01-01'),
+('1940-01-01'),
+('1941-01-01'),
+('1942-01-01'),
+('1943-01-01'),
+('1944-01-01'),
+('1945-01-01'),
+('1946-01-01'),
+('1947-01-01'),
+('1948-01-01'),
+('1949-01-01'),
+('1950-01-01'),
+('1951-01-01'),
+('1952-01-01'),
+('1953-01-01'),
+('1954-01-01'),
+('1955-01-01'),
+('1956-01-01'),
+('1957-01-01'),
+('1958-01-01'),
+('1959-01-01'),
+('1960-01-01'),
+('1961-01-01'),
+('1962-01-01'),
+('1963-01-01'),
+('1964-01-01'),
+('1965-01-01'),
+('1966-01-01'),
+('1967-01-01'),
+('1968-01-01'),
+('1969-01-01'),
+('1970-01-01'),
+('1971-01-01'),
+('1972-01-01'),
+('1973-01-01'),
+('1974-01-01'),
+('1975-01-01'),
+('1976-01-01'),
+('1977-01-01'),
+('1978-01-01'),
+('1979-01-01'),
+('1980-01-01'),
+('1981-01-01'),
+('1982-01-01'),
+('1983-01-01'),
+('1984-01-01'),
+('1985-01-01'),
+('1986-01-01'),
+('1987-01-01'),
+('1988-01-01'),
+('1989-01-01'),
+('1990-01-01'),
+('1991-01-01'),
+('1992-01-01'),
+('1993-01-01'),
+('1994-01-01'),
+('1995-01-01'),
+('1996-01-01'),
+('1997-01-01'),
+('1998-01-01'),
+('1999-01-01'),
+('2000-01-01'),
+('2001-01-01'),
+('2002-01-01'),
+('2003-01-01'),
+('2004-01-01'),
+('2005-01-01'),
+('2006-01-01'),
+('2007-01-01'),
+('2008-01-01'),
+('2009-01-01'),
+('2010-01-01'),
+('2011-01-01'),
+('2012-01-01'),
+('2013-01-01'),
+('2014-01-01'),
+('2015-01-01'),
+('2016-01-01'),
+('2017-01-01'),
+('2018-01-01'),
+('2019-01-01'),
+('2020-01-01'),
+('2021-01-01'),
+('2022-01-01'),
+('2023-01-01'),
+('2024-01-01'),
+('2025-01-01'),
+('2026-01-01'),
+('2027-01-01'),
+('2028-01-01'),
+('2029-01-01'),
+('2030-01-01'),
+('2031-01-01'),
+('2032-01-01'),
+('2033-01-01'),
+('2034-01-01'),
+('2035-01-01'),
+('2036-01-01');
+
+
+INSERT INTO `report` (`CLUB_ID`, `USER_ID`, `ANNU_YEAR`) VALUES
+(1, 1, '2023-01-01'),
+(1, 2, '2023-01-01'),
+(1, 3, '2023-01-01'),
+(1, 4, '2023-01-01'),
+(1, 5, '2023-01-01'),
+(1, 6, '2023-01-01'),
+(1, 7, '2023-01-01'),
+(1, 8, '2023-01-01'),
+(1, 9, '2023-01-01'),
+(1, 10, '2023-01-01'),
+(1, 11, '2023-01-01'),
+(1, 12, '2023-01-01'),
+(1, 21, '2023-01-01'),
+(1, 22, '2023-01-01'),
+(1, 23, '2023-01-01'),
+(1, 24, '2023-01-01'),
+(1, 25, '2023-01-01'),
+(1, 26, '2023-01-01'),
+(1, 32, '2023-01-01'),
+(1, 33, '2023-01-01'),
+(1, 34, '2023-01-01'),
+(1, 35, '2023-01-01'),
+(1, 36, '2023-01-01'),
+(1, 42, '2023-01-01'),
+(1, 43, '2023-01-01'),
+(1, 44, '2023-01-01'),
+(1, 45, '2023-01-01'),
+(1, 46, '2023-01-01'),
+(1, 50, '2023-01-01'),
+(1, 51, '2023-01-01'),
+(1, 55, '2023-01-01'),
+(2, 13, '2023-01-01'),
+(2, 14, '2023-01-01'),
+(2, 15, '2023-01-01'),
+(2, 16, '2023-01-01'),
+(2, 17, '2023-01-01'),
+(2, 18, '2023-01-01'),
+(2, 19, '2023-01-01'),
+(2, 20, '2023-01-01'),
+(2, 27, '2023-01-01'),
+(2, 28, '2023-01-01'),
+(2, 29, '2023-01-01'),
+(2, 30, '2023-01-01'),
+(2, 31, '2023-01-01'),
+(2, 37, '2023-01-01'),
+(2, 38, '2023-01-01'),
+(2, 39, '2023-01-01'),
+(2, 40, '2023-01-01'),
+(2, 41, '2023-01-01'),
+(2, 47, '2023-01-01'),
+(2, 48, '2023-01-01'),
+(2, 49, '2023-01-01'),
+(2, 52, '2023-01-01'),
+(2, 53, '2023-01-01'),
+(2, 54, '2023-01-01'),
+(2, 56, '2023-01-01'),
+(3, 57, '2023-01-01'),
+(4, 58, '2023-01-01'),
+(5, 59, '2023-01-01'),
+(6, 60, '2023-01-01');
+
+
+INSERT INTO `to_date` (`CLUB_ID`, `ANNU_YEAR`, `CLUB_INSCRIPTIONNB`, `CLUB_NBDEGREEOBTAINED`) VALUES
+(1, '2024-01-01', 48, '2'),
+(1, '2025-01-01', 50, '3'),
+(2, '2022-01-01', 45, '5'),
+(2, '2023-01-01', 30, '1'),
+(3, '2020-01-01', 20, '3'),
+(3, '2021-01-01', 25, '4'),
+(4, '2018-01-01', 70, '7'),
+(4, '2019-01-01', 60, '6'),
+(5, '2016-01-01', 40, '5'),
+(5, '2017-01-01', 35, '2'),
+(6, '2014-01-01', 15, '3'),
+(6, '2015-01-01', 10, '1'),
+(7, '2012-01-01', 60, '6'),
+(7, '2013-01-01', 55, '4'),
+(8, '2010-01-01', 40, '1'),
+(8, '2011-01-01', 38, '2'),
+(9, '2008-01-01', 75, '9'),
+(9, '2009-01-01', 80, '10'),
+(10, '2006-01-01', 25, '4'),
+(10, '2007-01-01', 22, '3'),
+(11, '2004-01-01', 65, '7'),
+(11, '2005-01-01', 70, '8'),
+(12, '2002-01-01', 50, '6'),
+(12, '2003-01-01', 45, '5'),
+(13, '2000-01-01', 35, '3'),
+(13, '2001-01-01', 30, '4'),
+(14, '1998-01-01', 55, '6'),
+(14, '1999-01-01', 60, '7'),
+(15, '1996-01-01', 30, '3'),
+(15, '1997-01-01', 25, '2'),
+(16, '1994-01-01', 40, '4'),
+(16, '1995-01-01', 45, '5'),
+(17, '1992-01-01', 55, '7'),
+(17, '1993-01-01', 50, '6'),
+(18, '1990-01-01', 65, '7'),
+(18, '1991-01-01', 70, '8'),
+(19, '1988-01-01', 40, '3'),
+(19, '1989-01-01', 35, '4'),
+(20, '1986-01-01', 55, '8'),
+(20, '1987-01-01', 60, '9'),
+(21, '1984-01-01', 25, '4'),
+(21, '1985-01-01', 30, '5'),
+(22, '1982-01-01', 55, '7'),
+(22, '1983-01-01', 50, '6'),
+(23, '1980-01-01', 45, '6'),
+(23, '1981-01-01', 40, '5'),
+(24, '1978-01-01', 70, '9'),
+(24, '1979-01-01', 65, '8'),
+(25, '1976-01-01', 40, '6'),
+(25, '1977-01-01', 30, '5'),
+(26, '1974-01-01', 60, '8'),
+(26, '1975-01-01', 50, '7'),
+(27, '1972-01-01', 40, '7'),
+(27, '1973-01-01', 35, '6'),
+(28, '1970-01-01', 60, '10'),
+(28, '1971-01-01', 55, '9'),
+(29, '1968-01-01', 30, '4'),
+(29, '1969-01-01', 25, '5'),
+(30, '1966-01-01', 50, '7'),
+(30, '1967-01-01', 45, '6'),
+(31, '1964-01-01', 55, '7'),
+(31, '1965-01-01', 60, '8'),
+(32, '1962-01-01', 40, '5'),
+(32, '1963-01-01', 35, '4'),
+(33, '1960-01-01', 55, '7'),
+(33, '1961-01-01', 50, '6'),
+(34, '1958-01-01', 65, '9'),
+(34, '1959-01-01', 60, '8'),
+(35, '1956-01-01', 25, '4'),
+(35, '1957-01-01', 30, '5'),
+(36, '1954-01-01', 50, '7'),
+(36, '1955-01-01', 45, '6'),
+(37, '1952-01-01', 55, '7'),
+(37, '1953-01-01', 60, '8'),
+(38, '1950-01-01', 40, '6'),
+(38, '1951-01-01', 35, '5'),
+(39, '1948-01-01', 45, '6'),
+(39, '1949-01-01', 50, '7'),
+(40, '1946-01-01', 35, '5'),
+(40, '1947-01-01', 30, '4'),
+(41, '1944-01-01', 55, '7'),
+(41, '1945-01-01', 50, '6'),
+(42, '1942-01-01', 45, '6'),
+(42, '1943-01-01', 40, '5'),
+(43, '1940-01-01', 65, '9'),
+(43, '1941-01-01', 60, '8'),
+(44, '1938-01-01', 35, '6'),
+(44, '1939-01-01', 30, '5'),
+(45, '1936-01-01', 55, '8'),
+(45, '1937-01-01', 50, '7'),
+(46, '1934-01-01', 65, '10'),
+(46, '1935-01-01', 60, '9'),
+(47, '1932-01-01', 35, '6'),
+(47, '1933-01-01', 30, '5'),
+(48, '1930-01-01', 45, '6'),
+(48, '1931-01-01', 50, '7'),
+(49, '1928-01-01', 65, '9'),
+(49, '1929-01-01', 60, '8'),
+(50, '1927-01-01', 40, '5');
+
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
-class ModificationUserController extends Controller {
+class ModificationUserController extends Controller
+{
 
     /**
      * Displays the page with all active users (excluding admins).
@@ -16,7 +17,8 @@ class ModificationUserController extends Controller {
      * @return \Illuminate\Contracts\View\View
      */
 
-    public function show() {
+    public function show()
+    {
 
         if (session('type_id') != 4) {
             return redirect()->route('home');
@@ -69,7 +71,8 @@ class ModificationUserController extends Controller {
      *     )
      * )
      */
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         if (session('type_id') != 4) {
             return redirect()->route('home');
         }
@@ -106,7 +109,8 @@ class ModificationUserController extends Controller {
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Contracts\View\View
      */
 
-    public function edit($id) {
+    public function edit($id)
+    {
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
@@ -176,7 +180,8 @@ class ModificationUserController extends Controller {
      *     )
      * )
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
 
         if (session('type_id') != 4) {
             return redirect()->route('home');
@@ -241,7 +246,8 @@ class ModificationUserController extends Controller {
      *     )
      * )
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
@@ -262,7 +268,4 @@ class ModificationUserController extends Controller {
         // Redirect back to the modification page with a success message.
         return redirect()->route('modification.users')->with('success', 'User successfully deactivated.');
     }
-    
 }
-
-?>

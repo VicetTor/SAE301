@@ -292,7 +292,8 @@ EOF;
         );
 
         PHPUnit::assertTrue(
-            Str::contains($this->headers->get('Location'), $uri), 'Redirect location ['.$this->headers->get('Location').'] does not contain ['.$uri.'].'
+            Str::contains($this->headers->get('Location'), $uri),
+            'Redirect location [' . $this->headers->get('Location') . '] does not contain [' . $uri . '].'
         );
 
         return $this;
@@ -319,7 +320,8 @@ EOF;
         $request = Request::create($this->headers->get('Location'));
 
         PHPUnit::assertTrue(
-            $request->hasValidSignature(), 'The response is not a redirect to a signed route.'
+            $request->hasValidSignature(),
+            'The response is not a redirect to a signed route.'
         );
 
         if (! is_null($name)) {
@@ -329,7 +331,8 @@ EOF;
             ]), '?');
 
             PHPUnit::assertEquals(
-                app('url')->to($uri), $expectedUri
+                app('url')->to($uri),
+                $expectedUri
             );
         }
 
@@ -346,14 +349,16 @@ EOF;
     public function assertHeader($headerName, $value = null)
     {
         PHPUnit::assertTrue(
-            $this->headers->has($headerName), "Header [{$headerName}] not present on response."
+            $this->headers->has($headerName),
+            "Header [{$headerName}] not present on response."
         );
 
         $actual = $this->headers->get($headerName);
 
         if (! is_null($value)) {
             PHPUnit::assertEquals(
-                $value, $this->headers->get($headerName),
+                $value,
+                $this->headers->get($headerName),
                 "Header [{$headerName}] was found, but value [{$actual}] does not match [{$value}]."
             );
         }
@@ -370,7 +375,8 @@ EOF;
     public function assertHeaderMissing($headerName)
     {
         PHPUnit::assertFalse(
-            $this->headers->has($headerName), "Unexpected header [{$headerName}] is present on response."
+            $this->headers->has($headerName),
+            "Unexpected header [{$headerName}] is present on response."
         );
 
         return $this;
@@ -385,7 +391,8 @@ EOF;
     public function assertLocation($uri)
     {
         PHPUnit::assertEquals(
-            app('url')->to($uri), app('url')->to($this->headers->get('Location'))
+            app('url')->to($uri),
+            app('url')->to($this->headers->get('Location'))
         );
 
         return $this;
@@ -403,17 +410,19 @@ EOF;
 
         if (trim($contentDisposition[0]) !== 'attachment') {
             PHPUnit::fail(
-                'Response does not offer a file download.'.PHP_EOL.
-                'Disposition ['.trim($contentDisposition[0]).'] found in header, [attachment] expected.'
+                'Response does not offer a file download.' . PHP_EOL .
+                    'Disposition [' . trim($contentDisposition[0]) . '] found in header, [attachment] expected.'
             );
         }
 
         if (! is_null($filename)) {
-            if (isset($contentDisposition[1]) &&
-                trim(explode('=', $contentDisposition[1])[0]) !== 'filename') {
+            if (
+                isset($contentDisposition[1]) &&
+                trim(explode('=', $contentDisposition[1])[0]) !== 'filename'
+            ) {
                 PHPUnit::fail(
-                    'Unsupported Content-Disposition header provided.'.PHP_EOL.
-                    'Disposition ['.trim(explode('=', $contentDisposition[1])[0]).'] found in header, [filename] expected.'
+                    'Unsupported Content-Disposition header provided.' . PHP_EOL .
+                        'Disposition [' . trim(explode('=', $contentDisposition[1])[0]) . '] found in header, [filename] expected.'
                 );
             }
 
@@ -480,7 +489,8 @@ EOF;
             : $cookieValue;
 
         PHPUnit::assertEquals(
-            $value, $actual,
+            $value,
+            $actual,
             "Cookie [{$cookieName}] was found, but value [{$actual}] does not match [{$value}]."
         );
 
@@ -830,9 +840,9 @@ EOF;
         $jsonErrors = Arr::get($this->json(), $responseKey) ?? [];
 
         $errorMessage = $jsonErrors
-                ? 'Response has the following JSON validation errors:'.
-                        PHP_EOL.PHP_EOL.json_encode($jsonErrors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE).PHP_EOL
-                : 'Response does not have JSON validation errors.';
+            ? 'Response has the following JSON validation errors:' .
+            PHP_EOL . PHP_EOL . json_encode($jsonErrors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL
+            : 'Response does not have JSON validation errors.';
 
         foreach ($errors as $key => $value) {
             if (is_int($key)) {
@@ -857,7 +867,7 @@ EOF;
 
             if ($errorMissing) {
                 PHPUnit::fail(
-                    "Failed to find a validation error in the response for key and message: '$key' => '$expectedMessage'".PHP_EOL.PHP_EOL.$errorMessage
+                    "Failed to find a validation error in the response for key and message: '$key' => '$expectedMessage'" . PHP_EOL . PHP_EOL . $errorMessage
                 );
             }
         }
@@ -877,14 +887,14 @@ EOF;
         $jsonErrors = Arr::get($this->json(), $responseKey) ?? [];
 
         $errorMessage = $jsonErrors
-            ? 'Response has the following JSON validation errors:'.
-            PHP_EOL.PHP_EOL.json_encode($jsonErrors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE).PHP_EOL
+            ? 'Response has the following JSON validation errors:' .
+            PHP_EOL . PHP_EOL . json_encode($jsonErrors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL
             : 'Response does not have JSON validation errors.';
 
         PHPUnit::assertArrayHasKey(
             $key,
             $jsonErrors,
-            "Failed to find a validation error in the response for key: '{$key}'".PHP_EOL.PHP_EOL.$errorMessage
+            "Failed to find a validation error in the response for key: '{$key}'" . PHP_EOL . PHP_EOL . $errorMessage
         );
 
         return $this;
@@ -917,8 +927,8 @@ EOF;
 
         if (is_null($keys) && count($errors) > 0) {
             PHPUnit::fail(
-                'Response has unexpected validation errors: '.PHP_EOL.PHP_EOL.
-                json_encode($errors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+                'Response has unexpected validation errors: ' . PHP_EOL . PHP_EOL .
+                    json_encode($errors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
             );
         }
 
@@ -1109,8 +1119,8 @@ EOF;
 
         if (is_null($keys) && count($errors) > 0) {
             PHPUnit::fail(
-                'Response has unexpected validation errors: '.PHP_EOL.PHP_EOL.
-                json_encode($errors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+                'Response has unexpected validation errors: ' . PHP_EOL . PHP_EOL .
+                    json_encode($errors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
             );
         }
 
@@ -1132,10 +1142,11 @@ EOF;
      * @param  string  $responseKey
      * @return $this
      */
-    public function assertInvalid($errors = null,
-                                  $errorBag = 'default',
-                                  $responseKey = 'errors')
-    {
+    public function assertInvalid(
+        $errors = null,
+        $errorBag = 'default',
+        $responseKey = 'errors'
+    ) {
         if ($this->baseResponse->headers->get('Content-Type') === 'application/json') {
             return $this->assertJsonValidationErrors($errors, $responseKey);
         }
@@ -1147,15 +1158,15 @@ EOF;
         $sessionErrors = $this->session()->get('errors')->getBag($errorBag)->getMessages();
 
         $errorMessage = $sessionErrors
-                ? 'Response has the following validation errors in the session:'.
-                        PHP_EOL.PHP_EOL.json_encode($sessionErrors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE).PHP_EOL
-                : 'Response does not have validation errors in the session.';
+            ? 'Response has the following validation errors in the session:' .
+            PHP_EOL . PHP_EOL . json_encode($sessionErrors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL
+            : 'Response does not have validation errors in the session.';
 
         foreach (Arr::wrap($errors) as $key => $value) {
             PHPUnit::assertArrayHasKey(
                 (is_int($key)) ? $value : $key,
                 $sessionErrors,
-                "Failed to find a validation error in session for key: '{$value}'".PHP_EOL.PHP_EOL.$errorMessage
+                "Failed to find a validation error in session for key: '{$value}'" . PHP_EOL . PHP_EOL . $errorMessage
             );
 
             if (! is_int($key)) {
@@ -1171,7 +1182,7 @@ EOF;
 
                 if (! $hasError) {
                     PHPUnit::fail(
-                        "Failed to find a validation error for key and message: '$key' => '$value'".PHP_EOL.PHP_EOL.$errorMessage
+                        "Failed to find a validation error for key and message: '$key' => '$value'" . PHP_EOL . PHP_EOL . $errorMessage
                     );
                 }
             }
@@ -1336,8 +1347,8 @@ EOF;
 
         PHPUnit::assertFalse(
             $hasErrors,
-            'Session has unexpected errors: '.PHP_EOL.PHP_EOL.
-            json_encode($errors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+            'Session has unexpected errors: ' . PHP_EOL . PHP_EOL .
+                json_encode($errors, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
         );
 
         return $this;
@@ -1549,8 +1560,8 @@ EOF;
     public function offsetExists($offset)
     {
         return $this->responseHasView()
-                    ? isset($this->original->gatherData()[$offset])
-                    : isset($this->json()[$offset]);
+            ? isset($this->original->gatherData()[$offset])
+            : isset($this->json()[$offset]);
     }
 
     /**
@@ -1563,8 +1574,8 @@ EOF;
     public function offsetGet($offset)
     {
         return $this->responseHasView()
-                    ? $this->viewData($offset)
-                    : $this->json()[$offset];
+            ? $this->viewData($offset)
+            : $this->json()[$offset];
     }
 
     /**

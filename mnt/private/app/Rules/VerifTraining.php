@@ -29,8 +29,8 @@ class VerifTraining implements Rule
     public function passes($attribute, $value)
     {
 
-        $count = DB::table('GRP2_USER')
-            ->join('grp2_attendee','grp2_attendee.USER_ID','=','GRP2_USER.USER_ID')
+        $count = DB::table('grp2_user')
+            ->join('grp2_attendee','grp2_attendee.USER_ID','=','grp2_user.USER_ID')
             ->where('grp2_attendee.USER_ID', end($value))->count();
 
 

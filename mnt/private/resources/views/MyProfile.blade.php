@@ -68,7 +68,7 @@
             </div>
 
             <!-- Displaying the user's level in preparation if the type is 4 -->
-            <?php if (Session('type_id') == 4) {
+            <?php if (Session('type_id') == 1) {
                 echo '<div> <h4 class="fw-bold d-inline p-2"> Niveau en préparation : </h4><p class="d-inline p-2">' . Session('level_id_resume') . '</p></div>';
             } ?>
         </div>
