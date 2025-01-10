@@ -61,7 +61,7 @@ class StudentController extends Controller
     <tbody>';
     $i = 0;
 
-    foreach($sessions as $session){
+    foreach($sessions as $session)
 
         $skills = DB::select(DB::raw('
         select distinct GRP2_SKILL.SKILL_ID, GRP2_SKILL.SKILL_LABEL from GRP2_SKILL
@@ -71,6 +71,8 @@ class StudentController extends Controller
         and GRP2_SKILL.LEVEL_ID ='.$level.'
         and GRP2_EVALUATION.USER_ID ='.$user_id
         ));
+
+        
 
         $nbSkills = count($skills);
         $taille = 0;
@@ -168,7 +170,7 @@ class StudentController extends Controller
         }
         $tableHtml.='</td>';
         $i++;
-    }
+    
     $tableHtml.='</tbody>
     </table>';
 

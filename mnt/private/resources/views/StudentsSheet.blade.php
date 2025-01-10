@@ -50,9 +50,10 @@ foreach($sessions as $session){
 }
 
 $statustype = StatusType::select('*')->get();
-$eleves = User::select('*')
-    ->where('TYPE_ID', '=', 1)
-        ->get();
+
+$attendee = Attendee::select('*')
+->where('USER_ID', '=', Session('user_id'))
+->get();
 
 ?>
 
@@ -70,11 +71,24 @@ $eleves = User::select('*')
 <div class="form-floating">
   <select class="form-select" id="selectEleve" aria-label="Floating label select example">
     <option selected>Sélectionner un élève ici</option>
-    @foreach($eleves as $eleve)
-        <option value="{{ $eleve->USER_ID }}">
-            {{$eleve->USER_FIRSTNAME}} {{$eleve->USER_LASTNAME}} {{$eleve->USER_ID}}
-        </option>
-    @endforeach
+
+        
+            
+                @foreach($attendee as $att)
+                @php
+                    $eleves = App\Models\User::where('TYPE_ID', 1)
+                        ->where('USER_ID', $att->USER_ID_ATTENDEE)
+                        ->get();
+                @endphp
+            
+                @foreach($eleves as $eleve)
+                    <option value="{{ $eleve->USER_ID }}">
+                        {{ $eleve->USER_FIRSTNAME }}
+                    </option>
+                @endforeach
+            @endforeach
+            
+        
   </select>
 </div>
 

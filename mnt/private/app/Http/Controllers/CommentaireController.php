@@ -36,11 +36,6 @@ class CommentaireController extends Controller
             <br/>
                 <button class="popup-submit" data-eval-id="'.$evalId.'">Valider</button>
             <br/><br/>
-            Eval id : ' . $evalId . '<br/> 
-            Statut id : ' . $statutId . '<br/> 
-            User id : ' . $user_id . '<br/> 
-            Abi id : ' . $abi_id . '<br/> 
-            Session id: ' . $sess_id . '
         </div>
     </div>'
     ;
