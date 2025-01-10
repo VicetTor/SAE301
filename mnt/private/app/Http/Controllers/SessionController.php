@@ -18,6 +18,12 @@ class SessionController extends Controller
      */
     public function create()
     {
+        if(Session('type_id') != 2){
+            return redirect()->route('home');
+        }if(Session('user_id') == null){
+            return redirect()->route('connexion');
+        }
+
         // Récupere le club du responsable de formation
         $club = Report::select('CLUB_ID')
             ->where('USER_ID', '=', session('user_id'))
@@ -65,6 +71,11 @@ class SessionController extends Controller
      */
     public function store(SessionRequest $request)
     {
+        if(session('type_id') != 2 ){
+            return redirect()->route('home');
+        }if(Session('user_id') == null){
+            return redirect()->route('connexion');
+        }
 
         //$dateTime = $validated['date'] . ' ' . $validated['time'];
         $sumSESSION = DB::table('grp2_session')->max('SESS_ID');
@@ -88,11 +99,11 @@ class SessionController extends Controller
             DB::table('grp2_attendee')->insert([
                 'ATTE_ID' => $sumATTENDEE + 1,
                 'SESS_ID' => $sumSESSION + 1,
-                'USER_ID' => $request->user_id[$i],
-                'USER_ID_ATTENDEE' => $request->initiator_id[$i],
+                'USER_ID' => $request->initiator_id[$i],
+                'USER_ID_ATTENDEE' => $request->user_id[$i],
             ]);
 
-            if($request->aptitude_id1[$i] != "Choix des aptitudes"){
+            if($request->aptitude_id1[$i] != "-1"){
 
                 $sumEVALUATION = DB::table('grp2_evaluation')->max('EVAL_ID');
 
@@ -106,7 +117,7 @@ class SessionController extends Controller
                 ]);
             }
 
-            if($request->aptitude_id2[$i] != "Choix des aptitudes"){
+            if($request->aptitude_id2[$i] != "-1"){
 
                 $sumEVALUATION = DB::table('grp2_evaluation')->max('EVAL_ID');
 
@@ -120,7 +131,7 @@ class SessionController extends Controller
                 ]);
             }
 
-            if($request->aptitude_id3[$i] != "Choix des aptitudes"){
+            if($request->aptitude_id3[$i] != "-1"){
 
                 $sumEVALUATION = DB::table('grp2_evaluation')->max('EVAL_ID');
 
@@ -145,12 +156,10 @@ class SessionController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
-        if (session('type_id') == 3) {
+        if (session('type_id') == 3 || session('type_id') == 4) {
             return redirect()->route('home');
         }
-        if (session('type_id') == 4) {
-            return redirect()->route('home');
-        }
+
         // Fetches the club name associated with the user by joining the user, report, and club tables.
         $club = DB::table('grp2_user')
             ->join('report', 'report.USER_ID', '=', 'grp2_user.USER_ID') // Join the 'report' table to get club information
@@ -169,6 +178,14 @@ class SessionController extends Controller
             ->where('grp2_user.USER_ID', '=', session('user_id')) // Filter by user ID from the session
             ->get(); // Retrieve all matching records
 
+        $initiatorSessions = DB::table('grp2_user')
+            ->join('grp2_attendee', 'grp2_user.user_id', '=', 'grp2_attendee.user_id') // Join with attendee data to check user sessions
+            ->join('grp2_session', 'grp2_attendee.sess_id', '=', 'grp2_session.sess_id') // Join with session data
+            ->where('grp2_user.user_id', '=', session('user_id')) 
+            ->where('grp2_attendee.user_id', '=', session('user_id'))// Filter by user ID from the session
+            ->get(); // Retrieve all matching records
+        
+
         // Fetches the abilities associated with the sessions that the user has attended, including session and evaluation data.
         $abilities = DB::table('grp2_ability')
             ->join('grp2_evaluation', 'grp2_ability.ABI_ID', '=', 'grp2_evaluation.ABI_ID') // Join with evaluation data
@@ -184,7 +201,7 @@ class SessionController extends Controller
             ->where('grp2_attendee.USER_ID_ATTENDEE', '=', session('user_id'))
             ->first();
 
-        return view('SessionsPage',['club'=>$club, 'sessions'=>$sessions, 'abilities'=>$abilities,'initiator'=>$initiator]);
+        return view('SessionsPage',['club'=>$club, 'sessions'=>$sessions, 'abilities'=>$abilities,'initiator'=>$initiator, 'initiatorSessions'=>$initiatorSessions]);
 
         // The comment suggests that the retrieved data (models) should be stored in variables
         // and passed to the view in an array, following Blade template conventions.

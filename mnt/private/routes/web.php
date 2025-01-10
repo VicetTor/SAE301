@@ -206,3 +206,5 @@ Route::post('/updateEvaluation', [App\Http\Controllers\EvaluationController::cla
 Route::post('/commentaireEval', [App\Http\Controllers\CommentaireController::class, 'commentaireEval']);
 Route::post('/updateCommentaire', [App\Http\Controllers\CommentaireController::class, 'updateCommentaire']);
 
+Route::post('/validerNiveau', [App\Http\Controllers\LevelValidationController::class, 'validateLevel']);
+
