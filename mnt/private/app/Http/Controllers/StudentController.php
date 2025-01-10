@@ -133,8 +133,8 @@ class StudentController extends Controller
                 $tableHtml.='<td>'.$apt->ABI_LABEL.'</td>';
                 $tableHtml.='<td class="decoration">';
                 $tableHtml .= '
-                    <button type="button" class="eval-btn" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id 
-                    . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID.'">Obs'.  $apt->ABI_ID  .'</button>
+                    <button type="button" class="eval-btn btn btn-primary btn-sm me-3" data-eval-id="' . ($evaluationTrouvee ? $evaluationTrouvee->EVAL_ID : 0) . '" data-user-id="' . $user_id 
+                    . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID.'">Obs.</button>
                                 ';
                 if ($session->SESS_DATE > now() && $type_utilisateur == 2) {
 

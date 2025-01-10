@@ -26,16 +26,15 @@ class CommentaireController extends Controller
     }
 
     $pop = '
-    <div class="popup-content">
+    <div class="popup-content border border-primary border border-4">
     
         <span class="popup-close">&times;</span>
-        <h3>Contenu de la session</h3>
+        <p class="fw-medium fs-3">Observation de la séance</p>
+        <hr></hr>
         <div id="popup-body">
-            <label for="popup-comment">commentaire :</label>
-            <textarea class="popup-comment" rows="4" cols="50" '.$txtReadOnly.'>'.$evaluation->EVAL_OBSERVATION.'</textarea>
-            <br/>
-                <button class="popup-submit" data-eval-id="'.$evalId.'">Valider</button>
-            <br/><br/>
+            <label for="popup-comment" class="fst-italic fs-6 mb-2">commentaire :</label>
+            <textarea class="popup-comment rounded-4" rows="4" cols="40" '.$txtReadOnly.'>'.$evaluation->EVAL_OBSERVATION.'</textarea>
+            <button class="popup-submit btn btn-success mt-3 mb-3 btn-lg" data-eval-id="'.$evalId.'">Valider</button> 
         </div>
     </div>'
     ;
