@@ -7,6 +7,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\ModificationUserController;
 use App\Http\Controllers\EvaluationController;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,6 +113,7 @@ Route::get('/students', function(){
 
 // User modification routes
 Route::get('/user', function(){
+    Log::debug("User_id=".session('user_id'));
     if (session('user_id') == null) {
         return redirect()->route('connexion');
     }
@@ -119,10 +121,10 @@ Route::get('/user', function(){
 });
 
 // Routes for updating user information and password
-Route::post('/infoUserUpdate', [App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate'); // Update user info
+Route::post('/infoUserUpdate', [App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUpdate'); // Update user info
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate'); // Get user info for profile page
 Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate'); // Update user password
-Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate'); // Update user profile
+Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate'); // Update user profile
 
 // Route for logging out
 Route::get('/logOut', [App\Http\Controllers\ProfileController::class, 'logOut'])->name('logOut');
@@ -203,4 +205,6 @@ Route::get('/choixEleve', [App\Http\Controllers\StudentController::class, 'getEl
 Route::post('/updateEvaluation', [App\Http\Controllers\EvaluationController::class, 'updateEvaluation']);
 Route::post('/commentaireEval', [App\Http\Controllers\CommentaireController::class, 'commentaireEval']);
 Route::post('/updateCommentaire', [App\Http\Controllers\CommentaireController::class, 'updateCommentaire']);
+
+Route::post('/validerNiveau', [App\Http\Controllers\LevelValidationController::class, 'validateLevel']);
 

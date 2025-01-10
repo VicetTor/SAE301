@@ -28,13 +28,13 @@ class SessionModifier extends Controller
         $users = User::select('USER_FIRSTNAME', 'USER_LASTNAME','USER_ID')
             ->where('LEVEL_ID_RESUME', '=', session('train_id'))
             ->where('TYPE_ID', '=', 1)
-            ->where('GRP2_USER.USER_ID', '!=', session('user_id'))
+            ->where('grp2_user.USER_ID', '!=', session('user_id'))
             ->distinct()
             ->get();
 
         // Liste des aptitudes
         $aptitudes = Ability::select('Abi_label','ABI_ID')
-        ->join('grp2_skill', 'grp2_skill.skill_id', '=', 'GRP2_ABILITY.skill_id')
+        ->join('grp2_skill', 'grp2_skill.skill_id', '=', 'grp2_ability.skill_id')
         ->where('grp2_skill.level_id', '=', session('train_id'))
         ->get();
         /*$aptitudes = [
@@ -47,7 +47,7 @@ class SessionModifier extends Controller
         $initiators = User::select('USER_FIRSTNAME', 'USER_LASTNAME','USER_ID')
         ->where('TRAIN_ID', '=', session('train_id'))
         ->where('TYPE_ID', '=', 2)
-        ->where('GRP2_USER.USER_ID', '!=', session('user_id'))
+        ->where('grp2_user.USER_ID', '!=', session('user_id'))
         ->distinct()
         ->get();
         /*$initiators = [

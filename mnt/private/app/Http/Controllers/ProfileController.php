@@ -53,6 +53,12 @@ class ProfileController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
+
+        $popUps = DB::table('report')
+        ->join('grp2_user','grp2_user.USER_ID','=','report.USER_ID') // Join with the user table
+        ->join('grp2_club','grp2_club.CLUB_ID','=','report.CLUB_ID') // Join with the club table
+        ->where('TYPE_ID','=','3') // Filter for reports of type 3
+        ->first(); // Fetch the first record (if exists)
         // Validate the incoming request data
         $validatedData = $request->validate([
             'inputEmail' => 'required|email|max:255', // Email must be valid
@@ -77,12 +83,12 @@ class ProfileController extends Controller
 
         // Update the user information in the database
         $testUpdate = DB::table('grp2_user')
-            ->where('user_id','=', session('user_id')) // Find the user by user_id (from session)
+            ->where('USER_ID','=', session('user_id')) // Find the user by user_id (from session)
             ->update([
-                'user_mail' => $inputMail,
-                'user_phonenumber' => $inputPhoneNumber,
-                'user_address' => $inputAddress,
-                'user_postalcode' => $inputPostalCode
+                'USER_MAIL' => $inputMail,
+                'USER_PHONENUMBER' => $inputPhoneNumber,
+                'USER_ADDRESS' => $inputAddress,
+                'USER_POSTALCODE' => $inputPostalCode
             ]);
 
         // Update the session data with the new values
@@ -92,7 +98,7 @@ class ProfileController extends Controller
         Session::put('user_postalcode', $inputPostalCode);
 
         // Redirect back to the profile page
-        return redirect()->route('profile');
+        return view('MyProfile', ['popUps' => $popUps]);
     }
 
     /**
@@ -105,11 +111,14 @@ class ProfileController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
+        
+
+
         // Fetch any report pop-ups for the user from the database
         $popUps = DB::table('report')
-            ->join('grp2_user','grp2_user.user_id','=','report.user_id') // Join with the user table
-            ->join('grp2_club','grp2_club.club_id','=','report.club_id') // Join with the club table
-            ->where('type_id','=','3') // Filter for reports of type 3
+            ->join('grp2_user','grp2_user.USER_ID','=','report.USER_ID') // Join with the user table
+            ->join('grp2_club','grp2_club.CLUB_ID','=','report.CLUB_ID') // Join with the club table
+            ->where('TYPE_ID','=','3') // Filter for reports of type 3
             ->first(); // Fetch the first record (if exists)
 
         // Return the profile view with any pop-up notifications
@@ -205,8 +214,8 @@ class ProfileController extends Controller
             if($inputNewPswd === $inputPswdVerif){
                 // Update the user's password in the database
                 $testUpdate = DB::table('grp2_user')
-                    ->where('user_id','=', session('user_id'))
-                    ->update(['user_password' => Hash::make($inputNewPswd)]); // Hash the new password before saving
+                    ->where('USER_ID','=', session('user_id'))
+                    ->update(['USER_PASSWORD' => Hash::make($inputNewPswd)]); // Hash the new password before saving
 
                 // Redirect to the profile page with a success message
                 return redirect()->route('profile')->with('success', 'Password updated successfully.');

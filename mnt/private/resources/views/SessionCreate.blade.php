@@ -7,6 +7,7 @@
 <!-- ligne 1 -->
 <form action="" method="POST">
     @csrf
+    <p>{{$errors}}</p>
     <div class="range">
             <div>
                 <p>Date</p>

@@ -7,57 +7,66 @@
 
 <?php
 
-use App\Models\Ability;
-use App\Models\Attendee;
-use App\Models\Evaluation;
-use App\Models\Skill;
-use App\Models\StatusType;
-use App\Models\User;
-use App\Models\Session;
+    use App\Models\Ability;
+    use App\Models\Attendee;
+    use App\Models\Evaluation;
+    use App\Models\Skill;
+    use App\Models\StatusType;
+    use App\Models\User;
+    use App\Models\Session;
 
+    /*query that retrieves user session*/
+    $user_id = session('user_id');
 
-$user_id = session('user_id');
+    /*query that retrieves the connected user's session*/
+    $level = session('level_id');
 
-$level = session('level_id');
-$skills = Skill::select('*')
-    ->where('LEVEL_ID','=',$level)->get();
-       
-$skillsWithAbilities = [];
-$i = 0;
-foreach ($skills as $skill) {
-    $abilities = Ability::select('*')
-        ->where('SKILL_ID', '=', $skill->SKILL_ID)
-            ->get();
-    $skillsWithAbilities[$i] = $abilities;
-    $i++;
-}
+    /*query that retrieves all skills*/
+    $skills = Skill::select('*')
+        ->where('LEVEL_ID','=',$level)->get();
+        
+    /*query that retrieves all abilities linked to the skill*/
+    $skillsWithAbilities = [];
+    $i = 0;
+    foreach ($skills as $skill) {
+        $abilities = Ability::select('*')
+            ->where('SKILL_ID', '=', $skill->SKILL_ID)
+                ->get();
+        $skillsWithAbilities[$i] = $abilities;
+        $i++;
+    }
 
-$sessions = Attendee::select('*', 'GRP2_USER.*')
-    ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_ATTENDEE', '=', 'GRP2_USER.USER_ID')
-        ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
-            ->where('GRP2_USER.USER_ID', '=', $user_id)
-                ->get();    
-$evaluationsChaqueSeance =[];
-$i = 0;
-foreach($sessions as $session){
-    $evaluations = Evaluation::select('*')
-        ->join('GRP2_STATUSTYPE', 'GRP2_STATUSTYPE.STATUSTYPE_ID', '=', 'GRP2_EVALUATION.STATUSTYPE_ID')
-            ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_EVALUATION.SESS_ID')
-                ->where('GRP2_EVALUATION.SESS_ID', '=', $session->SESS_ID)
-                    ->get();
-    $evaluationsChaqueSeance[$i] = $evaluations;
-    $i++;
-}
+    /*query that retrieves all attended sessions from a given user*/
+    $sessions = Attendee::select('*', 'grp2_user.*')
+        ->join('grp2_user', 'grp2_attendee.USER_ID_ATTENDEE', '=', 'grp2_user.USER_ID')
+            ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_attendee.SESS_ID')
+                ->where('grp2_user.USER_ID', '=', $user_id)
+                    ->get();    
+    $evaluationsChaqueSeance =[];
+    $i = 0;
 
-$statustype = StatusType::select('*')->get();
+    /*query that retrieves all evaluation for a given session*/
+    foreach($sessions as $session){
+        $evaluations = Evaluation::select('*')
+            ->join('grp2_statustype', 'grp2_statustype.STATUSTYPE_ID', '=', 'grp2_evaluation.STATUSTYPE_ID')
+                ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_evaluation.SESS_ID')
+                    ->where('grp2_evaluation.SESS_ID', '=', $session->SESS_ID)
+                        ->get();
+        $evaluationsChaqueSeance[$i] = $evaluations;
+        $i++;
+    }
 
-$attendee = Attendee::select('*')
-->where('USER_ID', '=', Session('user_id'))
-->get();
+    $statustype = StatusType::select('*')->get();
+
+    $attendee = Attendee::select('USER_ID_ATTENDEE')
+    ->where('USER_ID', '=', Session('user_id'))
+    ->distinct()
+    ->get();
 
 ?>
+{{$attendee}}
 
-
+<!-- Verify if the user is not a student !-->
 @if(!(Session('type_id') == 3) && !(Session('type_id') == 2))
     <h1>Vous n'avez les droits nécessaires</h1>
     <script>
@@ -72,21 +81,33 @@ $attendee = Attendee::select('*')
   <select class="form-select" id="selectEleve" aria-label="Floating label select example">
     <option selected>Sélectionner un élève ici</option>
 
-        
             
+            @if(Session('type_id') == 2)
                 @foreach($attendee as $att)
+                    @php
+                        $eleves = App\Models\User::where('TYPE_ID', 1)
+                            ->where('USER_ID', $att->USER_ID_ATTENDEE)
+                            ->distinct()
+                            ->get();
+                    @endphp
+                
+                    @foreach($eleves as $eleve)
+                        <option value="{{ $eleve->USER_ID }}">
+                            {{ $eleve->USER_FIRSTNAME }} {{$eleve->USER_LASTNAME}}
+                        </option>
+                    @endforeach
+                @endforeach
+                @elseif(session('type_id') == 3)
                 @php
-                    $eleves = App\Models\User::where('TYPE_ID', 1)
-                        ->where('USER_ID', $att->USER_ID_ATTENDEE)
-                        ->get();
+                $eleves = App\Models\User::where('TYPE_ID', 1)->get();
                 @endphp
-            
+
                 @foreach($eleves as $eleve)
                     <option value="{{ $eleve->USER_ID }}">
-                        {{ $eleve->USER_FIRSTNAME }}
+                        {{ $eleve->USER_FIRSTNAME }} {{$eleve->USER_LASTNAME}}
                     </option>
                 @endforeach
-            @endforeach
+                @endif
             
         
   </select>
@@ -116,7 +137,8 @@ $attendee = Attendee::select('*')
 $(document).on('change', '#selectEleve', function() {
     var userId = $(this).val();
     var selectedEleve = $(this).find("option:selected").text();
-
+    console.log(userId);
+        console.log(selectedEleve);
     $('#result').text("Tableau évolutif de : " + selectedEleve);
 
     $.ajax({
@@ -137,6 +159,7 @@ $(document).on('change', '#selectEleve', function() {
         var userId = $(this).data('user-id');
         var abiId = $(this).data('abi-id');
         var sessId = $(this).data('sess-id');
+        
 
     $.ajax({
         url: '/updateEvaluation',

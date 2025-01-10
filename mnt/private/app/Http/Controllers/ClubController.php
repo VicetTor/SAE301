@@ -124,10 +124,10 @@ class ClubController extends Controller
     {
         // Validate the incoming request data
         $validated = $request->validate([
-            'club_name' => 'required|string|max:255', // Club name is required and must not exceed 255 characters
-            'club_postalcode' => 'required|integer', // Postal code is required and must be an integer
-            'club_city' => 'required|string|max:255', // City name is required and must not exceed 255 characters
-            'club_address' => 'required|string|max:255', // Address is required and must not exceed 255 characters
+            'CLUB_NAME' => 'required|string|max:255', // Club name is required and must not exceed 255 characters
+            'CLUB_POSTALCODE' => 'required|integer', // Postal code is required and must be an integer
+            'CLUB_CITY' => 'required|string|max:255', // City name is required and must not exceed 255 characters
+            'CLUB_ADDRESS' => 'required|string|max:255', // Address is required and must not exceed 255 characters
         ]);
 
         // Create a new club with the validated data
@@ -186,10 +186,10 @@ class ClubController extends Controller
 
         // Validate the incoming request data
         $validated = $request->validate([
-            'club_name' => 'required|string|max:255',
-            'club_postalcode' => 'required|integer',
-            'club_city' => 'required|string|max:255',
-            'club_address' => 'required|string|max:255',
+            'CLUB_NAME' => 'required|string|max:255',
+            'CLUB_POSTALCODE' => 'required|integer',
+            'CLUB_CITY' => 'required|string|max:255',
+            'CLUB_ADDRESS' => 'required|string|max:255',
         ]);
 
         // Update the club with the validated data

@@ -15,7 +15,7 @@ class StatusType extends Model
      *
      * @var string
      */
-    protected $table = 'GRP2_STATUSTYPE';
+    protected $table = 'grp2_statustype';
 
 
     /**

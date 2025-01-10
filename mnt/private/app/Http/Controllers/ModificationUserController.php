@@ -28,25 +28,17 @@ class ModificationUserController extends Controller
         }
 
         $club = DB::table('report')
-            ->where('report.user_id', '=', Session('user_id'))
-            ->first();
+        ->where('report.USER_ID' , '=', Session('user_id'))
+        ->first();
 
 
         $users = User::where('USER_ISACTIVE', 1)
-            ->join('report', 'report.user_id', '=', 'grp2_user.user_id')
-            ->where('TYPE_ID', '!=', 4)
-            ->where('CLUB_ID', '=', $club->CLUB_ID)
-            ->get();
+                    ->join('report' , 'report.USER_ID', '=','grp2_user.USER_ID')
+                      ->where('TYPE_ID', '!=', 4)
+                      ->where('CLUB_ID', '=', $club->CLUB_ID)
+                      ->get();
 
-        $canEdit = session('type_id') == 4;
-
-        // If the user has edit permissions, show the modification page.
-        if ($canEdit) {
-            return view('ModificationUser', ['users' => $users, 'canEdit' => $canEdit]);
-        } else {
-            // Redirect unauthorized users to the home page.
-            return view('Home');
-        }
+        return view('ModificationUser', ['users' => $users, 'clubs_id' => $club]);
     }
 
     /**
@@ -88,18 +80,26 @@ class ModificationUserController extends Controller
             return redirect()->route('connexion');
         }
 
+        $club = DB::table('report')
+        ->where('report.user_id' , '=', Session('user_id'))
+        ->first();
+
         $searchTerm = $request->input('search');
 
         // Query users matching the search term in first name, last name, or license number.
-        $users = User::where('USER_FIRSTNAME', 'LIKE', "%$searchTerm%")
-            ->orWhere('USER_LASTNAME', 'LIKE', "%$searchTerm%")
-            ->orWhere('USER_LICENSENUMBER', 'LIKE', "%$searchTerm%")
-            ->get();
+        $users = User::join('report' , 'report.user_id', '=','grp2_user.user_id')
+                    ->where('USER_FIRSTNAME', 'LIKE', "%$searchTerm%")
+                    ->orWhere('USER_LASTNAME', 'LIKE', "%$searchTerm%")
+                    ->orWhere('USER_LICENSENUMBER', 'LIKE', "%$searchTerm%")
+                    ->get();
+
+
+        
 
         // Check if the authenticated user has edit permissions (TYPE_ID == 4).
         $canEdit = Auth::check() && Auth::user()->TYPE_ID == 4;
 
-        return view('ModificationUser', ['users' => $users, 'canEdit' => $canEdit]);
+        return view('ModificationUser', ['users' => $users, 'canEdit' => $canEdit, 'clubs_id' => $club]);
     }
 
     /**

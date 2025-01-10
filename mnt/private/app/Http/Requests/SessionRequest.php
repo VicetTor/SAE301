@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\VerifSession;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SessionRequest extends FormRequest
@@ -30,6 +31,7 @@ class SessionRequest extends FormRequest
             'user_id.*' => 'required|exists:grp2_user,USER_ID',
             'aptitude_id1.0' => 'required|exists:grp2_ability,ABI_ID',
             'initiator_id.*' => 'required|exists:grp2_user,USER_ID',
+            'initiator_id' => [new VerifSession($this)],
         ];
     }
 }
