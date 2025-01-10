@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
-class ModificationUserController extends Controller {
+class ModificationUserController extends Controller
+{
 
     /**
      * Displays the page with all active users (excluding admins).
@@ -16,7 +17,8 @@ class ModificationUserController extends Controller {
      * @return \Illuminate\Contracts\View\View
      */
 
-    public function show() {
+    public function show()
+    {
 
         if (session('type_id') != 4) {
             return redirect()->route('home');
@@ -26,15 +28,15 @@ class ModificationUserController extends Controller {
         }
 
         $club = DB::table('report')
-        ->where('report.user_id' , '=', Session('user_id'))
-        ->first();
+            ->where('report.user_id', '=', Session('user_id'))
+            ->first();
 
 
         $users = User::where('USER_ISACTIVE', 1)
-                    ->join('report' , 'report.user_id', '=','grp2_user.user_id')
-                      ->where('TYPE_ID', '!=', 4)
-                      ->where('CLUB_ID', '=', $club->CLUB_ID)
-                      ->get();
+            ->join('report', 'report.user_id', '=', 'grp2_user.user_id')
+            ->where('TYPE_ID', '!=', 4)
+            ->where('CLUB_ID', '=', $club->CLUB_ID)
+            ->get();
 
         $canEdit = session('type_id') == 4;
 
@@ -77,7 +79,8 @@ class ModificationUserController extends Controller {
      *     )
      * )
      */
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         if (session('type_id') != 4) {
             return redirect()->route('home');
         }
@@ -89,9 +92,9 @@ class ModificationUserController extends Controller {
 
         // Query users matching the search term in first name, last name, or license number.
         $users = User::where('USER_FIRSTNAME', 'LIKE', "%$searchTerm%")
-                    ->orWhere('USER_LASTNAME', 'LIKE', "%$searchTerm%")
-                    ->orWhere('USER_LICENSENUMBER', 'LIKE', "%$searchTerm%")
-                    ->get();
+            ->orWhere('USER_LASTNAME', 'LIKE', "%$searchTerm%")
+            ->orWhere('USER_LICENSENUMBER', 'LIKE', "%$searchTerm%")
+            ->get();
 
         // Check if the authenticated user has edit permissions (TYPE_ID == 4).
         $canEdit = Auth::check() && Auth::user()->TYPE_ID == 4;
@@ -106,7 +109,8 @@ class ModificationUserController extends Controller {
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Contracts\View\View
      */
 
-    public function edit($id) {
+    public function edit($id)
+    {
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
@@ -176,7 +180,8 @@ class ModificationUserController extends Controller {
      *     )
      * )
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
 
         if (session('type_id') != 4) {
             return redirect()->route('home');
@@ -241,7 +246,8 @@ class ModificationUserController extends Controller {
      *     )
      * )
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
@@ -262,7 +268,4 @@ class ModificationUserController extends Controller {
         // Redirect back to the modification page with a success message.
         return redirect()->route('modification.users')->with('success', 'User successfully deactivated.');
     }
-    
 }
-
-?>

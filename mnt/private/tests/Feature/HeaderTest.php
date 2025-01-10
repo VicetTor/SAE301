@@ -19,9 +19,9 @@ class HeaderTest extends TestCase
     public function test_header_for_role_eleve()
     {
         Session::start();
-        Session::put('type_id', 1);
+        Session::put('type_id', 4);
 
-        $response = $this->get('/profile');
+        $response = $this->get('/');
 
         $response->assertSee('Mes Séances');
         $response->assertSee('Mon bilan');
@@ -37,7 +37,7 @@ class HeaderTest extends TestCase
         Session::start();
         Session::put('type_id', 1);
 
-        $response = $this->get('/profile');
+        $response = $this->get('/');
 
         $response->assertDontSee('Valider niveau');
     }
