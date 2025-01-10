@@ -51,11 +51,13 @@ foreach($sessions as $session){
 
 $statustype = StatusType::select('*')->get();
 
-$attendee = Attendee::select('*')
+$attendee = Attendee::select('USER_ID_ATTENDEE')
 ->where('USER_ID', '=', Session('user_id'))
+->distinct()
 ->get();
 
 ?>
+{{$attendee}}
 
 
 @if(!(Session('type_id') == 3) && !(Session('type_id') == 2))
@@ -78,12 +80,13 @@ $attendee = Attendee::select('*')
                 @php
                     $eleves = App\Models\User::where('TYPE_ID', 1)
                         ->where('USER_ID', $att->USER_ID_ATTENDEE)
+                        ->distinct()
                         ->get();
                 @endphp
             
                 @foreach($eleves as $eleve)
                     <option value="{{ $eleve->USER_ID }}">
-                        {{ $eleve->USER_FIRSTNAME }}
+                        {{ $eleve->USER_FIRSTNAME }} {{$eleve->USER_LASTNAME}}
                     </option>
                 @endforeach
             @endforeach

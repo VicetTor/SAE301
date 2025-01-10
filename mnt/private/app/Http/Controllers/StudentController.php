@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -18,12 +17,13 @@ class StudentController extends Controller
 {
     public function getEleves(Request $request)
 {
-    $statustype = StatusType::all();
+    $statustype = DB::select('SELECT * FROM grp2_statustype');
+
     $user_id = $request->input('user_id'); 
     $type_utilisateur = Session('type_id');
     $tableHtml = '';
 
-        $eleve = User::find($user_id);
+    $eleve = User::find($user_id);
 
     $level = $eleve->LEVEL_ID_RESUME;
     
@@ -149,11 +149,12 @@ class StudentController extends Controller
                 $taille+=count($result);
             }
 
-            $tableHtml.='<td rowspan="'.$taille.'" class="session-date">'.
-            $session->SESS_DATE.
-            '</td>';
+        $tableHtml.='<td rowspan="'.$taille.'" class="session-date">'.
+        $session->SESS_DATE.
+        '</td>';
 
-            foreach($skills as $skill){
+        foreach($skills as $skill){
+
 
                 $result = DB::select(DB::raw('
                 select * from grp2_ability
@@ -164,9 +165,9 @@ class StudentController extends Controller
                 ));
                 $nombre = count($result);
 
-                $tableHtml.='
-                <td rowspan="'.$nombre.'" class="skill">'.
-                $skill->SKILL_LABEL.'</td>';
+            $tableHtml.='
+            <td rowspan="'.$nombre.'" class="skill">'.
+            $skill->SKILL_LABEL.'</td>';
 
                 $aptitude = DB::select(DB::raw('
                 select * from grp2_ability
@@ -177,13 +178,12 @@ class StudentController extends Controller
                 ));
                 $compteur = 0;
 
-                foreach($aptitude as $apt){
-                    $evaluationTrouvee = null;
-                    foreach($evaluationsChaqueSeance[$i] as $eval) {
-                        if($eval->ABI_ID == $apt->ABI_ID){
-                            $evaluationTrouvee = $eval;
-                            break;
-                        }
+            foreach($aptitude as $apt){
+                $evaluationTrouvee = null;
+                foreach($evaluationsChaqueSeance[$i] as $eval) {
+                    if($eval->ABI_ID == $apt->ABI_ID){ 
+                        $evaluationTrouvee = $eval;
+                        break;
                     }
                 }
                 if($compteur != 0){
@@ -203,23 +203,29 @@ class StudentController extends Controller
                     if ($evaluationTrouvee) {
                         $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL.$evaluationTrouvee->EVAL_ID . '</option>';
                     } else {
+                        $tableHtml .= '<option></option>';
+                    }
 
-                        if ($evaluationTrouvee) {
-                            $tableHtml .= $evaluationTrouvee->STATUSTYPE_LABEL;
-                        } else{
-                            $tableHtml.='Non évalué';
-                        }
+                    foreach ($statustype as $statutype) {
+                        $tableHtml .= '<option value="' . $statutype->STATUSTYPE_ID . '">' . $statutype->STATUSTYPE_LABEL . '</option>';
                     }
-                    $tableHtml.='</td> </tr>';
-                    if($compteur != 0){
-                        $tableHtml.= '</tr>';
+
+                    $tableHtml .= '</select>';
+                } else {
+
+                    if ($evaluationTrouvee) {
+                        $tableHtml .= $evaluationTrouvee->STATUSTYPE_LABEL;
+                    } else{
+                        $tableHtml.='Non évalué';
                     }
-                    $compteur++;
                 }
-                $tableHtml.='</td>';
+                $tableHtml.='</td> </tr>';
+                if($compteur != 0){
+                    $tableHtml.= '</tr>';
+                }
+                $compteur++;
             }
             $tableHtml.='</td>';
-            $i++;
         }
         $tableHtml.='</td>';
         $i++;
