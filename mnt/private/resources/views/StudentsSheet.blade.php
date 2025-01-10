@@ -75,21 +75,33 @@ $attendee = Attendee::select('USER_ID_ATTENDEE')
     <option selected>Sélectionner un élève ici</option>
 
         
-            
+            @if(Session('type_id') == 2)
+            salut
                 @foreach($attendee as $att)
+                    @php
+                        $eleves = App\Models\User::where('TYPE_ID', 1)
+                            ->where('USER_ID', $att->USER_ID_ATTENDEE)
+                            ->distinct()
+                            ->get();
+                    @endphp
+                
+                    @foreach($eleves as $eleve)
+                        <option value="{{ $eleve->USER_ID }}">
+                            {{ $eleve->USER_FIRSTNAME }} {{$eleve->USER_LASTNAME}}
+                        </option>
+                    @endforeach
+                @endforeach
+                @elseif(session('type_id') == 3)
                 @php
-                    $eleves = App\Models\User::where('TYPE_ID', 1)
-                        ->where('USER_ID', $att->USER_ID_ATTENDEE)
-                        ->distinct()
-                        ->get();
+                $eleves = App\Models\User::where('TYPE_ID', 1)->get();
                 @endphp
-            
+
                 @foreach($eleves as $eleve)
                     <option value="{{ $eleve->USER_ID }}">
                         {{ $eleve->USER_FIRSTNAME }} {{$eleve->USER_LASTNAME}}
                     </option>
                 @endforeach
-            @endforeach
+                @endif
             
         
   </select>
