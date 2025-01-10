@@ -121,10 +121,10 @@ Route::get('/user', function(){
 });
 
 // Routes for updating user information and password
-Route::post('/infoUserUpdate', [App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate'); // Update user info
+Route::post('/infoUserUpdate', [App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUpdate'); // Update user info
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate'); // Get user info for profile page
 Route::post('/pswdUserUpdate', [App\Http\Controllers\ProfileController::class, 'pswdUpdate'])->name('pswdUserUpdate'); // Update user password
-Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'up'])->name('infoUserUpdate'); // Update user profile
+Route::post('/profile',[App\Http\Controllers\ProfileController::class, 'infoUpdate'])->name('infoUserUpdate'); // Update user profile
 
 // Route for logging out
 Route::get('/logOut', [App\Http\Controllers\ProfileController::class, 'logOut'])->name('logOut');

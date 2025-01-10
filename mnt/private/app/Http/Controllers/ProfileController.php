@@ -53,6 +53,12 @@ class ProfileController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
+
+        $popUps = DB::table('report')
+        ->join('grp2_user','grp2_user.USER_ID','=','report.USER_ID') // Join with the user table
+        ->join('grp2_club','grp2_club.CLUB_ID','=','report.CLUB_ID') // Join with the club table
+        ->where('TYPE_ID','=','3') // Filter for reports of type 3
+        ->first(); // Fetch the first record (if exists)
         // Validate the incoming request data
         $validatedData = $request->validate([
             'inputEmail' => 'required|email|max:255', // Email must be valid
@@ -92,7 +98,7 @@ class ProfileController extends Controller
         Session::put('user_postalcode', $inputPostalCode);
 
         // Redirect back to the profile page
-        return redirect()->route('profile');
+        return view('MyProfile', ['popUps' => $popUps]);
     }
 
     /**
