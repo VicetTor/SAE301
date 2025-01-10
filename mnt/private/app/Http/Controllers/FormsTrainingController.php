@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\TrainingAddRequest;
 use App\Models\Level;
 use App\Models\typeUser;
 use App\Models\User;
@@ -71,15 +72,31 @@ class FormsTrainingController extends Controller {
             return redirect()->route('connexion');
         }
 
-        $students = DB::table('grp2_user')
-        ->where('TYPE_ID','=','2')
-        ->where('TRAIN_ID', '=', '0')
-        ->get();
+
+
+        if (session('train_id') == 3) {
+            $students = DB::table('grp2_user')
+            ->where('TYPE_ID','=','2')
+            ->where('TRAIN_ID', '=', '0')
+            ->where('LEVEL_ID', '>=', '5')
+            ->get();
+        }
+        else{
+            $students = DB::table('grp2_user')
+                ->where('TYPE_ID','=','2')
+                ->where('TRAIN_ID', '=', '0')
+                ->where('LEVEL_ID', '>=', '2')
+                ->get();
+        }
 
         $studies = DB::table('grp2_user')
-        ->where('TYPE_ID','=','1')
-        ->where('TRAIN_ID', '=', '0')
-        ->get();
+            ->where('TYPE_ID','=','1')
+            ->where('TRAIN_ID', '=', '0')
+            ->where('LEVEL_ID_RESUME', '=', session('train_id'))
+            ->get();
+
+
+
 
         return view('FormsModificationAdd',['trainings' =>  $students,'studies' => $studies]);
     }
@@ -105,7 +122,7 @@ class FormsTrainingController extends Controller {
     }
 
 
-    public function UpdateTraining(Request $request){
+    public function UpdateTraining(TrainingAddRequest $request){
         if (session('type_id') == 1) {
             return redirect()->route('home');
         }
