@@ -132,7 +132,7 @@
 
     <!-- Button to view progression -->
     <div class="d-flex justify-content-center">
-        <button data-mdb-button-init data-mdb-ripple-init class="col-lg-2 btn btn-primary" type="button" data-dismiss="modal">Voir la progression</button>
+        <a href='/sheet' class="col-lg-2"><button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary" type="button" data-dismiss="modal">Voir la progression</button>
     </div>
 
 @endsection

@@ -18,6 +18,12 @@ class SessionController extends Controller
      */
     public function create()
     {
+        if(Session('type_id') != 2){
+            return redirect()->route('home');
+        }if(Session('user_id') == null){
+            return redirect()->route('connexion');
+        }
+
         // Récupere le club du responsable de formation
         $club = Report::select('CLUB_ID')
             ->where('USER_ID', '=', session('user_id'))
@@ -65,6 +71,11 @@ class SessionController extends Controller
      */
     public function store(SessionRequest $request)
     {
+        if(session('type_id') != 2 ){
+            return redirect()->route('home');
+        }if(Session('user_id') == null){
+            return redirect()->route('connexion');
+        }
 
         //$dateTime = $validated['date'] . ' ' . $validated['time'];
         $sumSESSION = DB::table('grp2_session')->max('SESS_ID');
