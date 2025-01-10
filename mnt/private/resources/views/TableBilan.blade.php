@@ -16,11 +16,21 @@
     $levelPreparer = session('level_id_resume');
     
 
-
+    /*query that retrieves levels already obtained and those in preparation*/
     $niveaux = Level::select('*')
     ->where('LEVEL_ID','<=',$levelPreparer)
     ->get();
-    
+
+    /*request to retrieve the preparation level*/
+    $niveaux2 = Level::select('*')
+    ->where('LEVEL_ID','=',$levelPreparer)
+    ->get();
+
+    /*query that retrieves levels already obtained*/
+    $niveaux3 = Level::select('*')
+    ->where('LEVEL_ID','<',$levelPreparer)
+    ->get();
+
     $sessions = Attendee::select('*', 'grp2_user.*')
     ->join('grp2_user', 'grp2_attendee.USER_ID_attendee', '=', 'grp2_user.USER_ID')
     ->join('grp2_session', 'grp2_session.SESS_ID', '=', 'grp2_attendee.SESS_ID')
@@ -44,25 +54,28 @@
 
 ?>
 
-
-
-<p> 
-    @foreach($niveaux as $niveau)
-        {{ $niveau->LEVEL_LABEL }} <!-- Remplacez 'name' par le champ que vous souhaitez afficher -->
-    @endforeach
-</p>
-
-
-
-
+    
+    <!-- test if you are not connected and displays a message accordingly -->
     @if(session()->missing('user_mail'))
-        <p> Vous êtes actuellement NON CONNECTÉ </p>
+        <p class="fw-medium fs-3"> Vous êtes actuellement NON CONNECTÉ </p>
     @endif
-
-    <p> Bonjour {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
-    <p> Votre progression vers le Niveau {{ session('level_id') }}</p>
+    <!-- displays the first and last name of the account you're logged in to -->
+    <p class="fw-medium fs-3"> Vous êtes connecté(e) en tant que : {{ session('user_firstname') }} {{ session('user_lastname') }} </p>
+    <!-- displays levels already reached -->
+    <p class="fst-italic fs-5"> vous avez le(s) niveau(x) : 
+        @foreach($niveaux3 as $niveau)
+            {{ $niveau->LEVEL_LABEL }}
+        @endforeach
+    </p>
+    <!-- displays the level being prepared -->
+    <p class="fst-italic fs-5"> Votre progression vers :
+        @foreach($niveaux2 as $niveau)
+            {{ $niveau->LEVEL_LABEL }}
+        @endforeach
+    </p>
 
     <table>
+        <!-- displays the top of the table -->
         <thead>
             <tr>
                 <th>Date</th>
@@ -75,58 +88,57 @@
             @php 
                 $i = 0; 
             @endphp
+            <!-- foreach for all levels -->
             @foreach ($niveaux as $niveau)
-            @if ($niveau->LEVEL_ID == 0)
-                @continue
-            @endif
-
-            @php
-                $skills = Skill::select('*')
-                ->where('LEVEL_ID','!=','0')
-                ->where('LEVEL_ID','=',$niveau->LEVEL_ID)
-                ->get();
-            @endphp
-
-            @php
-                $taille = 0;
-                foreach($skills as $skill) {
-                    $taille += \App\Models\Ability::where('SKILL_ID', '=', $skill->SKILL_ID)->count();
-                }
-            @endphp
-
-
-
-                <!-- insére les dates -->
+                @if ($niveau->LEVEL_ID == 0)
+                    @continue
+                @endif
+                <!-- request that retrieves skills -->
+                @php
+                    $skills = Skill::select('*')
+                    ->where('LEVEL_ID','!=','0')
+                    ->where('LEVEL_ID','=',$niveau->LEVEL_ID)
+                    ->get();
+                @endphp
+                <!-- foreach that runs through all skills -->
+                @php
+                    $taille = 0;
+                    foreach($skills as $skill) {
+                        $taille += \App\Models\Ability::where('SKILL_ID', '=', $skill->SKILL_ID)->count();
+                    }
+                @endphp
+                <!-- line that inserts the dates -->
                 <td rowspan="{{ $taille }}" class="session-date">
                     {{ $niveau->LEVEL_LABEL }}
                 </td>
+                <!-- foreach that runs through all skills -->
                 @foreach ($skills as $skill)
+                    <!-- query that counts the number of ability -->
                     @php
                         $nombre = Ability::select('*')
                             ->where('SKILL_ID', '=', $skill->SKILL_ID)
                                 ->count();
                     @endphp
-                    <!-- insére les compétences -->
+                    <!-- inserts skills -->
                     <td rowspan="{{$nombre}}" class="skill">
                         {{ $skill->SKILL_LABEL }}
                     </td>
+                    <!-- requête qui récupère les abilitys -->
                     @php
                         $aptitude = Ability::select('*')
                             ->where('SKILL_ID', '=', $skill->SKILL_ID)->get();
                         $compteur = 0;
                     @endphp
+                    <!-- request that retrieves abilitys -->
                     @foreach($aptitude as $apt)
-                        @php
-                            
-                        @endphp 
                         @if($compteur != 0) 
                             <tr> 
                         @endif
-                        <!-- insére les aptitudes -->
+                        <!-- line that inserts the ability -->
                         <td class = "ability">
                             {{$apt->ABI_LABEL}}
                         </td>
-                        <!-- insére les évaluations -->
+                        <!-- line that inserts evaluations -->
                         <td class="eval"> 
                                 @php
                                 $nbEvals = Evaluation::select('*')
