@@ -159,6 +159,10 @@ tr:nth-child(even) {
     width: 20%;
 }
 
+#eval-btn{
+    border-radius: 50%;
+}
+
 @media (max-width: 768px) {
     table, thead, tbody, tr, td {
         display: block;

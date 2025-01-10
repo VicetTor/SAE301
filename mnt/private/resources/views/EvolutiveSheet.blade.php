@@ -6,10 +6,12 @@
 
 <?php
 
-    use App\Models\Ability;
-    use App\Models\Attendee;
-    use App\Models\Evaluation;
-    use App\Models\Skill;
+use App\Models\Ability;
+use App\Models\Attend;
+use App\Models\Attendee;
+use App\Models\Evaluation;
+use App\Models\Skill;
+
     use Illuminate\Support\Facades\DB;
 
 

@@ -10,12 +10,17 @@
     use App\Models\Attendee;
     use App\Models\Evaluation;
     use App\Models\Skill;
+    use App\Models\Level;
 
     $user_id = session('user_id');
-    $level = session('level_id_resume');
-    $skills = Skill::select('*')
-        ->where('LEVEL_ID','=',$level)->get();
+    $levelPreparer = session('level_id_resume');
+    
 
+
+    $niveaux = Level::select('*')
+    ->where('LEVEL_ID','<=',$levelPreparer)
+    ->get();
+    
     $sessions = Attendee::select('*', 'GRP2_USER.*')
     ->join('GRP2_USER', 'GRP2_ATTENDEE.USER_ID_attendee', '=', 'GRP2_USER.USER_ID')
     ->join('GRP2_SESSION', 'GRP2_SESSION.SESS_ID', '=', 'GRP2_ATTENDEE.SESS_ID')
@@ -35,14 +40,18 @@
     }
 
 
-    $taille = 0;
-    foreach($skills as $skill){
-        $taille += Ability::select('*')
-        ->where('SKILL_ID', '=', $skill->SKILL_ID)
-        ->count();
-    }
+    
 
 ?>
+
+
+
+<p> 
+    @foreach($niveaux as $niveau)
+        {{ $niveau->LEVEL_LABEL }} <!-- Remplacez 'name' par le champ que vous souhaitez afficher -->
+    @endforeach
+</p>
+
 
 
 
@@ -66,10 +75,30 @@
             @php 
                 $i = 0; 
             @endphp
-            @foreach ($sessions as $session)
+            @foreach ($niveaux as $niveau)
+            @if ($niveau->LEVEL_ID == 0)
+                @continue
+            @endif
+
+            @php
+                $skills = Skill::select('*')
+                ->where('LEVEL_ID','!=','0')
+                ->where('LEVEL_ID','=',$niveau->LEVEL_ID)
+                ->get();
+            @endphp
+
+            @php
+                $taille = 0;
+                foreach($skills as $skill) {
+                    $taille += \App\Models\Ability::where('SKILL_ID', '=', $skill->SKILL_ID)->count();
+                }
+            @endphp
+
+
+
                 <!-- insére les dates -->
                 <td rowspan="{{ $taille }}" class="session-date">
-                    {{ $session->SESS_DATE }}
+                    {{ $niveau->LEVEL_LABEL }}
                 </td>
                 @foreach ($skills as $skill)
                     @php
@@ -88,13 +117,7 @@
                     @endphp
                     @foreach($aptitude as $apt)
                         @php
-                            $evaluationTrouvee = null;
-                            foreach($evaluationsChaqueSeance[$i] as $eval) {
-                                if($eval->ABI_ID == $apt->ABI_ID){ 
-                                    $evaluationTrouvee = $eval;
-                                    break;
-                                }
-                            }
+                            
                         @endphp 
                         @if($compteur != 0) 
                             <tr> 
@@ -105,11 +128,27 @@
                         </td>
                         <!-- insére les évaluations -->
                         <td class="eval"> 
-                            @if($evaluationTrouvee) 
-                                {{$evaluationTrouvee->STATUSTYPE_LABEL}}
-                            @else
-                                Non évaluée
-                            @endif
+                                @php
+                                $nbEvals = Evaluation::select('*')
+                                ->where('USER_ID', '=', $user_id)
+                                ->where('ABI_ID','=',$apt->ABI_ID)
+                                ->count();
+                                
+                                $nbEvalsValide = Evaluation::select('*')
+                                ->where('USER_ID', '=', $user_id)
+                                ->where('ABI_ID','=',$apt->ABI_ID)
+                                ->where('STATUSTYPE_ID', '=', 3)
+                                ->count();
+                                @endphp
+
+                                @if($nbEvalsValide >= 3)
+                                    Validé
+                                @elseif($nbEvals > 0)
+                                    En cours
+                                @else
+                                    Non évalué
+                                @endif
+                                
                         </td>
                         </tr>
                         @if($compteur != 0) 
