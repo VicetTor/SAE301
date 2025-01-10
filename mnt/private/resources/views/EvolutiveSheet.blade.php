@@ -11,7 +11,8 @@ use App\Models\Attend;
 use App\Models\Attendee;
 use App\Models\Evaluation;
 use App\Models\Skill;
-use Illuminate\Support\Facades\DB;
+
+    use Illuminate\Support\Facades\DB;
 
 
     $user_id = session('user_id');
