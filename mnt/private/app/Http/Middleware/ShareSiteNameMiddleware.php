@@ -10,7 +10,7 @@ class ShareSiteNameMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        $site = DB::table('GRP2_SITE')->where('CLUB_ID', 1)->first();
+        $site = DB::table('grp2_site')->where('CLUB_ID', 1)->first();
         $siteName = $site->SITE_NAME ?? 'Secoule';
 
         view()->share('siteName', $siteName);

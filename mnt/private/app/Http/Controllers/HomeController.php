@@ -43,10 +43,10 @@ class HomeController extends BaseController
         }
         if(Session('user_id') !=null){
 
-            $clubName = DB::table('REPORT')
+            $clubName = DB::table('report')
                 ->select('CLUB_NAME')
-                ->join('grp2_club', 'grp2_club.club_id', '=', 'report.club_id')
-                ->where('user_id', '=', Session('user_id'))
+                ->join('grp2_club', 'grp2_club.CLUB_ID', '=', 'report.CLUB_ID')
+                ->where('USER_ID', '=', Session('user_id'))
                 ->first();
 
             if ($clubName) {

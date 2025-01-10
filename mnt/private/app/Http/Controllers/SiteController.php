@@ -50,10 +50,10 @@ class SiteController extends Controller
             return redirect()->route('home');
         }
         // Retrieve the CLUB_ID based on the current user's ID (from the session)
-        $clubID = DB::table('REPORT')
+        $clubID = DB::table('report')
             ->select('grp2_club.CLUB_ID')
-            ->join('grp2_club', 'grp2_club.club_id', '=', 'report.club_id')
-            ->where('user_id', '=', Session('user_id'))
+            ->join('grp2_club', 'grp2_club.CLUB_ID', '=', 'report.CLUB_ID')
+            ->where('USER_ID', '=', Session('user_id'))
             ->first();
 
         // Check if a club ID was found
@@ -65,7 +65,7 @@ class SiteController extends Controller
         }
 
         // Retrieve the site's settings based on the club ID
-        $site = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first();
+        $site = DB::table('grp2_site')->where('CLUB_ID', $clubID)->first();
 
         // Set default values if no site data is found
         $siteName = $site->SITE_NAME ?? 'Secoule'; // Default site name
@@ -144,10 +144,10 @@ class SiteController extends Controller
         $logoData = null; // Initialize logo data as null
 
         // Retrieve the CLUB_ID based on the current user's ID (from the session)
-        $clubID = DB::table('REPORT')
+        $clubID = DB::table('report')
             ->select('grp2_club.CLUB_ID')
-            ->join('grp2_club', 'grp2_club.club_id', '=', 'report.club_id')
-            ->where('user_id', '=', Session('user_id'))
+            ->join('grp2_club', 'grp2_club.CLUB_ID', '=', 'report.CLUB_ID')
+            ->where('USER_ID', '=', Session('user_id'))
             ->first();
 
         // Check if a club ID was found
@@ -165,18 +165,18 @@ class SiteController extends Controller
         }
 
         // Check if a site entry already exists for the current club
-        $existingSite = DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->first();
+        $existingSite = DB::table('grp2_site')->where('CLUB_ID', $clubID)->first();
 
         if ($existingSite) {
             // Update the existing site settings
-            DB::table('GRP2_SITE')->where('CLUB_ID', $clubID)->update([
+            DB::table('grp2_site')->where('CLUB_ID', $clubID)->update([
                 'SITE_NAME' => $siteName,
                 'SITE_COLOR' => $siteColor,
                 'SITE_LOGO' => $logoData ?? $existingSite->SITE_LOGO, // Use existing logo if no new logo is uploaded
             ]);
         } else {
             // Insert a new site entry if none exists
-            DB::table('GRP2_SITE')->insert([
+            DB::table('grp2_site')->insert([
                 'CLUB_ID' => 1, // Assign a default CLUB_ID of 1 (this might need to be dynamic based on your use case)
                 'SITE_NAME' => $siteName,
                 'SITE_COLOR' => $siteColor,

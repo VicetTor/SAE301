@@ -15,7 +15,7 @@ class To_Date extends Model
      *
      * @var string
      */
-    protected $table = 'TO_DATE';
+    protected $table = 'to_date';
 
 
 }

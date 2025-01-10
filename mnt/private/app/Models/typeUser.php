@@ -15,12 +15,12 @@ class typeUser extends Model
      *
      * @var string
      */
-    protected $table = 'GRP2_TYPEUSER';
+    protected $table = 'grp2_typeuser';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'type_id';
+    protected $primaryKey = 'TYPE_ID';
 }

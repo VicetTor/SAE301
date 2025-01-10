@@ -15,12 +15,12 @@ class Year extends Model
      *
      * @var string
      */
-    protected $table = 'GRP2_YEAR';
+    protected $table = 'grp2_year';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'club_id';
+    protected $primaryKey = 'CLUB_ID';
 }

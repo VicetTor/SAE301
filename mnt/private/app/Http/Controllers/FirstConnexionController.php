@@ -102,8 +102,8 @@ class FirstConnexionController extends Controller
         if ($inputNewPswd === $inputPswdVerif) {
             // Update the user's password in the database
             $testUpdate = DB::table('grp2_user')
-                ->where('user_id','=', Session('user_id'))
-                ->update(['user_password' => Hash::make($inputNewPswd), 'user_isfirstlogin' => 0]); // Hash the new password before saving
+                ->where('USER_ID','=', Session('user_id'))
+                ->update(['USER_PASSWORD' => Hash::make($inputNewPswd), 'USER_ISFIRSTLOGIN' => 0]); // Hash the new password before saving
 
             // Redirect to the profile page with a success message
             return redirect()->route('home');
