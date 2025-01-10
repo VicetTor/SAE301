@@ -39,23 +39,22 @@
                         <li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/"> Accueil </a> </li>
                         <?php
                         if (Session('type_id') == 4) {
-                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan formations </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/validate">Valider niveau</a></li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/modification/users">Modération</a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/modifying">Personnalisation</a></li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/select-year"> CSV </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/formation-accueil">Gestion formation</a> </li>';
+                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/training-graph">Graphique</a> </li>';
                         }
                         if (Session('type_id') == 3) {
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/session/create"> Créer séance </a> </li>';
-                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet"> Bilan formation </a> </li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/students">Liste adhérents</a></li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/evaluations/search">Historique evaluations</a></li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/formation-accueil">Gestion formation</a></li>';
                         }
                         if (Session('type_id') == 2) {
-                            echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/sheet">Bilan formations</a></li>';
                             echo '<li class="nav-item fs-5 margin-right"> <a class="nav-link active text-light" href="/students">Liste élèves</a></li>';
+                            echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/session">Mes Séances</a></li>';
                         }
                         if (Session('type_id') == 1) {
                             echo '<li class="nav-item fs-5 margin-right"><a class="nav-link active text-light" href="/session">Mes Séances</a></li>';

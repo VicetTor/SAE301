@@ -145,12 +145,10 @@ class SessionController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
-        if (session('type_id') == 3) {
+        if (session('type_id') == 3 || session('type_id') == 4) {
             return redirect()->route('home');
         }
-        if (session('type_id') == 4) {
-            return redirect()->route('home');
-        }
+
         // Fetches the club name associated with the user by joining the user, report, and club tables.
         $club = DB::table('grp2_user')
             ->join('report', 'report.user_id', '=', 'grp2_user.user_id') // Join the 'report' table to get club information
@@ -169,6 +167,14 @@ class SessionController extends Controller
             ->where('grp2_user.user_id', '=', session('user_id')) // Filter by user ID from the session
             ->get(); // Retrieve all matching records
 
+        $initiatorSessions = DB::table('grp2_user')
+            ->join('grp2_attendee', 'grp2_user.user_id', '=', 'grp2_attendee.user_id') // Join with attendee data to check user sessions
+            ->join('grp2_session', 'grp2_attendee.sess_id', '=', 'grp2_session.sess_id') // Join with session data
+            ->where('grp2_user.user_id', '=', session('user_id')) 
+            ->where('grp2_attendee.user_id', '=', session('user_id'))// Filter by user ID from the session
+            ->get(); // Retrieve all matching records
+        
+
         // Fetches the abilities associated with the sessions that the user has attended, including session and evaluation data.
         $abilities = DB::table('grp2_ability')
             ->join('grp2_evaluation', 'grp2_ability.abi_id', '=', 'grp2_evaluation.abi_id') // Join with evaluation data
@@ -184,7 +190,7 @@ class SessionController extends Controller
             ->where('grp2_attendee.user_id_attendee', '=', session('user_id'))
             ->first();
 
-        return view('SessionsPage',['club'=>$club, 'sessions'=>$sessions, 'abilities'=>$abilities,'initiator'=>$initiator]);
+        return view('SessionsPage',['club'=>$club, 'sessions'=>$sessions, 'abilities'=>$abilities,'initiator'=>$initiator, 'initiatorSessions'=>$initiatorSessions]);
 
         // The comment suggests that the retrieved data (models) should be stored in variables
         // and passed to the view in an array, following Blade template conventions.
