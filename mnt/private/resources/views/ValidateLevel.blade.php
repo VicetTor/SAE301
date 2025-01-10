@@ -1,6 +1,6 @@
 @extends('Base')
 
-@section('title','a définir')
+@section('title','Validation compétences')
 
 @section('content')
     <?php
@@ -10,7 +10,7 @@ use App\Models\Evaluation;
 use App\Models\Skill;
 use App\Models\User;
     ?>
-    <h1>Valider les compétences</h1>
+    <p class="fw-medium fs-2">Valider les niveaux des élèves qui ont réussi à valider toutes les compétences</p>
 
     <?php
         $user = User::select('*')
@@ -46,9 +46,9 @@ use App\Models\User;
                 }
             }
             if($isValide){
-                echo'<h3 class="text-center darkblue-text">'.$user->USER_FIRSTNAME.'</h3>';
-                echo'<h2> Prépare le niveau '.$user->LEVEL_ID_RESUME;
-                echo'<br/><button class="bouton-valider" data-user-id="'.$user->USER_ID.'" data-level-resume="'.$user->LEVEL_ID_RESUME.'"> valider la competence </button>';
+                echo'<p class="text-center darkblue-text fw-medium fs-3"> Elève : '.$user->USER_FIRSTNAME.' '.$user->USER_LASTNAME.'</p>';
+                echo'<p class="fw-medium fs-4"> A réussi à valider toutes les compétences du niveau : '.$user->LEVEL_ID_RESUME.'</p>';
+                echo'<br/><button class="bouton-valider btn btn-success" data-user-id="'.$user->USER_ID.'" data-level-resume="'.$user->LEVEL_ID_RESUME.'"> Valider le niveau </button>';
             }
         }
     ?>
