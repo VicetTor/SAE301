@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\TrainingAddRequest;
 use App\Models\Level;
 use App\Models\typeUser;
 use App\Models\User;
