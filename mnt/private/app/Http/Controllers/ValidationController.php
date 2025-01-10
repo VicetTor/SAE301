@@ -6,6 +6,22 @@ use App\Models\Validation;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *     schema="Validation",
+ *     type="object",
+ *     required={"SKILL_ID", "ABI_ID", "LEVEL_ID", "EVAL_ID", "VALID_DATE"},
+ *     @OA\Property(property="id", type="integer", description="Validation ID"),
+ *     @OA\Property(property="SKILL_ID", type="integer", description="Skill ID"),
+ *     @OA\Property(property="ABI_ID", type="integer", description="Ability ID"),
+ *     @OA\Property(property="LEVEL_ID", type="integer", description="Level ID"),
+ *     @OA\Property(property="EVAL_ID", type="integer", description="Evaluation ID"),
+ *     @OA\Property(property="VALID_DATE", type="string", format="date", description="Validation Date"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Creation Timestamp"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Update Timestamp")
+ * )
+ */
+
 class ValidationController extends Controller
 {
     /**
@@ -27,10 +43,11 @@ class ValidationController extends Controller
      *     )
      * )
      */
+    // This function retrieves all validation records from the database.
     public function index()
     {
-        $validations = Validation::all();
-        return response()->json($validations);
+        $validations = Validation::all(); // Fetch all validations from the database.
+        return response()->json($validations); // Return the list of validations as a JSON response.
     }
 
     /**
@@ -60,15 +77,16 @@ class ValidationController extends Controller
      *     )
      * )
      */
+    // This function retrieves a specific validation by its ID from the database.
     public function show($id)
     {
-        $validation = Validation::find($id);
-
+        $validation = Validation::find($id); // Find the validation by its ID.
+        
         if (!$validation) {
-            return response()->json(['error' => 'Validation not found'], 404);
+            return response()->json(['error' => 'Validation not found'], 404); // Return a 404 if validation not found.
         }
-
-        return response()->json($validation);
+        
+        return response()->json($validation); // Return the validation details as a JSON response.
     }
 
     /**
@@ -102,18 +120,22 @@ class ValidationController extends Controller
      *     )
      * )
      */
+    // This function creates a new validation entry in the database.
     public function store(Request $request)
     {
+        // Validate the incoming request data.
         $validated = $request->validate([
-            'SKILL_ID' => 'required|integer',
-            'ABI_ID' => 'required|integer',
-            'LEVEL_ID' => 'required|integer',
-            'EVAL_ID' => 'required|integer',
-            'VALID_DATE' => 'required|date',
+            'SKILL_ID' => 'required|integer', // Validate SKILL_ID as an integer.
+            'ABI_ID' => 'required|integer', // Validate ABI_ID as an integer.
+            'LEVEL_ID' => 'required|integer', // Validate LEVEL_ID as an integer.
+            'EVAL_ID' => 'required|integer', // Validate EVAL_ID as an integer.
+            'VALID_DATE' => 'required|date', // Validate VALID_DATE as a date.
         ]);
-
+        
+        // Create the validation record using the validated data.
         $validation = Validation::create($validated);
-
+        
+        // Return the created validation as a JSON response with a 201 status.
         return response()->json($validation, 201);
     }
 
@@ -155,14 +177,16 @@ class ValidationController extends Controller
      *     )
      * )
      */
+    // This function updates an existing validation record by ID.
     public function update(Request $request, $id)
     {
-        $validation = Validation::find($id);
-
+        $validation = Validation::find($id); // Find the validation by its ID.
+        
         if (!$validation) {
-            return response()->json(['error' => 'Validation not found'], 404);
+            return response()->json(['error' => 'Validation not found'], 404); // Return 404 if validation is not found.
         }
-
+        
+        // Validate the incoming request data.
         $validated = $request->validate([
             'SKILL_ID' => 'required|integer',
             'ABI_ID' => 'required|integer',
@@ -170,9 +194,11 @@ class ValidationController extends Controller
             'EVAL_ID' => 'required|integer',
             'VALID_DATE' => 'required|date',
         ]);
-
+        
+        // Update the validation record with the validated data.
         $validation->update($validated);
-
+        
+        // Return the updated validation record as a JSON response.
         return response()->json($validation);
     }
 
@@ -206,17 +232,18 @@ class ValidationController extends Controller
      *     )
      * )
      */
+    // This function deletes a validation record from the database.
     public function destroy($id)
     {
-        $validation = Validation::find($id);
-
+        $validation = Validation::find($id); // Find the validation by its ID.
+        
         if (!$validation) {
-            return response()->json(['error' => 'Validation not found'], 404);
+            return response()->json(['error' => 'Validation not found'], 404); // Return 404 if validation not found.
         }
-
-        $validation->delete();
-
+        
+        $validation->delete(); // Delete the validation record.
+        
+        // Return a success message indicating the deletion was successful.
         return response()->json(['message' => 'Validation deleted successfully']);
     }
 }
-?>

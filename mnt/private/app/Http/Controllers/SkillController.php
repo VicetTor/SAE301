@@ -6,6 +6,17 @@ use App\Models\Skill;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *     schema="Skill",
+ *     type="object",
+ *     required={"LEVEL_ID", "SKILL_LABEL"},
+ *     @OA\Property(property="id", type="integer", description="Skill ID"),
+ *     @OA\Property(property="LEVEL_ID", type="integer", description="Level ID"),
+ *     @OA\Property(property="SKILL_LABEL", type="string", description="Skill Label")
+ * )
+ */
+
 class SkillController extends Controller
 {
     /**
@@ -29,7 +40,9 @@ class SkillController extends Controller
      */
     public function index()
     {
+        // Retrieve all skills from the database
         $skills = Skill::all();
+        // Return the skills as a JSON response
         return response()->json($skills);
     }
 
@@ -62,12 +75,15 @@ class SkillController extends Controller
      */
     public function show($id)
     {
+        // Find the skill by its ID
         $skill = Skill::find($id);
 
+        // If the skill is not found, return a 404 error with a message
         if (!$skill) {
             return response()->json(['error' => 'Skill not found'], 404);
         }
 
+        // Return the skill as a JSON response
         return response()->json($skill);
     }
 
@@ -101,14 +117,17 @@ class SkillController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the incoming data
         $validated = $request->validate([
-            'LEVEL_ID' => 'required|integer',
-            'SKILL_LABEL' => 'required|string|max:255',
+            'LEVEL_ID' => 'required|integer', // LEVEL_ID must be an integer
+            'SKILL_LABEL' => 'required|string|max:255', // SKILL_LABEL must be a string, max length of 255
         ]);
 
+        // Create a new skill entry using the validated data
         $skill = Skill::create($validated);
 
-        return response()->json($skill, 201); // 201 signifie "créé"
+        // Return a JSON response with the created skill and a 201 status code (Created)
+        return response()->json($skill, 201);
     }
 
     /**
@@ -148,19 +167,24 @@ class SkillController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Find the skill by ID
         $skill = Skill::find($id);
 
+        // If the skill is not found, return a 404 error with a message
         if (!$skill) {
             return response()->json(['error' => 'Skill not found'], 404);
         }
 
+        // Validate the incoming data
         $validated = $request->validate([
             'LEVEL_ID' => 'required|integer',
             'SKILL_LABEL' => 'required|string|max:255',
         ]);
 
+        // Update the skill with the validated data
         $skill->update($validated);
 
+        // Return the updated skill as a JSON response
         return response()->json($skill);
     }
 
@@ -195,15 +219,18 @@ class SkillController extends Controller
      */
     public function destroy($id)
     {
+        // Find the skill by ID
         $skill = Skill::find($id);
 
+        // If the skill is not found, return a 404 error with a message
         if (!$skill) {
             return response()->json(['error' => 'Skill not found'], 404);
         }
 
+        // Delete the skill
         $skill->delete();
 
+        // Return a success message in the JSON response
         return response()->json(['message' => 'Skill deleted successfully']);
     }
 }
-?>

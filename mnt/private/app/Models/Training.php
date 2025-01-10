@@ -10,18 +10,18 @@ class Training extends Model
 {
     use HasFactory;
 
-    // Spécifier le nom de la table
-    protected $table = 'grp2_training';
+    // Specify the table name
+    protected $table = 'grp2_training'; // The model is associated with the 'grp2_training' table
 
-    // Spécifier la clé primaire
-    protected $primaryKey = 'TRAIN_ID';
+    // Specify the primary key
+    protected $primaryKey = 'TRAIN_ID'; // The primary key of the 'grp2_training' table is 'TRAIN_ID'
 
-    // Indiquer que cette table n'a pas de timestamps (created_at, updated_at)
-    public $timestamps = false;
+    // Indicate that this table does not have timestamps (created_at, updated_at)
+    public $timestamps = false; // Disabling automatic timestamp management for this model
 
-    // Définir les attributs qui peuvent être assignés en masse
+    // Define the attributes that can be mass-assigned
     protected $fillable = [
-        'TRAIN_ID', // Le champ qui identifie la formation
+        'TRAIN_ID', // The attribute for identifying the training
     ];
 
     /**
@@ -29,18 +29,27 @@ class Training extends Model
      *     schema="Training",
      *     type="object",
      *     required={"TRAIN_ID"},
-     *     @OA\Property(property="TRAIN_ID", type="integer", description="ID de la formation")
+     *     @OA\Property(property="TRAIN_ID", type="integer", description="ID of the training")
      * )
      */
 
-    
+    /**
+     * Relationship with the `Session` model.
+     * This defines a one-to-many relationship where a training can have many sessions.
+     * The foreign key in the `Session` model is `TRAIN_ID`, which corresponds to the primary key `TRAIN_ID` in the `Training` model.
+     */
     public function sessions()
     {
-        return $this->hasMany(Session::class, 'TRAIN_ID', 'TRAIN_ID');
+        return $this->hasMany(Session::class, 'TRAIN_ID', 'TRAIN_ID'); // A training can have many sessions
     }
 
-    
-    public function users(){
-        return $this->belongsToMany(User::class, 'grp2_attendee', 'TRAIN_ID', 'USER_ID');
+    /**
+     * Relationship with the `User` model through a pivot table `grp2_attendee`.
+     * This defines a many-to-many relationship where a training can have many users (attendees) and vice versa.
+     * The pivot table `grp2_attendee` has the foreign keys `TRAIN_ID` and `USER_ID` to connect the two models.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'grp2_attendee', 'TRAIN_ID', 'USER_ID'); // A training can have many users (attendees) via the pivot table
     }
 }
