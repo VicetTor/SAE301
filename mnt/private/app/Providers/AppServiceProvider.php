@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        /*  -> middleware
         $clubID = DB::table('report')
             ->select('grp2_club.CLUB_ID')
             ->join('grp2_club', 'grp2_club.CLUB_ID', '=', 'report.CLUB_ID')
@@ -50,6 +51,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('siteLogo', $siteLogo);
         View::share('siteColor', $siteColor);
         View::share('siteName', $siteName);
+        */
         //
         /*DB::listen(function ($query) {
             Log::debug($query->sql);

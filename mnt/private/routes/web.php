@@ -7,6 +7,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\ModificationUserController;
 use App\Http\Controllers\EvaluationController;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,6 +113,7 @@ Route::get('/students', function(){
 
 // User modification routes
 Route::get('/user', function(){
+    Log::debug("User_id=".session('user_id'));
     if (session('user_id') == null) {
         return redirect()->route('connexion');
     }

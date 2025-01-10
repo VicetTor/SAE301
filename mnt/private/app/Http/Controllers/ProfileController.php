@@ -105,6 +105,9 @@ class ProfileController extends Controller
         if (session('user_id') == null) {
             return redirect()->route('connexion');
         }
+        
+
+
         // Fetch any report pop-ups for the user from the database
         $popUps = DB::table('report')
             ->join('grp2_user','grp2_user.USER_ID','=','report.USER_ID') // Join with the user table
