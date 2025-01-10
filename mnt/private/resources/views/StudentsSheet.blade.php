@@ -83,7 +83,6 @@
 
             
             @if(Session('type_id') == 2)
-            salut
                 @foreach($attendee as $att)
                     @php
                         $eleves = App\Models\User::where('TYPE_ID', 1)
@@ -138,7 +137,8 @@
 $(document).on('change', '#selectEleve', function() {
     var userId = $(this).val();
     var selectedEleve = $(this).find("option:selected").text();
-
+    console.log(userId);
+        console.log(selectedEleve);
     $('#result').text("Tableau évolutif de : " + selectedEleve);
 
     $.ajax({
@@ -159,6 +159,7 @@ $(document).on('change', '#selectEleve', function() {
         var userId = $(this).data('user-id');
         var abiId = $(this).data('abi-id');
         var sessId = $(this).data('sess-id');
+        
 
     $.ajax({
         url: '/updateEvaluation',

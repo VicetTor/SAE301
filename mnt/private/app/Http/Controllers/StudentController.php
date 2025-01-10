@@ -201,7 +201,7 @@ class StudentController extends Controller
                     . '" data-abi-id="' . $apt->ABI_ID . '" data-sess-id="' . $session->SESS_ID . '">';
                     
                     if ($evaluationTrouvee) {
-                        $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL.$evaluationTrouvee->EVAL_ID . '</option>';
+                        $tableHtml .= '<option selected>' . $evaluationTrouvee->STATUSTYPE_LABEL. '</option>';
                     } else {
                         $tableHtml .= '<option></option>';
                     }
@@ -236,4 +236,5 @@ class StudentController extends Controller
     return response()->json(['html' => $tableHtml]);
 }
 
+}
 }
